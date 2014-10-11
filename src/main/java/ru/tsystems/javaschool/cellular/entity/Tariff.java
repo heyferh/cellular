@@ -2,13 +2,14 @@ package ru.tsystems.javaschool.cellular.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Created by ferh on 03.10.14.
  */
 @Entity
-@Table(name = "TARIFFS")
+@Table(name = "TARIFF")
 @NamedQuery(name = "Tariff.getAll", query = "SELECT t FROM Tariff t")
 public class Tariff implements Serializable {
 
@@ -20,17 +21,22 @@ public class Tariff implements Serializable {
     private String title;
     private int cost;
 
-    @OneToMany(mappedBy = "tariff")
-    private Set<Option> options;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "TARIFF_OPTION",
+            joinColumns = @JoinColumn(name = "tariff_id"),
+            inverseJoinColumns = @JoinColumn(name = "option_id")
+    )
+    private Set<Option> options = new HashSet<Option>();
 
     public Tariff() {
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -42,11 +48,11 @@ public class Tariff implements Serializable {
         this.title = title;
     }
 
-    public Integer getCost() {
+    public int getCost() {
         return cost;
     }
 
-    public void setCost(Integer cost) {
+    public void setCost(int cost) {
         this.cost = cost;
     }
 
@@ -54,14 +60,22 @@ public class Tariff implements Serializable {
         return options;
     }
 
-    public void setOptions(Set<Option> options) {
-        this.options = options;
+    public void addOptions(Option options) {
+        this.options.add(options);
+    }
+
+    @Override
+    public String toString() {
+        return "Tariff{" +
+                "title='" + title + '\'' +
+                ", cost=" + cost +
+                '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Tariff)) return false;
 
         Tariff tariff = (Tariff) o;
 

@@ -2,12 +2,16 @@ package ru.tsystems.javaschool.cellular.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by ferh on 03.10.14.
  */
 @Entity
-@Table(name = "CONTRACTS")
+@Table(name = "CONTRACT")
 @NamedQuery(name = "Contract.getAll", query = "SELECT c FROM Contract c")
 public class Contract implements Serializable {
 
@@ -20,13 +24,22 @@ public class Contract implements Serializable {
     private boolean isBlockedByOperator;
     private boolean isBlockedByClient;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "tariff_id")
-    private ru.tsystems.javaschool.cellular.entity.Tariff tariff;
+    private Tariff tariff;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable
+            (
+                    name = "CONTRACT_OPTION",
+                    joinColumns = {@JoinColumn(name = "contract_id")},
+                    inverseJoinColumns = {@JoinColumn(name = "option_id")}
+            )
+    private Set<Option> options = new HashSet<Option>();
 
     public Contract() {
     }
@@ -79,21 +92,39 @@ public class Contract implements Serializable {
         this.client = client;
     }
 
+    public Set<Option> getOptions() {
+        return options;
+    }
+
+    public void addOptions(Option option) {
+
+        this.options.add(option);
+    }
+
+    @Override
+    public String toString() {
+        return "Contract{" +
+                "phoneNumber='" + phoneNumber + '\'' +
+                ", isBlockedByOperator=" + isBlockedByOperator +
+                ", isBlockedByClient=" + isBlockedByClient +
+                '}';
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Contract)) return false;
 
         Contract contract = (Contract) o;
 
-        if (id != contract.id) return false;
+        if (!phoneNumber.equals(contract.phoneNumber)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+        return phoneNumber.hashCode();
     }
 }
 

@@ -2,13 +2,15 @@ package ru.tsystems.javaschool.cellular.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Created by ferh on 03.10.14.
  */
 @Entity
-@Table(name = "CLIENTS")
+@Table(name = "CLIENT")
 @NamedQuery(name = "Client.getAll", query = "SELECT c FROM Client c")
 public class Client implements Serializable {
 
@@ -17,17 +19,17 @@ public class Client implements Serializable {
     @Column(name = "client_id")
     private long id;
 
-    @Temporal(TemporalType.DATE)
-    private java.util.Date dayOfBirth;
     private String firstName;
     private String lastName;
+    @Temporal(TemporalType.DATE)
+    private java.util.Date dayOfBirth;
     private String idCard;
     private String address;
     private String email;
     private String accountPassword;
 
-    @OneToMany(mappedBy = "client")
-    private Set<Contract> contracts;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "client")
+    private Set<Contract> contracts = new HashSet<Contract>();
 
     public Client() {
     }
@@ -40,11 +42,11 @@ public class Client implements Serializable {
         this.id = id;
     }
 
-    public java.util.Date getDayOfBirth() {
+    public Date getDayOfBirth() {
         return dayOfBirth;
     }
 
-    public void setDayOfBirth(java.util.Date dayOfBirth) {
+    public void setDayOfBirth(Date dayOfBirth) {
         this.dayOfBirth = dayOfBirth;
     }
 
@@ -100,7 +102,36 @@ public class Client implements Serializable {
         return contracts;
     }
 
-    public void setContracts(Set<Contract> contracts) {
-        this.contracts = contracts;
+    public void addContract(Contract contract) {
+        this.contracts.add(contract);
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dayOfBirth=" + dayOfBirth +
+                ", idCard='" + idCard + '\'' +
+                ", address='" + address + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Client)) return false;
+
+        Client client = (Client) o;
+
+        if (id != client.id) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
     }
 }

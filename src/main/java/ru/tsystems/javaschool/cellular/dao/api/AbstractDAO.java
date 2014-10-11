@@ -1,7 +1,6 @@
 package ru.tsystems.javaschool.cellular.dao.api;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 
 /**
  * Created by ferh on 09.10.14.
@@ -16,62 +15,18 @@ public class AbstractDAO<T> {
     }
 
     public void create(T object) {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.persist(object);
-            entityManager.getTransaction().commit();
-        } catch (RuntimeException e) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw e;
-        }
+        entityManager.persist(object);
     }
 
     public T read(long id) {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        T element;
-        try {
-            entityManager.getTransaction().begin();
-            element = entityManager.find(type, id);
-            entityManager.getTransaction().commit();
-            return element;
-        } catch (RuntimeException e) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw e;
-        }
+        return entityManager.find(type, id);
     }
 
     public void update(T o) {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.merge(o);
-            entityManager.getTransaction().commit();
-        } catch (RuntimeException e) {
-
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw e;
-        }
+        entityManager.merge(o);
     }
 
     public void delete(T persistentObject) {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.remove(persistentObject);
-            entityManager.getTransaction().commit();
-        } catch (RuntimeException e) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw e;
-        }
+        entityManager.remove(persistentObject);
     }
-
 }

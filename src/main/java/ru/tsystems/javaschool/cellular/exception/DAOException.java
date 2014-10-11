@@ -3,10 +3,7 @@ package ru.tsystems.javaschool.cellular.exception;
 /**
  * Created by ferh on 09.10.14.
  */
-public class DAOException extends Exception {
-
-    public DAOException() {
-    }
+public class DAOException extends RuntimeException {
 
     public DAOException(String message) {
         super(message);
