@@ -8,6 +8,7 @@ import ru.tsystems.javaschool.cellular.service.api.OptionService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import java.util.List;
 
 /**
  * Created by ferh on 11.10.14.
@@ -40,6 +41,22 @@ public class OptionServiceImpl implements OptionService {
             entityTransaction.commit();
             if (option == null) throw new DAOException("Option with id: " + id + " doesn't exist");
             return option;
+        } catch (RuntimeException re) {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+            throw re;
+        }
+    }
+
+    @Override
+    public List<Option> getAllOptions() {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try {
+            entityTransaction.begin();
+            List<Option> lst = optionDAO.getAll();
+            if (lst.size() == 0) throw new DAOException("There is no clients in database yet");
+            return lst;
         } catch (RuntimeException re) {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();

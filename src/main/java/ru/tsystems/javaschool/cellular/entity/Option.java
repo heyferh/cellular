@@ -10,7 +10,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "OPTION")
-@NamedQuery(name = "Option.getAll", query = "SELECT o FROM Option o")
+@NamedQuery(name = "Option.getAll", query = "SELECT op FROM Option op")
 public class Option implements Serializable {
 
     @Id

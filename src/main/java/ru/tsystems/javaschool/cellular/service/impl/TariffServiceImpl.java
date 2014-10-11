@@ -8,6 +8,7 @@ import ru.tsystems.javaschool.cellular.service.api.TariffService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import java.util.List;
 
 /**
  * Created by ferh on 11.10.14.
@@ -40,6 +41,22 @@ public class TariffServiceImpl implements TariffService {
             entityTransaction.commit();
             if (tariff == null) throw new DAOException("Tariff with id: " + id + " doesn't exist");
             return tariff;
+        } catch (RuntimeException re) {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+            throw re;
+        }
+    }
+
+    @Override
+    public List<Tariff> getAllTariffs() {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try {
+            entityTransaction.begin();
+            List<Tariff> lst = tariffDAO.getAll();
+            if (lst.size() == 0) throw new DAOException("There is no clients in database yet");
+            return lst;
         } catch (RuntimeException re) {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();

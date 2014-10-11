@@ -5,6 +5,7 @@ import ru.tsystems.javaschool.cellular.entity.Client;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.util.List;
 
 /**
  * Created by ferh on 09.10.14.
@@ -21,4 +22,7 @@ public class ClientDAO extends AbstractDAO<Client> {
         return (Client) query.getSingleResult();
     }
 
+    public List<Client> getAll() {
+        return entityManager.createNamedQuery("Client.getAll", Client.class).getResultList();
+    }
 }

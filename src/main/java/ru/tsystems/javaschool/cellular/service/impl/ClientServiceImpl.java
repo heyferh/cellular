@@ -8,6 +8,7 @@ import ru.tsystems.javaschool.cellular.service.api.ClientService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import java.util.List;
 
 /**
  * Created by ferh on 09.10.14.
@@ -40,6 +41,22 @@ public class ClientServiceImpl implements ClientService {
             entityTransaction.commit();
             if (client == null) throw new DAOException("Client with id: " + id + " doesn't exist");
             return client;
+        } catch (RuntimeException re) {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+            throw re;
+        }
+    }
+
+    @Override
+    public List<Client> getAllClients() {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try {
+            entityTransaction.begin();
+            List<Client> lst = clientDAO.getAll();
+            if (lst.size() == 0) throw new DAOException("There is no clients in database yet");
+            return lst;
         } catch (RuntimeException re) {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
