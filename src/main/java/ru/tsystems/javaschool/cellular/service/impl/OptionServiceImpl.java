@@ -55,7 +55,7 @@ public class OptionServiceImpl implements OptionService {
         try {
             entityTransaction.begin();
             List<Option> lst = optionDAO.getAll();
-            if (lst.size() == 0) throw new DAOException("There is no clients in database yet");
+            if (lst.size() == 0) throw new DAOException("There is no options in database yet");
             return lst;
         } catch (RuntimeException re) {
             if (entityTransaction.isActive()) {

@@ -55,7 +55,7 @@ public class TariffServiceImpl implements TariffService {
         try {
             entityTransaction.begin();
             List<Tariff> lst = tariffDAO.getAll();
-            if (lst.size() == 0) throw new DAOException("There is no clients in database yet");
+            if (lst.size() == 0) throw new DAOException("There is no tariffs in database yet");
             return lst;
         } catch (RuntimeException re) {
             if (entityTransaction.isActive()) {
