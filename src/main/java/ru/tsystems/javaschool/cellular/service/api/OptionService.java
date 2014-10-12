@@ -17,4 +17,6 @@ public interface OptionService {
     public void updateOption(Option option);
 
     public void deleteOption(Option option);
+
+    public List<Option> getOptionsForTariff(String title);
 }

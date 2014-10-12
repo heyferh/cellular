@@ -18,4 +18,12 @@ public interface ContractService {
     public void updateContract(Contract contract);
 
     public void deleteContract(Contract contract);
+
+    public void forceBlock(Contract contract);
+
+    public void forceUnblock(Contract contract);
+
+    public void block(Contract contract);
+
+    public void unblock(Contract contract);
 }

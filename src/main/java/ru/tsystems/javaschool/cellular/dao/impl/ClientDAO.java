@@ -17,7 +17,7 @@ public class ClientDAO extends AbstractDAO<Client> {
     }
 
     public Client findClientByPhoneNumber(String phoneNumber) {
-        Query query = entityManager.createQuery("select c.client from Contract c where c.client.id=:number")
+        Query query = entityManager.createQuery("select c.client from Contract c where c.phoneNumber=:number")
                 .setParameter("number", phoneNumber);
         return (Client) query.getSingleResult();
     }

@@ -14,7 +14,7 @@ import java.util.List;
  * Created by ferh on 09.10.14.
  */
 public class ClientServiceImpl implements ClientService {
-    EntityManager entityManager = Manager.getEntityManager();
+    private EntityManager entityManager = Manager.getEntityManager();
     private ClientDAO clientDAO = new ClientDAO(entityManager, Client.class);
 
     @Override
@@ -55,6 +55,7 @@ public class ClientServiceImpl implements ClientService {
         try {
             entityTransaction.begin();
             List<Client> lst = clientDAO.getAll();
+            entityTransaction.commit();
             if (lst.size() == 0) throw new DAOException("There is no clients in database yet");
             return lst;
         } catch (RuntimeException re) {

@@ -9,7 +9,7 @@ import java.util.Set;
  * Created by ferh on 03.10.14.
  */
 @Entity
-@Table(name = "TARIFF")
+@Table(name = "TARIFFS")
 @NamedQuery(name = "Tariff.getAll", query = "SELECT t FROM Tariff t")
 public class Tariff implements Serializable {
 
@@ -23,7 +23,7 @@ public class Tariff implements Serializable {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "TARIFF_OPTION",
+            name = "TARIFFS_OPTIONS",
             joinColumns = @JoinColumn(name = "tariff_id"),
             inverseJoinColumns = @JoinColumn(name = "option_id")
     )

@@ -16,10 +16,12 @@ public class ContractDAO extends AbstractDAO<Contract> {
     }
 
     public Contract getContractByPhoneNumber(String phoneNumber) {
-        return null;
+        return (Contract) entityManager.createQuery("select c from Contract c where c.phoneNumber=:number")
+                .setParameter("number", phoneNumber).getSingleResult();
     }
 
     public List<Contract> getAll() {
         return entityManager.createNamedQuery("Contract.getAll", Contract.class).getResultList();
     }
+
 }

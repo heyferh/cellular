@@ -9,7 +9,7 @@ import java.util.Set;
  * Created by ferh on 05.10.14.
  */
 @Entity
-@Table(name = "OPTION")
+@Table(name = "OPTIONS")
 @NamedQuery(name = "Option.getAll", query = "SELECT op FROM Option op")
 public class Option implements Serializable {
 
@@ -23,16 +23,16 @@ public class Option implements Serializable {
     private int activationCost;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "REQUIRED_OPTION",
+    @JoinTable(name = "REQUIRED_OPTIONS",
             joinColumns = @JoinColumn(name = "src_opt_id"),
-            inverseJoinColumns = @JoinColumn(name = "dep_opt_id")
+            inverseJoinColumns = @JoinColumn(name = "required_opt_id")
     )
     private Set<Option> requiredOptions = new HashSet<Option>();
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "INCOMPATIBLE_OPTION",
+    @JoinTable(name = "INCOMPATIBLE_OPTIONS",
             joinColumns = @JoinColumn(name = "src_opt_id"),
-            inverseJoinColumns = @JoinColumn(name = "dep_opt_id")
+            inverseJoinColumns = @JoinColumn(name = "incompatible_opt_id")
     )
     private Set<Option> incompatibleOptions = new HashSet<Option>();
 

@@ -14,7 +14,7 @@ import java.util.List;
  * Created by ferh on 11.10.14.
  */
 public class TariffServiceImpl implements TariffService {
-    EntityManager entityManager = Manager.getEntityManager();
+    private EntityManager entityManager = Manager.getEntityManager();
     private TariffDAO tariffDAO = new TariffDAO(entityManager, Tariff.class);
 
     @Override
@@ -55,6 +55,7 @@ public class TariffServiceImpl implements TariffService {
         try {
             entityTransaction.begin();
             List<Tariff> lst = tariffDAO.getAll();
+            entityTransaction.commit();
             if (lst.size() == 0) throw new DAOException("There is no tariffs in database yet");
             return lst;
         } catch (RuntimeException re) {

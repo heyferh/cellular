@@ -14,7 +14,7 @@ import java.util.List;
  * Created by ferh on 11.10.14.
  */
 public class OptionServiceImpl implements OptionService {
-    EntityManager entityManager = Manager.getEntityManager();
+    private EntityManager entityManager = Manager.getEntityManager();
     private OptionDAO optionDAO = new OptionDAO(entityManager, Option.class);
 
     @Override
@@ -87,6 +87,23 @@ public class OptionServiceImpl implements OptionService {
             entityTransaction.begin();
             optionDAO.delete(option);
             entityTransaction.commit();
+        } catch (RuntimeException re) {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+            throw re;
+        }
+    }
+
+    @Override
+    public List<Option> getOptionsForTariff(String title) {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try {
+            entityTransaction.begin();
+            List<Option> lst = optionDAO.getOptionsForTariff(title);
+            entityTransaction.commit();
+            if(lst.size()==0) throw new DAOException("There is no options for " + title);
+            return lst;
         } catch (RuntimeException re) {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();

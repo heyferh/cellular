@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class ContractServiceImpl implements ContractService {
 
-    EntityManager entityManager = Manager.getEntityManager();
+    private EntityManager entityManager = Manager.getEntityManager();
     private ContractDAO contractDAO = new ContractDAO(entityManager, Contract.class);
 
     @Override
@@ -56,6 +56,7 @@ public class ContractServiceImpl implements ContractService {
         try {
             entityTransaction.begin();
             List<Contract> lst = contractDAO.getAll();
+            entityTransaction.commit();
             if (lst.size() == 0) throw new DAOException("There is no contracts in database yet");
             return lst;
         } catch (RuntimeException re) {
@@ -93,6 +94,47 @@ public class ContractServiceImpl implements ContractService {
                 entityTransaction.rollback();
             }
             throw re;
+        }
+    }
+
+    @Override
+    public void forceBlock(Contract contract) {
+        if (contract.isBlockedByOperator()) {
+            throw new DAOException("Phone number: " + contract.getPhoneNumber() + " is already blocked by operator");
+        } else {
+            contract.setBlockedByOperator(true);
+        }
+
+    }
+
+    @Override
+    public void forceUnblock(Contract contract) {
+        if (!contract.isBlockedByOperator()) {
+            throw new DAOException("Phone number: " + contract.getPhoneNumber() + " is already unblocked by operator");
+        } else {
+            contract.setBlockedByOperator(false);
+        }
+
+    }
+
+    @Override
+    public void block(Contract contract) {
+        if (!contract.isBlockedByClient()) {
+            contract.setBlockedByClient(true);
+        } else {
+            throw new DAOException("Phone number: " + contract.getPhoneNumber() + " is already blocked by client");
+        }
+
+    }
+
+    @Override
+    public void unblock(Contract contract) {
+        if (contract.isBlockedByOperator()) {
+            throw new DAOException("Unavailable operation. Phone number: " + contract.getPhoneNumber() + " is blocked by operator");
+        } else if (contract.isBlockedByClient()) {
+            contract.setBlockedByClient(false);
+        } else {
+            throw new DAOException("Phone number: " + contract.getPhoneNumber() + " is already unblocked by client");
         }
     }
 }

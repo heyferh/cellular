@@ -9,7 +9,7 @@ import java.util.Set;
  * Created by ferh on 03.10.14.
  */
 @Entity
-@Table(name = "CONTRACT")
+@Table(name = "CONTRACTS")
 @NamedQuery(name = "Contract.getAll", query = "SELECT c FROM Contract c")
 public class Contract implements Serializable {
 
@@ -33,7 +33,7 @@ public class Contract implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable
             (
-                    name = "CONTRACT_OPTION",
+                    name = "CONTRACTS_OPTIONS",
                     joinColumns = {@JoinColumn(name = "contract_id")},
                     inverseJoinColumns = {@JoinColumn(name = "option_id")}
             )

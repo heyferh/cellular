@@ -10,7 +10,7 @@ import java.util.Set;
  * Created by ferh on 03.10.14.
  */
 @Entity
-@Table(name = "CLIENT")
+@Table(name = "CLIENTS")
 @NamedQuery(name = "Client.getAll", query = "SELECT c FROM Client c")
 public class Client implements Serializable {
 
