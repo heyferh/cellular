@@ -32,6 +32,11 @@ public class Tariff implements Serializable {
     public Tariff() {
     }
 
+    public Tariff(String title, int cost) {
+        this.title = title;
+        this.cost = cost;
+    }
+
     public long getId() {
         return id;
     }

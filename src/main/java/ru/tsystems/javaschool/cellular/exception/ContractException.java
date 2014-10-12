@@ -1,12 +1,12 @@
 package ru.tsystems.javaschool.cellular.exception;
 
 /**
- * Created by ferh on 09.10.14.
+ * Created by ferh on 12.10.14.
  */
-public class DAOException extends RuntimeException {
+public class ContractException extends Exception {
     String msg;
 
-    public DAOException(String message) {
+    public ContractException(String message) {
         super(message);
         this.msg = message;
     }

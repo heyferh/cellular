@@ -39,6 +39,12 @@ public class Option implements Serializable {
     public Option() {
     }
 
+    public Option(String title, int cost, int activationCost) {
+        this.title = title;
+        this.cost = cost;
+        this.activationCost = activationCost;
+    }
+
     public long getId() {
         return id;
     }

@@ -1,7 +1,10 @@
 package ru.tsystems.javaschool.cellular.service.impl;
 
+import ru.tsystems.javaschool.cellular.dao.impl.ContractDAO;
 import ru.tsystems.javaschool.cellular.dao.impl.TariffDAO;
+import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.entity.Manager;
+import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
 import ru.tsystems.javaschool.cellular.service.api.TariffService;
@@ -16,6 +19,7 @@ import java.util.List;
 public class TariffServiceImpl implements TariffService {
     private EntityManager entityManager = Manager.getEntityManager();
     private TariffDAO tariffDAO = new TariffDAO(entityManager, Tariff.class);
+    private ContractDAO contractDAO = new ContractDAO(entityManager, Contract.class);
 
     @Override
     public void createTariff(Tariff tariff) {
@@ -94,5 +98,15 @@ public class TariffServiceImpl implements TariffService {
             }
             throw re;
         }
+    }
+
+    @Override
+    public void addOptionForTariff(Tariff tariff, Option option) {
+        tariff.getOptions().add(option);
+    }
+
+    @Override
+    public void deleteTariffOption(Tariff tariff, Option option) {
+        tariff.getOptions().remove(option);
     }
 }

@@ -1,6 +1,8 @@
 package ru.tsystems.javaschool.cellular.service.api;
 
 import ru.tsystems.javaschool.cellular.entity.Client;
+import ru.tsystems.javaschool.cellular.entity.Contract;
+import ru.tsystems.javaschool.cellular.entity.Option;
 
 import java.util.List;
 
@@ -20,4 +22,5 @@ public interface ClientService {
     public void deleteClient(Client client);
 
     public Client findClientByNumber(String number);
+
 }

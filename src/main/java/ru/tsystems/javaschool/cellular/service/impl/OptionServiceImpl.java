@@ -102,7 +102,7 @@ public class OptionServiceImpl implements OptionService {
             entityTransaction.begin();
             List<Option> lst = optionDAO.getOptionsForTariff(title);
             entityTransaction.commit();
-            if(lst.size()==0) throw new DAOException("There is no options for " + title);
+            if (lst.size() == 0) throw new DAOException("There is no options for " + title);
             return lst;
         } catch (RuntimeException re) {
             if (entityTransaction.isActive()) {
@@ -110,5 +110,25 @@ public class OptionServiceImpl implements OptionService {
             }
             throw re;
         }
+    }
+
+    @Override
+    public void addIncompatibleOption(Option src, Option option) {
+        src.getIncompatibleOptions().add(option);
+    }
+
+    @Override
+    public void removeIncompatibleOption(Option src, Option option) {
+        src.getIncompatibleOptions().remove(option);
+    }
+
+    @Override
+    public void addRequiredOption(Option src, Option option) {
+        src.getRequiredOptions().add(option);
+    }
+
+    @Override
+    public void removeRequiredOption(Option src, Option option) {
+        src.getRequiredOptions().remove(option);
     }
 }

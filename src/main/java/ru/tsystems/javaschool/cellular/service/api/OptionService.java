@@ -19,4 +19,12 @@ public interface OptionService {
     public void deleteOption(Option option);
 
     public List<Option> getOptionsForTariff(String title);
+
+    public void addIncompatibleOption(Option src, Option option);
+
+    public void removeIncompatibleOption(Option src, Option option);
+
+    public void addRequiredOption(Option src, Option option);
+
+    public void removeRequiredOption(Option src, Option option);
 }

@@ -42,6 +42,12 @@ public class Contract implements Serializable {
     public Contract() {
     }
 
+    public Contract(String phoneNumber, boolean isBlockedByOperator, boolean isBlockedByClient) {
+        this.phoneNumber = phoneNumber;
+        this.isBlockedByOperator = isBlockedByOperator;
+        this.isBlockedByClient = isBlockedByClient;
+    }
+
     public long getId() {
         return id;
     }

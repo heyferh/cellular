@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.service.api;
 
+import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
 
 import java.util.List;
@@ -17,4 +18,9 @@ public interface TariffService {
     public void updateTariff(Tariff tariff);
 
     public void deleteTariff(Tariff tariff);
+
+    public void addOptionForTariff(Tariff tariff, Option option);
+
+    public void deleteTariffOption(Tariff tariff, Option option);
+
 }
