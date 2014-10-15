@@ -1,6 +1,7 @@
 package ru.tsystems.javaschool.cellular.service.api;
 
 import ru.tsystems.javaschool.cellular.entity.Option;
+import ru.tsystems.javaschool.cellular.exception.DAOException;
 
 import java.util.List;
 
@@ -10,15 +11,15 @@ import java.util.List;
 public interface OptionService {
     public void createOption(Option option);
 
-    public Option getOptionById(long id);
+    public Option getOptionById(long id) throws DAOException;
 
-    public List<Option> getAllOptions();
+    public List<Option> getAllOptions() throws DAOException;
 
     public void updateOption(Option option);
 
     public void deleteOption(Option option);
 
-    public List<Option> getOptionsForTariff(String title);
+    public List<Option> getOptionsForTariff(String title) throws DAOException;
 
     public void addIncompatibleOption(Option src, Option option);
 

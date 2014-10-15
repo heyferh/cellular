@@ -33,39 +33,20 @@
             <artifactId>hibernate-core</artifactId>
             <version>4.3.6.Final</version>
         </dependency>
-    </dependencies>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>codehaus-snapshots</id>
-            <name>Codehaus Snapshots</name>
-            <url>http://nexus.codehaus.org/snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+        </dependency>
 
-    <repositories>
-        <repository>
-            <id>codehaus-snapshots</id>
-            <name>Codehaus Snapshots</name>
-            <url>http://nexus.codehaus.org/snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+    </dependencies>
+
     <build>
         <finalName>cellular</finalName>
     </build>
-    <reporting>
-        <plugins>
-        </plugins>
-    </reporting>
 </project>

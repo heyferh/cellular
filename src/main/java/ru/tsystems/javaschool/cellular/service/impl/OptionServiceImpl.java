@@ -33,36 +33,36 @@ public class OptionServiceImpl implements OptionService {
     }
 
     @Override
-    public Option getOptionById(long id) {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        try {
-            entityTransaction.begin();
+    public Option getOptionById(long id) throws DAOException {
+//        EntityTransaction entityTransaction = entityManager.getTransaction();
+//        try {
+//            entityTransaction.begin();
             Option option = optionDAO.read(id);
-            entityTransaction.commit();
+//            entityTransaction.commit();
             if (option == null) throw new DAOException("Option with id: " + id + " doesn't exist");
             return option;
-        } catch (RuntimeException re) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw re;
-        }
+//        } catch (RuntimeException re) {
+//            if (entityTransaction.isActive()) {
+//                entityTransaction.rollback();
+//            }
+//            throw re;
+//        }
     }
 
     @Override
-    public List<Option> getAllOptions() {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        try {
-            entityTransaction.begin();
+    public List<Option> getAllOptions() throws DAOException {
+//        EntityTransaction entityTransaction = entityManager.getTransaction();
+//        try {
+//            entityTransaction.begin();
             List<Option> lst = optionDAO.getAll();
             if (lst.size() == 0) throw new DAOException("There is no options in database yet");
             return lst;
-        } catch (RuntimeException re) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw re;
-        }
+//        } catch (RuntimeException re) {
+//            if (entityTransaction.isActive()) {
+//                entityTransaction.rollback();
+//            }
+//            throw re;
+//        }
     }
 
     @Override
@@ -96,7 +96,7 @@ public class OptionServiceImpl implements OptionService {
     }
 
     @Override
-    public List<Option> getOptionsForTariff(String title) {
+    public List<Option> getOptionsForTariff(String title) throws DAOException {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
             entityTransaction.begin();

@@ -12,6 +12,7 @@ import ru.tsystems.javaschool.cellular.service.api.TariffService;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by ferh on 11.10.14.
@@ -37,37 +38,37 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
-    public Tariff getTariffById(long id) {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        try {
-            entityTransaction.begin();
+    public Tariff getTariffById(long id) throws DAOException {
+//        EntityTransaction entityTransaction = entityManager.getTransaction();
+//        try {
+//            entityTransaction.begin();
             Tariff tariff = tariffDAO.read(id);
-            entityTransaction.commit();
+//            entityTransaction.commit();
             if (tariff == null) throw new DAOException("Tariff with id: " + id + " doesn't exist");
             return tariff;
-        } catch (RuntimeException re) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw re;
-        }
+//        } catch (RuntimeException re) {
+//            if (entityTransaction.isActive()) {
+//                entityTransaction.rollback();
+//            }
+//            throw re;
+//        }
     }
 
     @Override
-    public List<Tariff> getAllTariffs() {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        try {
-            entityTransaction.begin();
+    public List<Tariff> getAllTariffs() throws DAOException {
+//        EntityTransaction entityTransaction = entityManager.getTransaction();
+//        try {
+//            entityTransaction.begin();
             List<Tariff> lst = tariffDAO.getAll();
-            entityTransaction.commit();
+//            entityTransaction.commit();
             if (lst.size() == 0) throw new DAOException("There is no tariffs in database yet");
             return lst;
-        } catch (RuntimeException re) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw re;
-        }
+//        } catch (RuntimeException re) {
+//            if (entityTransaction.isActive()) {
+//                entityTransaction.rollback();
+//            }
+//            throw re;
+//        }
     }
 
     @Override
@@ -102,11 +103,12 @@ public class TariffServiceImpl implements TariffService {
 
     @Override
     public void addOptionForTariff(Tariff tariff, Option option) {
-        tariff.getOptions().add(option);
+        tariff.addOptions(option);
     }
 
     @Override
     public void deleteTariffOption(Tariff tariff, Option option) {
-        tariff.getOptions().remove(option);
+        Set<Option> optionSet = tariff.getOptions();
+        optionSet.remove(option);
     }
 }

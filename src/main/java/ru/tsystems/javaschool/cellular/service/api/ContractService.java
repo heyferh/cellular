@@ -4,6 +4,7 @@ import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
 import ru.tsystems.javaschool.cellular.exception.ContractException;
+import ru.tsystems.javaschool.cellular.exception.DAOException;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
 
 import java.util.List;
@@ -15,9 +16,9 @@ public interface ContractService {
 
     public void createContract(Contract contract);
 
-    public Contract getContractById(long id);
+    public Contract getContractById(long id) throws DAOException;
 
-    public List<Contract> getAllContracts();
+    public List<Contract> getAllContracts() throws DAOException;
 
     public void updateContract(Contract contract);
 

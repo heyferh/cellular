@@ -14,6 +14,7 @@ import java.util.List;
  * Created by ferh on 09.10.14.
  */
 public class ClientServiceImpl implements ClientService {
+    // заменить на транзакшн менеджер
     private EntityManager entityManager = Manager.getEntityManager();
     private ClientDAO clientDAO = new ClientDAO(entityManager, Client.class);
 
@@ -33,37 +34,37 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client getClientById(long id) {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        try {
-            entityTransaction.begin();
+    public Client getClientById(long id) throws DAOException {
+//        EntityTransaction entityTransaction = entityManager.getTransaction();
+//        try {
+//            entityTransaction.begin();
             Client client = clientDAO.read(id);
-            entityTransaction.commit();
+//            entityTransaction.commit();
             if (client == null) throw new DAOException("Client with id: " + id + " doesn't exist");
             return client;
-        } catch (RuntimeException re) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw re;
-        }
+//        } catch (RuntimeException re) {
+//            if (entityTransaction.isActive()) {
+//                entityTransaction.rollback();
+//            }
+//            throw re;
+//        }
     }
 
     @Override
-    public List<Client> getAllClients() {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        try {
-            entityTransaction.begin();
+    public List<Client> getAllClients() throws DAOException {
+//        EntityTransaction entityTransaction = entityManager.getTransaction();
+//        try {
+//            entityTransaction.begin();
             List<Client> lst = clientDAO.getAll();
-            entityTransaction.commit();
+//            entityTransaction.commit();
             if (lst.size() == 0) throw new DAOException("There is no clients in database yet");
             return lst;
-        } catch (RuntimeException re) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw re;
-        }
+//        } catch (RuntimeException re) {
+//            if (entityTransaction.isActive()) {
+//                entityTransaction.rollback();
+//            }
+//            throw re;
+//        }
     }
 
     @Override
@@ -97,7 +98,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client findClientByNumber(String number) {
+    public Client findClientByNumber(String number) throws DAOException {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
             entityTransaction.begin();

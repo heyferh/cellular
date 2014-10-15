@@ -39,37 +39,37 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public Contract getContractById(long id) {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        try {
-            entityTransaction.begin();
-            Contract contract = contractDAO.read(id);
-            entityTransaction.commit();
-            if (contract == null) throw new DAOException("Contract with id: " + id + " doesn't exist");
-            return contract;
-        } catch (RuntimeException re) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw re;
-        }
+    public Contract getContractById(long id) throws DAOException {
+//        EntityTransaction entityTransaction = entityManager.getTransaction();
+//        try {
+//            entityTransaction.begin();
+        Contract contract = contractDAO.read(id);
+//            entityTransaction.commit();
+        if (contract == null) throw new DAOException("Contract with id: " + id + " doesn't exist");
+        return contract;
+//        } catch (RuntimeException re) {
+//            if (entityTransaction.isActive()) {
+//                entityTransaction.rollback();
+//            }
+//            throw re;
+//        }
     }
 
     @Override
-    public List<Contract> getAllContracts() {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        try {
-            entityTransaction.begin();
+    public List<Contract> getAllContracts() throws DAOException {
+//        EntityTransaction entityTransaction = entityManager.getTransaction();
+//        try {
+//            entityTransaction.begin();
             List<Contract> lst = contractDAO.getAll();
-            entityTransaction.commit();
+//            entityTransaction.commit();
             if (lst.size() == 0) throw new DAOException("There is no contracts in database yet");
             return lst;
-        } catch (RuntimeException re) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw re;
-        }
+//        } catch (RuntimeException re) {
+//            if (entityTransaction.isActive()) {
+//                entityTransaction.rollback();
+//            }
+//            throw re;
+//        }
     }
 
     @Override
@@ -158,10 +158,16 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public void enableOption(Contract contract, Option option) throws OptionException {
         Set<Option> optionSet = contract.getOptions();
-        for (Option srcOption : optionSet) {
-            if (srcOption.getIncompatibleOptions().contains(option)) {
-                throw new OptionException("Option: " + option.getTitle() + " is incompatible with option: " + srcOption.getTitle());
+        for (Option incompatibleOption : option.getIncompatibleOptions()) {
+            if (optionSet.contains(incompatibleOption)) {
+                throw new OptionException("Option: " + option.getTitle() + " is incompatible with option: " + incompatibleOption.getTitle());
             }
         }
+        for (Option requiredOption : option.getRequiredOptions()) {
+            if (!optionSet.contains(requiredOption)) {
+                throw new OptionException("Option: " + option.getTitle() + " requires " + requiredOption.getTitle() + " to be enable");
+            }
+        }
+        optionSet.add(option);
     }
 }

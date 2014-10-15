@@ -9,6 +9,15 @@ public class AbstractDAO<T> {
     protected final EntityManager entityManager;
     protected Class<T> type;
 
+    class TransactionManager {
+        EntityManager entityManager;
+
+        //begin()
+        //commit()
+        //rollback()
+
+    }
+
     public AbstractDAO(EntityManager entityManager, Class<T> type) {
         this.entityManager = entityManager;
         this.type = type;
