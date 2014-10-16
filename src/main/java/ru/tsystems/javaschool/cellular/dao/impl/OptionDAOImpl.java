@@ -47,21 +47,29 @@ public class OptionDAOImpl implements OptionDAO {
     }
 
     @Override
-    public void delete(Option option) {
+    public void delete(Option option) throws DAOException {
         try {
             entityManager.remove(option);
         } catch (PersistenceException e) {
-
+            throw new DAOException("Unable to delete option: " + option, e);
         }
     }
 
-    public List<Option> getAll() {
-        return entityManager.createNamedQuery("Option.getAll", Option.class).getResultList();
+    public List<Option> getAll() throws DAOException {
+        try {
+            return entityManager.createNamedQuery("Option.getAll", Option.class).getResultList();
+        } catch (PersistenceException e) {
+            throw new DAOException("Unable to get all options", e);
+        }
     }
 
-    public List<Option> getOptionsForTariff(String title) {
-        Query query = entityManager.createQuery("select t.options from Tariff t where t.title=:tariff_title")
-                .setParameter("tariff_title", title);
-        return query.getResultList();
+    public List<Option> getOptionsForTariff(String title) throws DAOException {
+        try {
+            Query query = entityManager.createQuery("select t.options from Tariff t where t.title=:tariff_title")
+                    .setParameter("tariff_title", title);
+            return query.getResultList();
+        } catch (PersistenceException e) {
+            throw new DAOException("Unable to get options for tariff: " + title, e);
+        }
     }
 }

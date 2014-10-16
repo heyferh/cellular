@@ -16,9 +16,9 @@ public interface OptionDAO {
 
     public void update(Option option) throws DAOException;
 
-    public void delete(Option option);
+    public void delete(Option option) throws DAOException;
 
-    public List<Option> getAll();
+    public List<Option> getAll() throws DAOException;
 
-    public List<Option> getOptionsForTariff(String title);
+    public List<Option> getOptionsForTariff(String title) throws DAOException;
 }
