@@ -1,6 +1,8 @@
 package ru.tsystems.javaschool.cellular.controller;
 
 import ru.tsystems.javaschool.cellular.entity.Contract;
+import ru.tsystems.javaschool.cellular.entity.Manager;
+import ru.tsystems.javaschool.cellular.exception.ContractException;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
 import ru.tsystems.javaschool.cellular.service.api.ContractService;
 import ru.tsystems.javaschool.cellular.service.impl.ContractServiceImpl;
@@ -15,7 +17,7 @@ import java.io.IOException;
  * Created by ferh on 14.10.14.
  */
 public class ContractServlet extends HttpServlet {
-    ContractService contractService = new ContractServiceImpl();
+    private ContractService contractService = new ContractServiceImpl(Manager.getEntityManager());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -25,7 +27,7 @@ public class ContractServlet extends HttpServlet {
         Contract contract = null;
         try {
             contract = contractService.getContractById(Long.parseLong(request.getParameter("clicked_id")));
-        } catch (DAOException e) {
+        } catch (ContractException e) {
             e.printStackTrace();
         }
 

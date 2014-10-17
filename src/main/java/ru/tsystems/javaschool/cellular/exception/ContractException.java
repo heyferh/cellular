@@ -1,13 +1,17 @@
 package ru.tsystems.javaschool.cellular.exception;
 
 /**
- * Created by ferh on 12.10.14.
+ * Created by ferh on 17.10.14.
  */
 public class ContractException extends Exception {
-    String msg;
+    public ContractException() {
+    }
 
     public ContractException(String message) {
         super(message);
-        this.msg = message;
+    }
+
+    public ContractException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

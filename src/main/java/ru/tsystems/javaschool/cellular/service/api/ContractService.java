@@ -4,7 +4,6 @@ import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
 import ru.tsystems.javaschool.cellular.exception.ContractException;
-import ru.tsystems.javaschool.cellular.exception.DAOException;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
 
 import java.util.List;
@@ -14,21 +13,21 @@ import java.util.List;
  */
 public interface ContractService {
 
-    public void createContract(Contract contract);
+    public void createContract(Contract contract) throws ContractException;
 
-    public Contract getContractById(long id) throws DAOException;
+    public Contract getContractById(long id) throws ContractException;
 
-    public List<Contract> getAllContracts() throws DAOException;
+    public List<Contract> getAllContracts() throws ContractException;
 
-    public void updateContract(Contract contract);
+    public void updateContract(Contract contract) throws ContractException;
 
-    public void deleteContract(Contract contract);
+    public void deleteContract(Contract contract) throws ContractException;
 
     public void forceBlock(Contract contract) throws ContractException;
 
     public void forceUnblock(Contract contract) throws ContractException;
 
-    public void block(Contract contract);
+    public void block(Contract contract) throws ContractException;
 
     public void unblock(Contract contract) throws ContractException;
 

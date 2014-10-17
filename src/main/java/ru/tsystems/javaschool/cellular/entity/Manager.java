@@ -14,4 +14,8 @@ public class Manager {
     public static EntityManager getEntityManager() {
         return em;
     }
+
+    private Manager() {
+    }
 }
+

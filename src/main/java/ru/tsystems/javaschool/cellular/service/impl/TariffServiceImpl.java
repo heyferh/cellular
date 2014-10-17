@@ -1,12 +1,13 @@
 package ru.tsystems.javaschool.cellular.service.impl;
 
-import ru.tsystems.javaschool.cellular.dao.impl.ContractDAO;
-import ru.tsystems.javaschool.cellular.dao.impl.TariffDAO;
-import ru.tsystems.javaschool.cellular.entity.Contract;
-import ru.tsystems.javaschool.cellular.entity.Manager;
+import ru.tsystems.javaschool.cellular.dao.api.ContractDAO;
+import ru.tsystems.javaschool.cellular.dao.api.TariffDAO;
+import ru.tsystems.javaschool.cellular.dao.impl.ContractDAOImpl;
+import ru.tsystems.javaschool.cellular.dao.impl.TariffDAOImpl;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
+import ru.tsystems.javaschool.cellular.exception.TariffException;
 import ru.tsystems.javaschool.cellular.service.api.TariffService;
 
 import javax.persistence.EntityManager;
@@ -18,86 +19,67 @@ import java.util.Set;
  * Created by ferh on 11.10.14.
  */
 public class TariffServiceImpl implements TariffService {
-    private EntityManager entityManager = Manager.getEntityManager();
-    private TariffDAO tariffDAO = new TariffDAO(entityManager, Tariff.class);
-    private ContractDAO contractDAO = new ContractDAO(entityManager, Contract.class);
+    private EntityManager entityManager;
+    private TariffDAO tariffDAO;
+    private ContractDAO contractDAO;
+
+    public TariffServiceImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
+        this.tariffDAO = new TariffDAOImpl(entityManager);
+        this.contractDAO = new ContractDAOImpl(entityManager);
+    }
 
     @Override
-    public void createTariff(Tariff tariff) {
+    public void createTariff(Tariff tariff) throws TariffException {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
             entityTransaction.begin();
             tariffDAO.create(tariff);
             entityTransaction.commit();
-        } catch (RuntimeException re) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw re;
+        } catch (DAOException e) {
+            throw new TariffException();
         }
     }
 
     @Override
-    public Tariff getTariffById(long id) throws DAOException {
-//        EntityTransaction entityTransaction = entityManager.getTransaction();
-//        try {
-//            entityTransaction.begin();
-            Tariff tariff = tariffDAO.read(id);
-//            entityTransaction.commit();
-            if (tariff == null) throw new DAOException("Tariff with id: " + id + " doesn't exist");
-            return tariff;
-//        } catch (RuntimeException re) {
-//            if (entityTransaction.isActive()) {
-//                entityTransaction.rollback();
-//            }
-//            throw re;
-//        }
+    public Tariff getTariffById(long id) throws TariffException {
+        try {
+            return tariffDAO.read(id);
+        } catch (DAOException e) {
+            throw new TariffException();
+        }
     }
 
     @Override
-    public List<Tariff> getAllTariffs() throws DAOException {
-//        EntityTransaction entityTransaction = entityManager.getTransaction();
-//        try {
-//            entityTransaction.begin();
-            List<Tariff> lst = tariffDAO.getAll();
-//            entityTransaction.commit();
-            if (lst.size() == 0) throw new DAOException("There is no tariffs in database yet");
-            return lst;
-//        } catch (RuntimeException re) {
-//            if (entityTransaction.isActive()) {
-//                entityTransaction.rollback();
-//            }
-//            throw re;
-//        }
+    public List<Tariff> getAllTariffs() throws TariffException {
+        try {
+            return tariffDAO.getAll();
+        } catch (DAOException e) {
+            throw new TariffException();
+        }
     }
 
     @Override
-    public void updateTariff(Tariff tariff) {
+    public void updateTariff(Tariff tariff) throws TariffException {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
             entityTransaction.begin();
             tariffDAO.update(tariff);
             entityTransaction.commit();
-        } catch (RuntimeException re) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw re;
+        } catch (DAOException e) {
+            throw new TariffException();
         }
     }
 
     @Override
-    public void deleteTariff(Tariff tariff) {
+    public void deleteTariff(Tariff tariff) throws TariffException {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
             entityTransaction.begin();
             tariffDAO.delete(tariff);
             entityTransaction.commit();
-        } catch (RuntimeException re) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw re;
+        } catch (DAOException e) {
+            throw new TariffException();
         }
     }
 

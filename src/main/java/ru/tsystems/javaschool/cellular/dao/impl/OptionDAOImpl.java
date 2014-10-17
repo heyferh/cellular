@@ -13,7 +13,7 @@ import java.util.List;
  * Created by ferh on 09.10.14.
  */
 public class OptionDAOImpl implements OptionDAO {
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     public OptionDAOImpl(EntityManager entityManager) {
         this.entityManager = entityManager;

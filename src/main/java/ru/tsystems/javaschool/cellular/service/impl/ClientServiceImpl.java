@@ -1,8 +1,9 @@
 package ru.tsystems.javaschool.cellular.service.impl;
 
-import ru.tsystems.javaschool.cellular.dao.impl.ClientDAO;
+import ru.tsystems.javaschool.cellular.dao.api.ClientDAO;
+import ru.tsystems.javaschool.cellular.dao.impl.ClientDAOImpl;
 import ru.tsystems.javaschool.cellular.entity.Client;
-import ru.tsystems.javaschool.cellular.entity.Manager;
+import ru.tsystems.javaschool.cellular.exception.ClientException;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
 import ru.tsystems.javaschool.cellular.service.api.ClientService;
 
@@ -14,103 +15,85 @@ import java.util.List;
  * Created by ferh on 09.10.14.
  */
 public class ClientServiceImpl implements ClientService {
-    // заменить на транзакшн менеджер
-    private EntityManager entityManager = Manager.getEntityManager();
-    private ClientDAO clientDAO = new ClientDAO(entityManager, Client.class);
+    private EntityManager entityManager;
+    private ClientDAO clientDAO;
+
+    public ClientServiceImpl(EntityManager entityManager) {
+        clientDAO = new ClientDAOImpl(entityManager);
+        this.entityManager = entityManager;
+    }
 
     @Override
-    public void createClient(Client client) {
+    public void createClient(Client client) throws ClientException {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
             entityTransaction.begin();
             clientDAO.create(client);
             entityTransaction.commit();
-        } catch (RuntimeException re) {
+        } catch (DAOException e) {
+            throw new ClientException();
+        } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
             }
-            throw re;
         }
     }
 
     @Override
-    public Client getClientById(long id) throws DAOException {
-//        EntityTransaction entityTransaction = entityManager.getTransaction();
-//        try {
-//            entityTransaction.begin();
-            Client client = clientDAO.read(id);
-//            entityTransaction.commit();
-            if (client == null) throw new DAOException("Client with id: " + id + " doesn't exist");
-            return client;
-//        } catch (RuntimeException re) {
-//            if (entityTransaction.isActive()) {
-//                entityTransaction.rollback();
-//            }
-//            throw re;
-//        }
+    public Client getClientById(long id) throws ClientException {
+        try {
+            return clientDAO.read(id);
+        } catch (DAOException e) {
+            throw new ClientException();
+        }
     }
 
     @Override
-    public List<Client> getAllClients() throws DAOException {
-//        EntityTransaction entityTransaction = entityManager.getTransaction();
-//        try {
-//            entityTransaction.begin();
-            List<Client> lst = clientDAO.getAll();
-//            entityTransaction.commit();
-            if (lst.size() == 0) throw new DAOException("There is no clients in database yet");
+    public List<Client> getAllClients() throws ClientException {
+        List<Client> lst = null;
+        try {
+            lst = clientDAO.getAll();
             return lst;
-//        } catch (RuntimeException re) {
-//            if (entityTransaction.isActive()) {
-//                entityTransaction.rollback();
-//            }
-//            throw re;
-//        }
+        } catch (DAOException e) {
+            throw new ClientException();
+        }
+
     }
 
     @Override
-    public void updateClient(Client client) {
+    public void updateClient(Client client) throws ClientException {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
             entityTransaction.begin();
             clientDAO.update(client);
             entityTransaction.commit();
-        } catch (RuntimeException re) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw re;
+        } catch (DAOException e) {
+            throw new ClientException();
         }
     }
 
     @Override
-    public void deleteClient(Client client) {
+    public void deleteClient(Client client) throws ClientException {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
             entityTransaction.begin();
             clientDAO.delete(client);
             entityTransaction.commit();
-        } catch (RuntimeException re) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw re;
+        } catch (DAOException e) {
+            throw new ClientException();
         }
     }
 
     @Override
-    public Client findClientByNumber(String number) throws DAOException {
+    public Client findClientByNumber(String number) throws ClientException {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
             entityTransaction.begin();
             Client client = clientDAO.findClientByPhoneNumber(number);
             entityTransaction.commit();
-            if (client == null) throw new DAOException("Client with number" + number + "not found");
             return client;
-        } catch (RuntimeException re) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw re;
+        } catch (DAOException e) {
+            throw new ClientException();
         }
     }
 }

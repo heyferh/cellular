@@ -1,8 +1,8 @@
 package ru.tsystems.javaschool.cellular.service.impl;
 
-import ru.tsystems.javaschool.cellular.dao.impl.ContractDAO;
+import ru.tsystems.javaschool.cellular.dao.api.ContractDAO;
+import ru.tsystems.javaschool.cellular.dao.impl.ContractDAOImpl;
 import ru.tsystems.javaschool.cellular.entity.Contract;
-import ru.tsystems.javaschool.cellular.entity.Manager;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
 import ru.tsystems.javaschool.cellular.exception.ContractException;
@@ -20,85 +20,65 @@ import java.util.Set;
  */
 public class ContractServiceImpl implements ContractService {
 
-    private EntityManager entityManager = Manager.getEntityManager();
-    private ContractDAO contractDAO = new ContractDAO(entityManager, Contract.class);
+    private EntityManager entityManager;
+    private ContractDAO contractDAO;
+
+    public ContractServiceImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
+        this.contractDAO = new ContractDAOImpl(entityManager);
+    }
 
     @Override
-    public void createContract(Contract contract) {
+    public void createContract(Contract contract) throws ContractException {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
             entityTransaction.begin();
             contractDAO.create(contract);
             entityTransaction.commit();
-        } catch (RuntimeException re) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw re;
+        } catch (DAOException e) {
+            throw new ContractException();
         }
     }
 
     @Override
-    public Contract getContractById(long id) throws DAOException {
-//        EntityTransaction entityTransaction = entityManager.getTransaction();
-//        try {
-//            entityTransaction.begin();
-        Contract contract = contractDAO.read(id);
-//            entityTransaction.commit();
-        if (contract == null) throw new DAOException("Contract with id: " + id + " doesn't exist");
-        return contract;
-//        } catch (RuntimeException re) {
-//            if (entityTransaction.isActive()) {
-//                entityTransaction.rollback();
-//            }
-//            throw re;
-//        }
+    public Contract getContractById(long id) throws ContractException {
+        try {
+            return contractDAO.read(id);
+        } catch (DAOException e) {
+            throw new ContractException();
+        }
     }
 
     @Override
-    public List<Contract> getAllContracts() throws DAOException {
-//        EntityTransaction entityTransaction = entityManager.getTransaction();
-//        try {
-//            entityTransaction.begin();
-            List<Contract> lst = contractDAO.getAll();
-//            entityTransaction.commit();
-            if (lst.size() == 0) throw new DAOException("There is no contracts in database yet");
-            return lst;
-//        } catch (RuntimeException re) {
-//            if (entityTransaction.isActive()) {
-//                entityTransaction.rollback();
-//            }
-//            throw re;
-//        }
+    public List<Contract> getAllContracts() throws ContractException {
+        try {
+            return contractDAO.getAll();
+        } catch (DAOException e) {
+            throw new ContractException();
+        }
     }
 
     @Override
-    public void updateContract(Contract contract) {
+    public void updateContract(Contract contract) throws ContractException {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
             entityTransaction.begin();
             contractDAO.update(contract);
             entityTransaction.commit();
-        } catch (RuntimeException re) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw re;
+        } catch (DAOException e) {
+            throw new ContractException();
         }
     }
 
     @Override
-    public void deleteContract(Contract contract) {
+    public void deleteContract(Contract contract) throws ContractException {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
             entityTransaction.begin();
             contractDAO.delete(contract);
             entityTransaction.commit();
-        } catch (RuntimeException re) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
-            throw re;
+        } catch (DAOException e) {
+            throw new ContractException();
         }
     }
 
@@ -123,9 +103,11 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public void block(Contract contract) {
+    public void block(Contract contract) throws ContractException {
         if (!contract.isBlockedByClient()) {
             contract.setBlockedByClient(true);
+        } else {
+            throw new ContractException("Contract " + contract + " is already blocked");
         }
     }
 

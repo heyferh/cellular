@@ -1,6 +1,8 @@
 package ru.tsystems.javaschool.cellular.controller;
 
 import ru.tsystems.javaschool.cellular.entity.Client;
+import ru.tsystems.javaschool.cellular.entity.Manager;
+import ru.tsystems.javaschool.cellular.exception.ClientException;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
 import ru.tsystems.javaschool.cellular.service.api.ClientService;
 import ru.tsystems.javaschool.cellular.service.impl.ClientServiceImpl;
@@ -16,14 +18,14 @@ import java.util.List;
  * Created by ferh on 13.10.14.
  */
 public class AllContractsServlet extends HttpServlet {
-    ClientService clientService = new ClientServiceImpl();
+    private ClientService clientService = new ClientServiceImpl(Manager.getEntityManager());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Client> clientList = null;
 
         try {
             clientList = clientService.getAllClients();
-        } catch (DAOException e) {
+        } catch (ClientException e) {
             e.printStackTrace();
         }
 

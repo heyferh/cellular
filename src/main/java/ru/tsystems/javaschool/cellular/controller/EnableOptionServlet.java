@@ -1,6 +1,7 @@
 package ru.tsystems.javaschool.cellular.controller;
 
 import ru.tsystems.javaschool.cellular.entity.Contract;
+import ru.tsystems.javaschool.cellular.entity.Manager;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.service.api.ContractService;
 import ru.tsystems.javaschool.cellular.service.api.OptionService;
@@ -17,23 +18,25 @@ import java.io.IOException;
  * Created by ferh on 15.10.14.
  */
 public class EnableOptionServlet extends HttpServlet {
-    ContractService contractService = new ContractServiceImpl();
-    OptionService optionService = new OptionServiceImpl();
+    private ContractService contractService = new ContractServiceImpl(Manager.getEntityManager());
+    private OptionService optionService = new OptionServiceImpl(Manager.getEntityManager());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Contract contract = null;
+        Option option = null;
         try {
-            Contract contract = contractService.getContractById(Long.parseLong(request.getParameter("contract_id")));
-            Option option = optionService.getOptionById(Long.parseLong(request.getParameter("option_id")));
+            contract = contractService.getContractById(Long.parseLong(request.getParameter("contract_id")));
+            option = optionService.getOptionById(Long.parseLong(request.getParameter("option_id")));
             contractService.enableOption(contract, option);
             contractService.updateContract(contract);
-            request.setAttribute("contract", contract);
-            request.getRequestDispatcher("operator_contract.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        request.setAttribute("contract", contract);
+        request.getRequestDispatcher("operator_contract.jsp").forward(request, response);
     }
 }

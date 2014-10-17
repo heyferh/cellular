@@ -1,8 +1,8 @@
 package ru.tsystems.javaschool.cellular.controller;
 
 import ru.tsystems.javaschool.cellular.entity.Contract;
+import ru.tsystems.javaschool.cellular.entity.Manager;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
-import ru.tsystems.javaschool.cellular.exception.DAOException;
 import ru.tsystems.javaschool.cellular.service.api.ContractService;
 import ru.tsystems.javaschool.cellular.service.api.TariffService;
 import ru.tsystems.javaschool.cellular.service.impl.ContractServiceImpl;
@@ -18,8 +18,8 @@ import java.io.IOException;
  * Created by ferh on 15.10.14.
  */
 public class ChangeTariffServlet extends HttpServlet {
-    ContractService contractService = new ContractServiceImpl();
-    TariffService tariffService = new TariffServiceImpl();
+    private ContractService contractService = new ContractServiceImpl(Manager.getEntityManager());
+    private TariffService tariffService = new TariffServiceImpl(Manager.getEntityManager());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -29,7 +29,7 @@ public class ChangeTariffServlet extends HttpServlet {
             contractService.updateContract(contract);
             request.setAttribute("contract", contract);
             request.getRequestDispatcher("operator_contract.jsp").forward(request, response);
-        } catch (DAOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

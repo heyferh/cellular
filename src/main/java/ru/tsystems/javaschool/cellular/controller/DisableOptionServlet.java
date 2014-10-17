@@ -1,6 +1,7 @@
 package ru.tsystems.javaschool.cellular.controller;
 
 import ru.tsystems.javaschool.cellular.entity.Contract;
+import ru.tsystems.javaschool.cellular.entity.Manager;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.service.api.ContractService;
 import ru.tsystems.javaschool.cellular.service.api.OptionService;
@@ -17,8 +18,8 @@ import java.io.IOException;
  * Created by ferh on 15.10.14.
  */
 public class DisableOptionServlet extends HttpServlet {
-    ContractService contractService = new ContractServiceImpl();
-    OptionService optionService = new OptionServiceImpl();
+    private ContractService contractService = new ContractServiceImpl(Manager.getEntityManager());
+    private OptionService optionService = new OptionServiceImpl(Manager.getEntityManager());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

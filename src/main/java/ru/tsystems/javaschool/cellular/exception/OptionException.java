@@ -1,13 +1,17 @@
 package ru.tsystems.javaschool.cellular.exception;
 
 /**
- * Created by ferh on 12.10.14.
+ * Created by ferh on 17.10.14.
  */
 public class OptionException extends Exception {
-    String msg;
+    public OptionException() {
+    }
 
     public OptionException(String message) {
         super(message);
-        this.msg = message;
+    }
+
+    public OptionException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

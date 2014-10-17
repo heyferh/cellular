@@ -1,9 +1,7 @@
 package ru.tsystems.javaschool.cellular.service.api;
 
 import ru.tsystems.javaschool.cellular.entity.Client;
-import ru.tsystems.javaschool.cellular.entity.Contract;
-import ru.tsystems.javaschool.cellular.entity.Option;
-import ru.tsystems.javaschool.cellular.exception.DAOException;
+import ru.tsystems.javaschool.cellular.exception.ClientException;
 
 import java.util.List;
 
@@ -12,16 +10,16 @@ import java.util.List;
  */
 public interface ClientService {
 
-    public void createClient(Client client);
+    public void createClient(Client client) throws ClientException;
 
-    public Client getClientById(long id) throws DAOException;
+    public Client getClientById(long id) throws ClientException;
 
-    public List<Client> getAllClients() throws DAOException;
+    public List<Client> getAllClients() throws ClientException;
 
-    public void updateClient(Client client);
+    public void updateClient(Client client) throws ClientException;
 
-    public void deleteClient(Client client);
+    public void deleteClient(Client client) throws ClientException;
 
-    public Client findClientByNumber(String number) throws DAOException;
+    public Client findClientByNumber(String number) throws ClientException;
 
 }

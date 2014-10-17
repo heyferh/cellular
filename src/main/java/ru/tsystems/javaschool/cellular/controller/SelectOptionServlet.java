@@ -1,8 +1,10 @@
 package ru.tsystems.javaschool.cellular.controller;
 
 import ru.tsystems.javaschool.cellular.entity.Contract;
+import ru.tsystems.javaschool.cellular.entity.Manager;
 import ru.tsystems.javaschool.cellular.entity.Option;
-import ru.tsystems.javaschool.cellular.exception.DAOException;
+import ru.tsystems.javaschool.cellular.exception.ContractException;
+import ru.tsystems.javaschool.cellular.exception.OptionException;
 import ru.tsystems.javaschool.cellular.service.api.ContractService;
 import ru.tsystems.javaschool.cellular.service.api.OptionService;
 import ru.tsystems.javaschool.cellular.service.impl.ContractServiceImpl;
@@ -19,23 +21,29 @@ import java.util.List;
  * Created by ferh on 15.10.14.
  */
 public class SelectOptionServlet extends HttpServlet {
-    ContractService contractService = new ContractServiceImpl();
-    OptionService optionService = new OptionServiceImpl();
+    private ContractService contractService = new ContractServiceImpl(Manager.getEntityManager());
+    private OptionService optionService = new OptionServiceImpl(Manager.getEntityManager());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Contract contract = null;
         try {
-            Contract contract = contractService.getContractById(Long.parseLong(request.getParameter("contract_id")));
-            List<Option> optionList = optionService.getOptionsForTariff(contract.getTariff().getTitle());
-            optionList.removeAll(contract.getOptions());
-            request.setAttribute("optionList", optionList);
-            request.setAttribute("contract_id", contract.getId());
-            request.getRequestDispatcher("select_options.jsp").forward(request, response);
-        } catch (DAOException e) {
+            contract = contractService.getContractById(Long.parseLong(request.getParameter("contract_id")));
+        } catch (ContractException e) {
             e.printStackTrace();
         }
+        List<Option> optionList = null;
+        try {
+            optionList = optionService.getOptionsForTariff(contract.getTariff().getTitle());
+        } catch (OptionException e) {
+            e.printStackTrace();
+        }
+        optionList.removeAll(contract.getOptions());
+        request.setAttribute("optionList", optionList);
+        request.setAttribute("contract_id", contract.getId());
+        request.getRequestDispatcher("select_options.jsp").forward(request, response);
     }
 }

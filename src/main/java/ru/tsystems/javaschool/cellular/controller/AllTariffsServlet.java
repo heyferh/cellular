@@ -1,7 +1,9 @@
 package ru.tsystems.javaschool.cellular.controller;
 
+import ru.tsystems.javaschool.cellular.entity.Manager;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
+import ru.tsystems.javaschool.cellular.exception.TariffException;
 import ru.tsystems.javaschool.cellular.service.api.TariffService;
 import ru.tsystems.javaschool.cellular.service.impl.TariffServiceImpl;
 
@@ -16,7 +18,7 @@ import java.util.List;
  * Created by ferh on 15.10.14.
  */
 public class AllTariffsServlet extends HttpServlet {
-    TariffService tariffService = new TariffServiceImpl();
+    private TariffService tariffService = new TariffServiceImpl(Manager.getEntityManager());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -26,8 +28,8 @@ public class AllTariffsServlet extends HttpServlet {
         try {
             List<Tariff> tariffList = tariffService.getAllTariffs();
             request.setAttribute("tariffList", tariffList);
-            request.getRequestDispatcher("all_tariffs.jsp").forward(request,response);
-        } catch (DAOException e) {
+            request.getRequestDispatcher("all_tariffs.jsp").forward(request, response);
+        } catch (TariffException e) {
             e.printStackTrace();
         }
     }

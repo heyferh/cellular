@@ -13,11 +13,12 @@ import java.util.List;
  * Created by ferh on 09.10.14.
  */
 public class ClientDAOImpl implements ClientDAO {
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     public ClientDAOImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
+
 
     @Override
     public void create(Client client) throws DAOException {

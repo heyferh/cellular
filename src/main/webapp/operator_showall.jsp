@@ -4,7 +4,6 @@
 <html>
 <head>
     <link rel="stylesheet" href="style.css">
-    <script src="jquery-2.1.1.min.js"></script>
     <title>All contracts</title>
 </head>
 <body>

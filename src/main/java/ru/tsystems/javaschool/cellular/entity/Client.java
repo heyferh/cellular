@@ -135,9 +135,8 @@ public class Client implements Serializable {
 
         Client client = (Client) o;
 
-        if (id != client.id) return false;
+        return id == client.id;
 
-        return true;
     }
 
     @Override
