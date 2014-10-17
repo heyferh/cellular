@@ -12,21 +12,13 @@ import java.util.Set;
 @Entity
 @Table(name = "CLIENTS")
 @NamedQuery(name = "Client.getAll", query = "SELECT c FROM Client c")
-public class Client implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "client_id")
-    private long id;
-
+public class Client extends User implements Serializable {
     private String firstName;
     private String lastName;
     @Temporal(TemporalType.DATE)
     private java.util.Date dayOfBirth;
     private String idCard;
     private String address;
-    private String email;
-    private String accountPassword;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "client")
     private Set<Contract> contracts = new HashSet<Contract>();
@@ -41,15 +33,7 @@ public class Client implements Serializable {
         this.idCard = idCard;
         this.address = address;
         this.email = email;
-        this.accountPassword = accountPassword;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+        this.password = accountPassword;
     }
 
     public Date getDayOfBirth() {
@@ -98,14 +82,6 @@ public class Client implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getAccountPassword() {
-        return accountPassword;
-    }
-
-    public void setAccountPassword(String accountPassword) {
-        this.accountPassword = accountPassword;
     }
 
     public Set<Contract> getContracts() {

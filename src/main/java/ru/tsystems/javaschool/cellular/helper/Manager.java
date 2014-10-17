@@ -1,4 +1,4 @@
-package ru.tsystems.javaschool.cellular.entity;
+package ru.tsystems.javaschool.cellular.helper;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
