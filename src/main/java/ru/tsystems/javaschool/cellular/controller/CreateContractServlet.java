@@ -75,6 +75,7 @@ public class CreateContractServlet extends HttpServlet {
         } catch (ClientException e) {
             e.printStackTrace();
         }
+        response.sendRedirect("all_contracts");
     }
 
 

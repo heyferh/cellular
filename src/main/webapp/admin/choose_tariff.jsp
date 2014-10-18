@@ -6,7 +6,7 @@
     <title></title>
 </head>
 <body>
-<form method="POST" action="create_contract">
+<form method="POST" action="fill_forms">
     <fieldset>
         <legend>Choose tariff</legend>
         <c:forEach var="tariff" items="${tariffList}">

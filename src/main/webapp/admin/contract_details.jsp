@@ -16,6 +16,15 @@
     <p>Phone number: ${contract.phoneNumber}</p>
 </fieldset>
 <fieldset>
+    <legend>Status</legend>
+    <c:if test="${contract.blockedByOperator}">
+        <p>Blocked <a href="unblock?contract_id=${contract.id}">Unblock</a></p>
+    </c:if>
+    <c:if test="${not contract.blockedByOperator}">
+        <p>Active <a href="block?contract_id=${contract.id}">Block</a></p>
+    </c:if>
+</fieldset>
+<fieldset>
     <legend>Tariff</legend>
     <p>Current tariff: ${contract.tariff.title} </p>
     <a href="select_tariff?contract_id=${contract.id}">Change tariff</a>

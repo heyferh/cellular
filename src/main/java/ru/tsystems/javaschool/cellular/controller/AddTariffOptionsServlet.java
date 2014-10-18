@@ -35,8 +35,7 @@ public class AddTariffOptionsServlet extends HttpServlet {
             }
             tariffService.updateTariff(tariff);
             List<Tariff> tariffList = tariffService.getAllTariffs();
-            request.setAttribute("tariffs", tariffList);
-            request.getRequestDispatcher("all_tariffs.jsp").forward(request, response);
+            response.sendRedirect("all_tariffs");
         } catch (Exception e) {
             e.printStackTrace();
         }

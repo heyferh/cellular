@@ -19,8 +19,8 @@ public class Contract implements Serializable {
     private long id;
 
     private String phoneNumber;
-    private boolean isBlockedByOperator;
-    private boolean isBlockedByClient;
+    private boolean blockedByOperator;
+    private boolean blockedByClient;
 
     @OneToOne
     @JoinColumn(name = "tariff_id")
@@ -44,8 +44,8 @@ public class Contract implements Serializable {
 
     public Contract(String phoneNumber, boolean isBlockedByOperator, boolean isBlockedByClient) {
         this.phoneNumber = phoneNumber;
-        this.isBlockedByOperator = isBlockedByOperator;
-        this.isBlockedByClient = isBlockedByClient;
+        this.blockedByOperator = isBlockedByOperator;
+        this.blockedByClient = isBlockedByClient;
     }
 
     public long getId() {
@@ -65,19 +65,19 @@ public class Contract implements Serializable {
     }
 
     public boolean isBlockedByOperator() {
-        return isBlockedByOperator;
+        return blockedByOperator;
     }
 
-    public void setBlockedByOperator(boolean isBlockedByOperator) {
-        this.isBlockedByOperator = isBlockedByOperator;
+    public void setBlockedByOperator(boolean blockedByOperator) {
+        this.blockedByOperator = blockedByOperator;
     }
 
     public boolean isBlockedByClient() {
-        return isBlockedByClient;
+        return blockedByClient;
     }
 
-    public void setBlockedByClient(boolean isBlockedByClient) {
-        this.isBlockedByClient = isBlockedByClient;
+    public void setBlockedByClient(boolean blockedByClient) {
+        this.blockedByClient = blockedByClient;
     }
 
     public Tariff getTariff() {
@@ -109,8 +109,8 @@ public class Contract implements Serializable {
     public String toString() {
         return "Contract{" +
                 "phoneNumber='" + phoneNumber + '\'' +
-                ", isBlockedByOperator=" + isBlockedByOperator +
-                ", isBlockedByClient=" + isBlockedByClient +
+                ", blockedByOperator=" + blockedByOperator +
+                ", blockedByClient=" + blockedByClient +
                 '}';
     }
 

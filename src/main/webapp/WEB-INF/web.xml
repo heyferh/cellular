@@ -67,8 +67,10 @@
         <servlet-name>FillFormsServlet</servlet-name>
         <servlet-class>ru.tsystems.javaschool.cellular.controller.FillFormsServlet</servlet-class>
     </servlet>
-
-
+    <servlet>
+        <servlet-name>BlockUnblockServlet</servlet-name>
+        <servlet-class>ru.tsystems.javaschool.cellular.controller.BlockUnblockServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>EditTariffOptionsServlet</servlet-name>
         <url-pattern>/admin/edit_options</url-pattern>
@@ -132,5 +134,13 @@
     <servlet-mapping>
         <servlet-name>CreateNewTariffServlet</servlet-name>
         <url-pattern>/admin/create_tariff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlockUnblockServlet</servlet-name>
+        <url-pattern>/admin/block</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlockUnblockServlet</servlet-name>
+        <url-pattern>/admin/unblock</url-pattern>
     </servlet-mapping>
 </web-app>
