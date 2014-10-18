@@ -20,10 +20,6 @@
         <servlet-class>ru.tsystems.javaschool.cellular.controller.SelectTariffServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ChangeTariffServlet</servlet-name>
-        <servlet-class>ru.tsystems.javaschool.cellular.controller.ChangeTariffServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>DisableOptionServlet</servlet-name>
         <servlet-class>ru.tsystems.javaschool.cellular.controller.DisableOptionServlet</servlet-class>
     </servlet>
@@ -59,56 +55,82 @@
         <servlet-name>AddTariffOptionsServlet</servlet-name>
         <servlet-class>ru.tsystems.javaschool.cellular.controller.AddTariffOptionsServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>AllContractsServlet</servlet-name>
-        <url-pattern>/all</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ContractServlet</servlet-name>
-        <url-pattern>/contract</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SelectTariffServlet</servlet-name>
-        <url-pattern>/select_tariff</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ChangeTariffServlet</servlet-name>
-        <url-pattern>/change_tariff</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DisableOptionServlet</servlet-name>
-        <url-pattern>/disable_option</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SelectOptionServlet</servlet-name>
-        <url-pattern>/select_options</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>EnableOptionServlet</servlet-name>
-        <url-pattern>/enable_option</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AllTariffsServlet</servlet-name>
-        <url-pattern>/all_tariffs</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>RemoveTariffServlet</servlet-name>
-        <url-pattern>/remove_tariff</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CreateNewTariffServlet</servlet-name>
-        <url-pattern>/create_new_tariff</url-pattern>
-    </servlet-mapping>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>ru.tsystems.javaschool.cellular.controller.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateContractServlet</servlet-name>
+        <servlet-class>ru.tsystems.javaschool.cellular.controller.CreateContractServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FillFormsServlet</servlet-name>
+        <servlet-class>ru.tsystems.javaschool.cellular.controller.FillFormsServlet</servlet-class>
+    </servlet>
+
+
     <servlet-mapping>
         <servlet-name>EditTariffOptionsServlet</servlet-name>
-        <url-pattern>/edit_options</url-pattern>
+        <url-pattern>/admin/edit_options</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RemoveTariffOptionsServlet</servlet-name>
-        <url-pattern>/remove_option</url-pattern>
+        <url-pattern>/admin/remove_option</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddTariffOptionsServlet</servlet-name>
-        <url-pattern>/add_option</url-pattern>
+        <url-pattern>/admin/add_option</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateContractServlet</servlet-name>
+        <url-pattern>/admin/new_contract</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FillFormsServlet</servlet-name>
+        <url-pattern>/admin/fill_forms</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateContractServlet</servlet-name>
+        <url-pattern>/admin/add_contract</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AllContractsServlet</servlet-name>
+        <url-pattern>/admin/all_contracts</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ContractServlet</servlet-name>
+        <url-pattern>/admin/contract_details</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SelectTariffServlet</servlet-name>
+        <url-pattern>/admin/select_tariff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SelectTariffServlet</servlet-name>
+        <url-pattern>/admin/change_tariff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DisableOptionServlet</servlet-name>
+        <url-pattern>/admin/disable_option</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SelectOptionServlet</servlet-name>
+        <url-pattern>/admin/select_options</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EnableOptionServlet</servlet-name>
+        <url-pattern>/admin/enable_option</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AllTariffsServlet</servlet-name>
+        <url-pattern>/admin/all_tariffs</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveTariffServlet</servlet-name>
+        <url-pattern>/admin/remove_tariff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateNewTariffServlet</servlet-name>
+        <url-pattern>/admin/create_tariff</url-pattern>
     </servlet-mapping>
 </web-app>

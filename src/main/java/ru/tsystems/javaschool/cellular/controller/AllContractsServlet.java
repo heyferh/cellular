@@ -1,9 +1,8 @@
 package ru.tsystems.javaschool.cellular.controller;
 
 import ru.tsystems.javaschool.cellular.entity.Client;
-import ru.tsystems.javaschool.cellular.entity.Manager;
 import ru.tsystems.javaschool.cellular.exception.ClientException;
-import ru.tsystems.javaschool.cellular.exception.DAOException;
+import ru.tsystems.javaschool.cellular.helper.Manager;
 import ru.tsystems.javaschool.cellular.service.api.ClientService;
 import ru.tsystems.javaschool.cellular.service.impl.ClientServiceImpl;
 
@@ -21,6 +20,9 @@ public class AllContractsServlet extends HttpServlet {
     private ClientService clientService = new ClientServiceImpl(Manager.getEntityManager());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Client> clientList = null;
 
         try {
@@ -30,10 +32,6 @@ public class AllContractsServlet extends HttpServlet {
         }
 
         request.setAttribute("clientList", clientList);
-        request.getRequestDispatcher("operator_showall.jsp").forward(request, response);
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        request.getRequestDispatcher("all_contracts.jsp").forward(request, response);
     }
 }

@@ -72,4 +72,15 @@ public class OptionDAOImpl implements OptionDAO {
             throw new DAOException("Unable to get options for tariff: " + title, e);
         }
     }
+
+    @Override
+    public List<Option> getOptionsForTariff(long tariff_id) throws DAOException {
+        try {
+            Query query = entityManager.createQuery("select t.options from Tariff t where t.id=:tariff_id")
+                    .setParameter("tariff_id", tariff_id);
+            return query.getResultList();
+        } catch (PersistenceException e) {
+            throw new DAOException("Unable to get options for tariff with id: " + tariff_id, e);
+        }
+    }
 }

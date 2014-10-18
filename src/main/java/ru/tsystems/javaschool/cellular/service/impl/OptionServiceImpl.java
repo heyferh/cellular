@@ -78,14 +78,9 @@ public class OptionServiceImpl implements OptionService {
     }
 
     @Override
-    public List<Option> getOptionsForTariff(String title) throws OptionException {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        List<Option> optionList;
+    public List<Option> getOptionsForTariff(long tariff_id) throws OptionException {
         try {
-            entityTransaction.begin();
-            optionList = optionDAO.getOptionsForTariff(title);
-            entityTransaction.commit();
-            return optionList;
+            return optionDAO.getOptionsForTariff(tariff_id);
         } catch (DAOException e) {
             throw new OptionException();
         }

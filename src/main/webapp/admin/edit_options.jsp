@@ -7,8 +7,8 @@
 </head>
 <body>
 <c:forEach var="option" items="${tariff.options}">
-    ${option.title} <a href="/remove_option?tariff_id=${tariff.id}&option_id=${option.id}">Remove</a><br>
+    ${option.title} <a href="remove_option?tariff_id=${tariff.id}&option_id=${option.id}">Remove</a><br>
 </c:forEach>
-<a href="/add_option?tariff_id=${tariff.id}">Add options</a><br>
+<a href="add_option?tariff_id=${tariff.id}">Add options</a><br>
 </body>
 </html>

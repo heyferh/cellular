@@ -1,6 +1,6 @@
 package ru.tsystems.javaschool.cellular.controller;
 
-import ru.tsystems.javaschool.cellular.entity.Manager;
+import ru.tsystems.javaschool.cellular.helper.Manager;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
 import ru.tsystems.javaschool.cellular.service.api.OptionService;
@@ -50,7 +50,7 @@ public class AddTariffOptionsServlet extends HttpServlet {
             optionList.removeAll(currentTariff.getOptions());
             request.setAttribute("tariff_id", request.getParameter("tariff_id"));
             request.setAttribute("optionList", optionList);
-            request.getRequestDispatcher("create_add_option.jsp").forward(request, response);
+            request.getRequestDispatcher("add_option.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -15,8 +15,7 @@ import java.util.Set;
 public class Client extends User implements Serializable {
     private String firstName;
     private String lastName;
-    @Temporal(TemporalType.DATE)
-    private java.util.Date dayOfBirth;
+    private String dayOfBirth;
     private String idCard;
     private String address;
 
@@ -26,7 +25,7 @@ public class Client extends User implements Serializable {
     public Client() {
     }
 
-    public Client(String firstName, String lastName, Date dayOfBirth, String idCard, String address, String email, String accountPassword) {
+    public Client(String firstName, String lastName, String dayOfBirth, String idCard, String address, String email, String accountPassword) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dayOfBirth = dayOfBirth;
@@ -36,11 +35,11 @@ public class Client extends User implements Serializable {
         this.password = accountPassword;
     }
 
-    public Date getDayOfBirth() {
+    public String getDayOfBirth() {
         return dayOfBirth;
     }
 
-    public void setDayOfBirth(Date dayOfBirth) {
+    public void setDayOfBirth(String dayOfBirth) {
         this.dayOfBirth = dayOfBirth;
     }
 

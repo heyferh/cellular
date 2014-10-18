@@ -1,7 +1,7 @@
 package ru.tsystems.javaschool.cellular.controller;
 
 import ru.tsystems.javaschool.cellular.entity.Contract;
-import ru.tsystems.javaschool.cellular.entity.Manager;
+import ru.tsystems.javaschool.cellular.helper.Manager;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.service.api.ContractService;
 import ru.tsystems.javaschool.cellular.service.api.OptionService;
@@ -32,7 +32,7 @@ public class DisableOptionServlet extends HttpServlet {
             contractService.disableOption(contract, option);
             contractService.updateContract(contract);
             request.setAttribute("contract", contract);
-            request.getRequestDispatcher("operator_contract.jsp").forward(request, response);
+            request.getRequestDispatcher("contract_details.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }

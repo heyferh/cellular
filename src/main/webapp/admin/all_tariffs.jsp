@@ -6,12 +6,14 @@
     <title></title>
 </head>
 <body>
-<form method="POST" action="change_tariff">
+<fieldset>
+    <legend>All tariffs</legend>
     <c:forEach var="tariff" items="${tariffList}">
-        <input type="radio" name="new_tariff" value="${tariff.id}">${tariff.title}<br>
+        ${tariff}
+        <a href="remove_tariff?tariff_id=${tariff.id}">Remove</a>
+        <a href="edit_options?tariff_id=${tariff.id}">Edit options</a> <br>
     </c:forEach>
-    <input type="hidden" name="contract_id" value="${contract_id}">
-    <input type="submit">
-</form>
+    <a href="create_tariff">Create</a>
+</fieldset>
 </body>
 </html>

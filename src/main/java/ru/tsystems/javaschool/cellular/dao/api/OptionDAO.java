@@ -21,4 +21,6 @@ public interface OptionDAO {
     public List<Option> getAll() throws DAOException;
 
     public List<Option> getOptionsForTariff(String title) throws DAOException;
+
+    public List<Option> getOptionsForTariff(long tariff_id) throws DAOException;
 }

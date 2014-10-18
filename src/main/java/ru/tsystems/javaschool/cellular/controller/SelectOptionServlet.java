@@ -1,7 +1,7 @@
 package ru.tsystems.javaschool.cellular.controller;
 
 import ru.tsystems.javaschool.cellular.entity.Contract;
-import ru.tsystems.javaschool.cellular.entity.Manager;
+import ru.tsystems.javaschool.cellular.helper.Manager;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.exception.ContractException;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
@@ -37,7 +37,7 @@ public class SelectOptionServlet extends HttpServlet {
         }
         List<Option> optionList = null;
         try {
-            optionList = optionService.getOptionsForTariff(contract.getTariff().getTitle());
+            optionList = optionService.getOptionsForTariff(contract.getTariff().getId());
         } catch (OptionException e) {
             e.printStackTrace();
         }

@@ -6,7 +6,7 @@
     <title></title>
 </head>
 <body>
-<form method="post" action="/create_new_tariff">
+<form method="post" action="create_tariff">
     Title: <input type="text" name="title">
     Price: <input type="text" name="price">
     <fieldset>

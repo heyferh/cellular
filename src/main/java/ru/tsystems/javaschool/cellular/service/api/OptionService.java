@@ -19,7 +19,7 @@ public interface OptionService {
 
     public void deleteOption(Option option) throws OptionException;
 
-    public List<Option> getOptionsForTariff(String title) throws OptionException;
+    public List<Option> getOptionsForTariff(long tariff_id) throws OptionException;
 
     public void addIncompatibleOption(Option src, Option option);
 
