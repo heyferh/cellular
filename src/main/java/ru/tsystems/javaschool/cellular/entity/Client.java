@@ -2,7 +2,6 @@ package ru.tsystems.javaschool.cellular.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,13 +12,14 @@ import java.util.Set;
 @Table(name = "CLIENTS")
 @NamedQuery(name = "Client.getAll", query = "SELECT c FROM Client c")
 public class Client extends User implements Serializable {
+
     private String firstName;
     private String lastName;
     private String dayOfBirth;
     private String idCard;
     private String address;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "client")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "client")
     private Set<Contract> contracts = new HashSet<Contract>();
 
     public Client() {

@@ -71,6 +71,20 @@
         <servlet-name>BlockUnblockServlet</servlet-name>
         <servlet-class>ru.tsystems.javaschool.cellular.controller.BlockUnblockServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AccountServlet</servlet-name>
+        <servlet-class>ru.tsystems.javaschool.cellular.controller.AccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ClientContractServlet</servlet-name>
+        <servlet-class>ru.tsystems.javaschool.cellular.controller.ClientContractServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ClientBlockUnblockServlet</servlet-name>
+        <servlet-class>ru.tsystems.javaschool.cellular.controller.ClientBlockUnblockServlet</servlet-class>
+    </servlet>
+
+
     <servlet-mapping>
         <servlet-name>EditTariffOptionsServlet</servlet-name>
         <url-pattern>/admin/edit_options</url-pattern>
@@ -106,22 +120,24 @@
     <servlet-mapping>
         <servlet-name>SelectTariffServlet</servlet-name>
         <url-pattern>/admin/select_tariff</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SelectTariffServlet</servlet-name>
         <url-pattern>/admin/change_tariff</url-pattern>
+        <url-pattern>/user/select_tariff</url-pattern>
+        <url-pattern>/user/change_tariff</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DisableOptionServlet</servlet-name>
         <url-pattern>/admin/disable_option</url-pattern>
+        <url-pattern>/user/disable_option</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SelectOptionServlet</servlet-name>
         <url-pattern>/admin/select_options</url-pattern>
+        <url-pattern>/user/select_options</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EnableOptionServlet</servlet-name>
         <url-pattern>/admin/enable_option</url-pattern>
+        <url-pattern>/user/enable_option</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AllTariffsServlet</servlet-name>
@@ -138,9 +154,19 @@
     <servlet-mapping>
         <servlet-name>BlockUnblockServlet</servlet-name>
         <url-pattern>/admin/block</url-pattern>
+        <url-pattern>/admin/unblock</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>BlockUnblockServlet</servlet-name>
-        <url-pattern>/admin/unblock</url-pattern>
+        <servlet-name>AccountServlet</servlet-name>
+        <url-pattern>/user/account</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ClientContractServlet</servlet-name>
+        <url-pattern>/user/contract_details</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ClientBlockUnblockServlet</servlet-name>
+        <url-pattern>/user/block</url-pattern>
+        <url-pattern>/user/unblock</url-pattern>
     </servlet-mapping>
 </web-app>

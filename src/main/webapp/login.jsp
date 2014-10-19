@@ -6,8 +6,9 @@
     <title>login page</title>
 </head>
 <body>
-<form method="post" action="all" enctype="application/x-www-form-urlencoded">
+<form method="post" action="login" enctype="application/x-www-form-urlencoded">
     <p>email<input type="email" name="email"></p>
+
     <p>password<input type="password" name="password"></p>
 
     <p><input type="submit"></p>

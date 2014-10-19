@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <link rel="stylesheet" href="../style.css">
     <title></title>
 </head>
 <body>
@@ -17,10 +16,10 @@
 </fieldset>
 <fieldset>
     <legend>Status</legend>
-    <c:if test="${contract.blockedByOperator}">
+    <c:if test="${contract.blockedByClient}">
         <p>Blocked <a href="unblock?contract_id=${contract.id}">Unblock</a></p>
     </c:if>
-    <c:if test="${not contract.blockedByOperator}">
+    <c:if test="${not contract.blockedByClient}">
         <p>Active <a href="block?contract_id=${contract.id}">Block</a></p>
     </c:if>
 </fieldset>

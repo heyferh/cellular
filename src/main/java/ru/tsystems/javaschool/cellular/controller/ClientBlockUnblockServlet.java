@@ -13,12 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by ferh on 18.10.14.
+ * Created by ferh on 19.10.14.
  */
-public class BlockUnblockServlet extends HttpServlet {
+public class ClientBlockUnblockServlet extends HttpServlet {
     ContractService contractService = new ContractServiceImpl(Manager.getEntityManager());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,9 +31,9 @@ public class BlockUnblockServlet extends HttpServlet {
         }
         try {
             if (request.getRequestURI().endsWith("unblock")) {
-                contractService.forceUnblock(contract);
+                contractService.unblock(contract);
             } else {
-                contractService.forceBlock(contract);
+                contractService.block(contract);
             }
             contractService.updateContract(contract);
         } catch (ContractException e) {
