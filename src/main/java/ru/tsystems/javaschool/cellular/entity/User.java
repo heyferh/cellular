@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User {
     @Id
-    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected long id;
     protected String email;

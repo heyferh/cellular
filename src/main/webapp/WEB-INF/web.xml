@@ -83,6 +83,22 @@
         <servlet-name>ClientBlockUnblockServlet</servlet-name>
         <servlet-class>ru.tsystems.javaschool.cellular.controller.ClientBlockUnblockServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AllOptionsServlet</servlet-name>
+        <servlet-class>ru.tsystems.javaschool.cellular.controller.AllOptionsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OptionEditServlet</servlet-name>
+        <servlet-class>ru.tsystems.javaschool.cellular.controller.OptionEditServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddAnotherContractServlet</servlet-name>
+        <servlet-class>ru.tsystems.javaschool.cellular.controller.AddAnotherContractServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateAnotherContractServlet</servlet-name>
+        <servlet-class>ru.tsystems.javaschool.cellular.controller.CreateAnotherContractServlet</servlet-class>
+    </servlet>
 
 
     <servlet-mapping>
@@ -155,6 +171,23 @@
         <servlet-name>BlockUnblockServlet</servlet-name>
         <url-pattern>/admin/block</url-pattern>
         <url-pattern>/admin/unblock</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AllOptionsServlet</servlet-name>
+        <url-pattern>/admin/all_options</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OptionEditServlet</servlet-name>
+        <url-pattern>/admin/delete_option</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddAnotherContractServlet</servlet-name>
+        <url-pattern>/admin/add_another_contract</url-pattern>
+        <url-pattern>/admin/fill_contract_info</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateAnotherContractServlet</servlet-name>
+        <url-pattern>/admin/register_new_contract</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AccountServlet</servlet-name>

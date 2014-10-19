@@ -15,6 +15,7 @@
                 <p id="${contract.id}">
                     <a href="contract_details?id=${contract.id}">${contract.phoneNumber}</a></p>
             </c:forEach>
+            <p><a href="add_another_contract?client_id=${client.id}">+</a></p>
         </div>
     </div>
 </c:forEach>
