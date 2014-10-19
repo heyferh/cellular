@@ -15,7 +15,7 @@
 <fieldset>
     <legend>Contracts</legend>
     <c:forEach var="contract" items="${client.contracts}">
-        <a href="contract_details?contract_id=${contract.id}">${contract.phoneNumber}</a>
+        <p><a href="contract_details?contract_id=${contract.id}">${contract.phoneNumber}</a></p>
     </c:forEach>
 </fieldset>
 </body>

@@ -99,6 +99,10 @@
         <servlet-name>CreateAnotherContractServlet</servlet-name>
         <servlet-class>ru.tsystems.javaschool.cellular.controller.CreateAnotherContractServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageOptionsServlet</servlet-name>
+        <servlet-class>ru.tsystems.javaschool.cellular.controller.ManageOptionsServlet</servlet-class>
+    </servlet>
 
 
     <servlet-mapping>
@@ -201,5 +205,9 @@
         <servlet-name>ClientBlockUnblockServlet</servlet-name>
         <url-pattern>/user/block</url-pattern>
         <url-pattern>/user/unblock</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageOptionsServlet</servlet-name>
+        <url-pattern>/admin/manage_options</url-pattern>
     </servlet-mapping>
 </web-app>

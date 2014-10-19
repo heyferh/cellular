@@ -21,7 +21,9 @@
 <fieldset>
     <legend>Options</legend>
     <c:forEach var="option" items="${optionList}">
-        <p>${option.title} <a href="delete_option?option_id=${option.id}">Remove</a></p>
+        <p><a href="delete_option?option_id=${option.id}">Remove</a> ${option.title}
+            <a href="manage_options?option_id=${option.id}&action=require">Manage requirements</a>
+            <a href="manage_options?option_id=${option.id}&action=incompatible">Manage compatibilities </a></p>
     </c:forEach>
 </fieldset>
 </body>
