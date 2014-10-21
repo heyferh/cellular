@@ -17,7 +17,7 @@ public interface ClientDAO {
 
     public void delete(Client client) throws DAOException;
 
-    public Client findClientByPhoneNumber(String phoneNumber) throws DAOException;
+    public Client findClientByEmail(String email) throws DAOException;
 
     public List<Client> getAll() throws DAOException;
 }

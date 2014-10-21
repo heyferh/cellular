@@ -57,13 +57,13 @@ public class ClientDAOImpl implements ClientDAO {
 
     }
 
-    public Client findClientByPhoneNumber(String phoneNumber) throws DAOException {
+    public Client findClientByEmail(String email) throws DAOException {
         try {
-            Query query = entityManager.createQuery("select c.client from Contract c where c.phoneNumber=:number")
-                    .setParameter("number", phoneNumber);
+            Query query = entityManager.createQuery("select c from Client c where c.email=:email")
+                    .setParameter("email", email);
             return (Client) query.getSingleResult();
         } catch (PersistenceException e) {
-            throw new DAOException("Searching for client with phone number: " + phoneNumber + " fails", e);
+            throw new DAOException("Searching for client with phone number: " + email + " fails", e);
         }
     }
 

@@ -2,6 +2,7 @@ package ru.tsystems.javaschool.cellular.service.impl;
 
 import ru.tsystems.javaschool.cellular.dao.api.UserDAO;
 import ru.tsystems.javaschool.cellular.dao.impl.UserDAOImpl;
+import ru.tsystems.javaschool.cellular.entity.User;
 import ru.tsystems.javaschool.cellular.exception.AuthorizationException;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
 import ru.tsystems.javaschool.cellular.service.api.AuthorizationService;
@@ -21,9 +22,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
 
     @Override
-    public String getRoleByEmail(String email) throws AuthorizationException {
+    public User getUserByEmail(String email) throws AuthorizationException {
         try {
-            return userDAO.getUsersRole(email);
+            return userDAO.getUserByEmail(email);
         } catch (DAOException e) {
             throw new AuthorizationException();
         }

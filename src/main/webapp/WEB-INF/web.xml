@@ -3,8 +3,12 @@
         "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>ru.tsystems.javaschool.cellular.controller.AuthFilter</filter-class>
+    </filter>
     <welcome-file-list>
-        <welcome-file>login.jsp</welcome-file>
+        <welcome-file>login.html</welcome-file>
     </welcome-file-list>
     <display-name>Archetype Created Web Application</display-name>
     <servlet>
@@ -98,6 +102,14 @@
     <servlet>
         <servlet-name>ManageOptionsServlet</servlet-name>
         <servlet-class>ru.tsystems.javaschool.cellular.controller.ManageOptionsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>ru.tsystems.javaschool.cellular.controller.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>ru.tsystems.javaschool.cellular.controller.LogoutServlet</servlet-class>
     </servlet>
 
 
@@ -207,5 +219,18 @@
         <url-pattern>/admin/manage_options</url-pattern>
         <url-pattern>/admin/manage_required_options</url-pattern>
         <url-pattern>/admin/manage_incompatible_options</url-pattern>
+    </servlet-mapping>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/admin/logout</url-pattern>
+        <url-pattern>/user/logout</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -14,15 +14,6 @@ public abstract class User {
     protected long id;
     protected String email;
     protected String password;
-    protected String role = "user";
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     public String getPassword() {
         return password;

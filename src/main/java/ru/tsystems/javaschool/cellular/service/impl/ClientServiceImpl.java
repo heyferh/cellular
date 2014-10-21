@@ -49,6 +49,15 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public Client getClientByEmail(String email) throws ClientException {
+        try {
+            return clientDAO.findClientByEmail(email);
+        } catch (DAOException e) {
+            throw new ClientException();
+        }
+    }
+
+    @Override
     public List<Client> getAllClients() throws ClientException {
         List<Client> lst = null;
         try {
@@ -69,7 +78,7 @@ public class ClientServiceImpl implements ClientService {
             entityTransaction.commit();
         } catch (DAOException e) {
             throw new ClientException();
-        }finally {
+        } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
             }
@@ -85,23 +94,10 @@ public class ClientServiceImpl implements ClientService {
             entityTransaction.commit();
         } catch (DAOException e) {
             throw new ClientException();
-        }finally {
+        } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
             }
-        }
-    }
-
-    @Override
-    public Client findClientByNumber(String number) throws ClientException {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        try {
-            entityTransaction.begin();
-            Client client = clientDAO.findClientByPhoneNumber(number);
-            entityTransaction.commit();
-            return client;
-        } catch (DAOException e) {
-            throw new ClientException();
         }
     }
 }

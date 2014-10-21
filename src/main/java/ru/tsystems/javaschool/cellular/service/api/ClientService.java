@@ -14,12 +14,11 @@ public interface ClientService {
 
     public Client getClientById(long id) throws ClientException;
 
+    public Client getClientByEmail(String email) throws ClientException;
+
     public List<Client> getAllClients() throws ClientException;
 
     public void updateClient(Client client) throws ClientException;
 
     public void deleteClient(Client client) throws ClientException;
-
-    public Client findClientByNumber(String number) throws ClientException;
-
 }
