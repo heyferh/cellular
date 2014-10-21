@@ -13,7 +13,6 @@ import ru.tsystems.javaschool.cellular.service.api.TariffService;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by ferh on 11.10.14.
@@ -38,6 +37,10 @@ public class TariffServiceImpl implements TariffService {
             entityTransaction.commit();
         } catch (DAOException e) {
             throw new TariffException();
+        } finally {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
         }
     }
 
@@ -68,6 +71,10 @@ public class TariffServiceImpl implements TariffService {
             entityTransaction.commit();
         } catch (DAOException e) {
             throw new TariffException();
+        } finally {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
         }
     }
 
@@ -80,6 +87,10 @@ public class TariffServiceImpl implements TariffService {
             entityTransaction.commit();
         } catch (DAOException e) {
             throw new TariffException();
+        } finally {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
         }
     }
 
@@ -90,7 +101,6 @@ public class TariffServiceImpl implements TariffService {
 
     @Override
     public void deleteTariffOption(Tariff tariff, Option option) {
-        Set<Option> optionSet = tariff.getOptions();
-        optionSet.remove(option);
+        tariff.getOptions().remove(option);
     }
 }

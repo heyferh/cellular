@@ -21,11 +21,7 @@ public interface OptionService {
 
     public List<Option> getOptionsForTariff(long tariff_id) throws OptionException;
 
-    public void addIncompatibleOption(Option src, Option option);
+    public void manageIncompatibleOptions(long id, String[] ids) throws OptionException;
 
-    public void removeIncompatibleOption(Option src, Option option);
-
-    public void addRequiredOption(Option src, Option option);
-
-    public void removeRequiredOption(Option src, Option option);
+    public void manageRequiredOptions(long id, String[] ids);
 }

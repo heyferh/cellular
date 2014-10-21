@@ -32,6 +32,10 @@ public class OptionServiceImpl implements OptionService {
             entityTransaction.commit();
         } catch (DAOException e) {
             throw new OptionException();
+        } finally {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
         }
     }
 
@@ -62,6 +66,10 @@ public class OptionServiceImpl implements OptionService {
             entityTransaction.commit();
         } catch (DAOException e) {
             throw new OptionException();
+        } finally {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
         }
     }
 
@@ -74,6 +82,10 @@ public class OptionServiceImpl implements OptionService {
             entityTransaction.commit();
         } catch (DAOException e) {
             throw new OptionException();
+        } finally {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
         }
     }
 
@@ -87,22 +99,56 @@ public class OptionServiceImpl implements OptionService {
     }
 
     @Override
-    public void addIncompatibleOption(Option src, Option option) {
-        src.getIncompatibleOptions().add(option);
+    public void manageIncompatibleOptions(long id, String[] ids) throws OptionException {
+        Option option = null;
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try {
+            entityTransaction.begin();
+            option = optionDAO.read(id);
+            for (Option option1 : option.getIncompatibleOptions()) {
+                option1.getIncompatibleOptions().remove(option);
+            }
+            option.getIncompatibleOptions().clear();
+            if (ids != null) {
+                Option incompatibleOption = null;
+                for (String optionId : ids) {
+                    incompatibleOption = optionDAO.read(Long.parseLong(optionId));
+                    option.addIncompatibleOptions(incompatibleOption);
+                    incompatibleOption.addIncompatibleOptions(option);
+                    optionDAO.update(incompatibleOption);
+                }
+            }
+            optionDAO.update(option);
+            entityTransaction.commit();
+        } catch (DAOException e) {
+            throw new OptionException();
+        } finally {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+        }
     }
 
     @Override
-    public void removeIncompatibleOption(Option src, Option option) {
-        src.getIncompatibleOptions().remove(option);
-    }
-
-    @Override
-    public void addRequiredOption(Option src, Option option) {
-        src.getRequiredOptions().add(option);
-    }
-
-    @Override
-    public void removeRequiredOption(Option src, Option option) {
-        src.getRequiredOptions().remove(option);
+    public void manageRequiredOptions(long id, String[] ids) {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try {
+            entityTransaction.begin();
+            Option option = optionDAO.read(id);
+            option.getRequiredOptions().clear();
+            if (ids != null) {
+                for (String optionId : ids) {
+                    option.addRequiredOptions(optionDAO.read(Long.parseLong(optionId)));
+                }
+            }
+            optionDAO.update(option);
+            entityTransaction.commit();
+        } catch (DAOException e) {
+            e.printStackTrace();
+        } finally {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+        }
     }
 }

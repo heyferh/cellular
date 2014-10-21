@@ -20,7 +20,16 @@ public class ManageOptionsServlet extends HttpServlet {
     OptionService optionService = new OptionServiceImpl(Manager.getEntityManager());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        try {
+            if (request.getParameter("action").equals("require")) {
+                optionService.manageRequiredOptions(Long.parseLong(request.getParameter("option_id")), request.getParameterValues("required"));
+            } else if (request.getParameter("action").equals("incompatible")) {
+                optionService.manageIncompatibleOptions(Long.parseLong(request.getParameter("option_id")), request.getParameterValues("incompatible"));
+            }
+        } catch (OptionException e) {
+            e.printStackTrace();
+        }
+        response.sendRedirect("all_options");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -35,11 +44,13 @@ public class ManageOptionsServlet extends HttpServlet {
         }
         if (request.getParameter("action").equals("require")) {
             optionList.removeAll(option.getRequiredOptions());
+            optionList.removeAll(option.getIncompatibleOptions());
             optionList.remove(option);
             request.setAttribute("optionList", optionList);
             request.setAttribute("action", "require");
         } else {
             optionList.removeAll(option.getIncompatibleOptions());
+            optionList.removeAll(option.getRequiredOptions());
             optionList.remove(option);
             request.setAttribute("optionList", optionList);
             request.setAttribute("action", "compatible");

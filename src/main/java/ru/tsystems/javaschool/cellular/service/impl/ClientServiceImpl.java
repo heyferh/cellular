@@ -69,6 +69,10 @@ public class ClientServiceImpl implements ClientService {
             entityTransaction.commit();
         } catch (DAOException e) {
             throw new ClientException();
+        }finally {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
         }
     }
 
@@ -81,6 +85,10 @@ public class ClientServiceImpl implements ClientService {
             entityTransaction.commit();
         } catch (DAOException e) {
             throw new ClientException();
+        }finally {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
         }
     }
 

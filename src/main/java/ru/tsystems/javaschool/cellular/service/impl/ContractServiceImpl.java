@@ -37,6 +37,10 @@ public class ContractServiceImpl implements ContractService {
             entityTransaction.commit();
         } catch (DAOException e) {
             throw new ContractException();
+        }finally {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
         }
     }
 
@@ -67,6 +71,10 @@ public class ContractServiceImpl implements ContractService {
             entityTransaction.commit();
         } catch (DAOException e) {
             throw new ContractException();
+        }finally {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
         }
     }
 
@@ -79,6 +87,10 @@ public class ContractServiceImpl implements ContractService {
             entityTransaction.commit();
         } catch (DAOException e) {
             throw new ContractException();
+        }finally {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
         }
     }
 
@@ -143,6 +155,11 @@ public class ContractServiceImpl implements ContractService {
         for (Option incompatibleOption : option.getIncompatibleOptions()) {
             if (optionSet.contains(incompatibleOption)) {
                 throw new OptionException("Option: " + option.getTitle() + " is incompatible with option: " + incompatibleOption.getTitle());
+            }
+        }
+        for (Option srcOption : optionSet) {
+            if (srcOption.getIncompatibleOptions().contains(option)) {
+                throw new OptionException("Option: " + srcOption.getTitle() + " contains the: " + option.getTitle() + " as incompatible");
             }
         }
         for (Option requiredOption : option.getRequiredOptions()) {

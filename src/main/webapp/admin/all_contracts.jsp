@@ -19,6 +19,5 @@
         </div>
     </div>
 </c:forEach>
-${sessionScope.session_attribute}
 </body>
 </html>

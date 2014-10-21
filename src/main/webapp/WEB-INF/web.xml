@@ -56,10 +56,6 @@
         <servlet-class>ru.tsystems.javaschool.cellular.controller.AddTariffOptionsServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>ru.tsystems.javaschool.cellular.controller.LoginServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>CreateContractServlet</servlet-name>
         <servlet-class>ru.tsystems.javaschool.cellular.controller.CreateContractServlet</servlet-class>
     </servlet>
@@ -209,5 +205,7 @@
     <servlet-mapping>
         <servlet-name>ManageOptionsServlet</servlet-name>
         <url-pattern>/admin/manage_options</url-pattern>
+        <url-pattern>/admin/manage_required_options</url-pattern>
+        <url-pattern>/admin/manage_incompatible_options</url-pattern>
     </servlet-mapping>
 </web-app>
