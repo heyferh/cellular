@@ -7,54 +7,14 @@ import ru.tsystems.javaschool.cellular.exception.DAOException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
-import java.util.List;
 
 /**
  * Created by ferh on 09.10.14.
  */
-public class ClientDAOImpl implements ClientDAO {
-    private EntityManager entityManager;
+public class ClientDAOImpl extends CommonDAOImpl<Client> implements ClientDAO {
 
     public ClientDAOImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-
-
-    @Override
-    public void create(Client client) throws DAOException {
-        try {
-            entityManager.persist(client);
-        } catch (PersistenceException e) {
-            throw new DAOException("Adding " + client + " fails.", e);
-        }
-    }
-
-    @Override
-    public Client read(long id) throws DAOException {
-        try {
-            return entityManager.find(Client.class, id);
-        } catch (PersistenceException e) {
-            throw new DAOException("Reading client with id " + id + " fails.", e);
-        }
-    }
-
-    @Override
-    public void update(Client client) throws DAOException {
-        try {
-            entityManager.merge(client);
-        } catch (PersistenceException e) {
-            throw new DAOException("Updating " + client + " fails.", e);
-        }
-    }
-
-    @Override
-    public void delete(Client client) throws DAOException {
-        try {
-            entityManager.remove(client);
-        } catch (PersistenceException e) {
-            throw new DAOException("Deleting " + client + " fails.", e);
-        }
-
+        super(entityManager, Client.class);
     }
 
     public Client findClientByEmail(String email) throws DAOException {
@@ -64,14 +24,6 @@ public class ClientDAOImpl implements ClientDAO {
             return (Client) query.getSingleResult();
         } catch (PersistenceException e) {
             throw new DAOException("Searching for client with phone number: " + email + " fails", e);
-        }
-    }
-
-    public List<Client> getAll() throws DAOException {
-        try {
-            return entityManager.createNamedQuery("Client.getAll", Client.class).getResultList();
-        } catch (PersistenceException e) {
-            throw new DAOException("Getting list of clients fails", e);
         }
     }
 }

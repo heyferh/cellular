@@ -47,7 +47,7 @@ public class TariffServiceImpl implements TariffService {
     @Override
     public Tariff getTariffById(long id) throws TariffException {
         try {
-            return tariffDAO.read(id);
+            return tariffDAO.get(id);
         } catch (DAOException e) {
             throw new TariffException();
         }

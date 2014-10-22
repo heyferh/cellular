@@ -60,7 +60,7 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public Contract getContractById(long id) throws ContractException {
         try {
-            return contractDAO.read(id);
+            return contractDAO.get(id);
         } catch (DAOException e) {
             throw new ContractException();
         }
@@ -195,9 +195,9 @@ public class ContractServiceImpl implements ContractService {
             client.addContract(contract);
             clientDAO.create(client);
             contract.setClient(client);
-            contract.setTariff(tariffDAO.read(tariffId));
+            contract.setTariff(tariffDAO.get(tariffId));
             for (long id : optionIds) {
-                enableOption(contract, optionDAO.read(id));
+                enableOption(contract, optionDAO.get(id));
             }
             entityTransaction.commit();
         } catch (DAOException e) {

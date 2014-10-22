@@ -42,7 +42,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client getClientById(long id) throws ClientException {
         try {
-            return clientDAO.read(id);
+            return clientDAO.get(id);
         } catch (DAOException e) {
             throw new ClientException();
         }

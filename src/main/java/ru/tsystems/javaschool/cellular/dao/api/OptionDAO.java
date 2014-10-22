@@ -9,17 +9,7 @@ import java.util.List;
 /**
  * Created by ferh on 16.10.14.
  */
-public interface OptionDAO {
-    public void create(Option option) throws DAOException;
-
-    public Option read(long id) throws DAOException;
-
-    public void update(Option option) throws DAOException;
-
-    public void delete(Option option) throws DAOException;
-
-    public List<Option> getAll() throws DAOException;
-
+public interface OptionDAO extends CommonDAO<Option> {
     public List<Option> getOptionsForTariff(String title) throws DAOException;
 
     public List<Option> getOptionsForTariff(long tariff_id) throws DAOException;

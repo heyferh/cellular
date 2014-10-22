@@ -42,7 +42,7 @@ public class OptionServiceImpl implements OptionService {
     @Override
     public Option getOptionById(long id) throws OptionException {
         try {
-            return optionDAO.read(id);
+            return optionDAO.get(id);
         } catch (DAOException e) {
             throw new OptionException();
         }
@@ -104,7 +104,7 @@ public class OptionServiceImpl implements OptionService {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
             entityTransaction.begin();
-            option = optionDAO.read(id);
+            option = optionDAO.get(id);
             for (Option option1 : option.getIncompatibleOptions()) {
                 option1.getIncompatibleOptions().remove(option);
             }
@@ -112,7 +112,7 @@ public class OptionServiceImpl implements OptionService {
             if (ids != null) {
                 Option incompatibleOption = null;
                 for (String optionId : ids) {
-                    incompatibleOption = optionDAO.read(Long.parseLong(optionId));
+                    incompatibleOption = optionDAO.get(Long.parseLong(optionId));
                     option.addIncompatibleOptions(incompatibleOption);
                     incompatibleOption.addIncompatibleOptions(option);
                     optionDAO.update(incompatibleOption);
@@ -134,11 +134,11 @@ public class OptionServiceImpl implements OptionService {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
             entityTransaction.begin();
-            Option option = optionDAO.read(id);
+            Option option = optionDAO.get(id);
             option.getRequiredOptions().clear();
             if (ids != null) {
                 for (String optionId : ids) {
-                    option.addRequiredOptions(optionDAO.read(Long.parseLong(optionId)));
+                    option.addRequiredOptions(optionDAO.get(Long.parseLong(optionId)));
                 }
             }
             optionDAO.update(option);
