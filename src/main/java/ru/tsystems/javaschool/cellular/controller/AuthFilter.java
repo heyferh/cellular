@@ -32,12 +32,12 @@ public class AuthFilter implements Filter {
             return;
         } else if (session != null) {
             if (request.getSession().getAttribute("role").equals("admin") && uri.contains("/user")) {
-                response.sendRedirect("/admin/all_contracts");
+                response.sendRedirect("/cellular/admin/all_contracts");
                 return;
             }
             if (request.getSession().getAttribute("role").equals("user") && uri.contains("/admin")) {
                 Client client = (Client) request.getSession().getAttribute("client");
-                response.sendRedirect("/user/account?client_id=" + client.getId());
+                response.sendRedirect("/cellular/user/account?client_id=" + client.getId());
                 return;
             }
         }

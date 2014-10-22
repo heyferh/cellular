@@ -35,13 +35,13 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("client", user);
                 session.setAttribute("role", "user");
                 response.addCookie(new Cookie("email", user.getEmail()));
-                response.sendRedirect("/user/account");
+                response.sendRedirect("user/account");
             }
             if (user instanceof Administrator && user.getPassword().equals(password)) {
                 session = request.getSession();
                 session.setAttribute("role", "admin");
                 response.addCookie(new Cookie("email", email));
-                response.sendRedirect("/admin/all_contracts");
+                response.sendRedirect("admin/all_contracts");
             } else {
                 PrintWriter out = response.getWriter();
                 out.println("<font color=red>Either user name or password is wrong.</font>");
