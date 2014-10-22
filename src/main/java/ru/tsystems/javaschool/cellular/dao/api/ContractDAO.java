@@ -20,4 +20,6 @@ public interface ContractDAO {
     public Contract getContractByPhoneNumber(String phoneNumber) throws DAOException;
 
     public List<Contract> getAll() throws DAOException;
+
+    public boolean checkIfNumberExists(String number) throws DAOException;
 }

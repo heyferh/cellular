@@ -38,18 +38,24 @@ public class SelectTariffServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Tariff> tariffList = null;
-        try {
-            tariffList = tariffService.getAllTariffs();
-        } catch (TariffException e) {
-            e.printStackTrace();
-        }
         Contract currentContract = null;
         try {
             currentContract = contractService.getContractById(Long.parseLong(request.getParameter("contract_id")));
         } catch (ContractException e) {
             e.printStackTrace();
         }
+        if (currentContract.isBlockedByOperator() && request.getRequestURI().contains("/user")) {
+            request.setAttribute("message", "This number is blocked by operator!");
+            request.getRequestDispatcher("errorpage.jsp").forward(request, response);
+            return;
+        }
+        List<Tariff> tariffList = null;
+        try {
+            tariffList = tariffService.getAllTariffs();
+        } catch (TariffException e) {
+            e.printStackTrace();
+        }
+
         tariffList.remove(currentContract.getTariff());
         request.setAttribute("tariffList", tariffList);
         request.setAttribute("contract_id", request.getParameter("contract_id"));

@@ -16,11 +16,16 @@
 </fieldset>
 <fieldset>
     <legend>Status</legend>
-    <c:if test="${contract.blockedByClient}">
-        <p>Blocked <a href="unblock?contract_id=${contract.id}">Unblock</a></p>
+    <c:if test="${contract.blockedByOperator}">
+        <p>Blocked by operator!</p>
     </c:if>
-    <c:if test="${not contract.blockedByClient}">
-        <p>Active <a href="block?contract_id=${contract.id}">Block</a></p>
+    <c:if test="${not contract.blockedByOperator}">
+        <c:if test="${contract.blockedByClient}">
+            <p>Blocked by client <a href="unblock?contract_id=${contract.id}">Unblock</a></p>
+        </c:if>
+        <c:if test="${not contract.blockedByClient}">
+            <p>Active <a href="block?contract_id=${contract.id}">Block</a></p>
+        </c:if>
     </c:if>
 </fieldset>
 <fieldset>

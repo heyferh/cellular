@@ -3,7 +3,6 @@ package ru.tsystems.javaschool.cellular.controller;
 import ru.tsystems.javaschool.cellular.entity.Client;
 import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
-import ru.tsystems.javaschool.cellular.exception.ClientException;
 import ru.tsystems.javaschool.cellular.exception.ContractException;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
 import ru.tsystems.javaschool.cellular.exception.TariffException;
@@ -43,36 +42,18 @@ public class CreateContractServlet extends HttpServlet {
         client.setDayOfBirth(request.getParameter("dayofbirth"));
         client.setPassword(request.getParameter("password"));
         Contract contract = new Contract();
-        contract.setClient(client);
         contract.setPhoneNumber(request.getParameter("phonenumber"));
 
-        try {
-            clientService.createClient(client);
-        } catch (ClientException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            contract.setTariff(tariffService.getTariffById(Long.parseLong(request.getParameter("tariff_id"))));
-        } catch (TariffException e) {
-            e.printStackTrace();
-        }
-        for (String optionId : request.getParameterValues("options")) {
-            try {
-                contract.addOptions(optionService.getOptionById(Long.parseLong(optionId)));
-            } catch (OptionException e) {
-                e.printStackTrace();
-            }
+        long tariff_id = Long.parseLong(request.getParameter("tariff_id"));
+        long[] optionId = new long[request.getParameterValues("options").length];
+        for (int i = 0; i < optionId.length; i++) {
+            optionId[i] = Long.parseLong(request.getParameterValues("options")[i]);
         }
         try {
-            contractService.createContract(contract);
+            contractService.addContract(contract, client, tariff_id, optionId);
         } catch (ContractException e) {
             e.printStackTrace();
-        }
-        try {
-            client.addContract(contract);
-            clientService.updateClient(client);
-        } catch (ClientException e) {
+        } catch (OptionException e) {
             e.printStackTrace();
         }
         response.sendRedirect("all_contracts");

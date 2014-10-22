@@ -1,7 +1,14 @@
 package ru.tsystems.javaschool.cellular.service.impl;
 
+import ru.tsystems.javaschool.cellular.dao.api.ClientDAO;
 import ru.tsystems.javaschool.cellular.dao.api.ContractDAO;
+import ru.tsystems.javaschool.cellular.dao.api.OptionDAO;
+import ru.tsystems.javaschool.cellular.dao.api.TariffDAO;
+import ru.tsystems.javaschool.cellular.dao.impl.ClientDAOImpl;
 import ru.tsystems.javaschool.cellular.dao.impl.ContractDAOImpl;
+import ru.tsystems.javaschool.cellular.dao.impl.OptionDAOImpl;
+import ru.tsystems.javaschool.cellular.dao.impl.TariffDAOImpl;
+import ru.tsystems.javaschool.cellular.entity.Client;
 import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
@@ -22,10 +29,16 @@ public class ContractServiceImpl implements ContractService {
 
     private EntityManager entityManager;
     private ContractDAO contractDAO;
+    private ClientDAO clientDAO;
+    private OptionDAO optionDAO;
+    private TariffDAO tariffDAO;
 
     public ContractServiceImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
         this.contractDAO = new ContractDAOImpl(entityManager);
+        this.clientDAO = new ClientDAOImpl(entityManager);
+        this.optionDAO = new OptionDAOImpl(entityManager);
+        this.tariffDAO = new TariffDAOImpl(entityManager);
     }
 
     @Override
@@ -37,7 +50,7 @@ public class ContractServiceImpl implements ContractService {
             entityTransaction.commit();
         } catch (DAOException e) {
             throw new ContractException();
-        }finally {
+        } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
             }
@@ -71,7 +84,7 @@ public class ContractServiceImpl implements ContractService {
             entityTransaction.commit();
         } catch (DAOException e) {
             throw new ContractException();
-        }finally {
+        } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
             }
@@ -87,7 +100,7 @@ public class ContractServiceImpl implements ContractService {
             entityTransaction.commit();
         } catch (DAOException e) {
             throw new ContractException();
-        }finally {
+        } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
             }
@@ -169,4 +182,31 @@ public class ContractServiceImpl implements ContractService {
         }
         optionSet.add(option);
     }
+
+    @Override
+    public void addContract(Contract contract, Client client, long tariffId, long[] optionIds) throws ContractException, OptionException {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try {
+            entityTransaction.begin();
+            if (contractDAO.checkIfNumberExists(contract.getPhoneNumber())) {
+                throw new ContractException();
+            }
+            contractDAO.create(contract);
+            client.addContract(contract);
+            clientDAO.create(client);
+            contract.setClient(client);
+            contract.setTariff(tariffDAO.read(tariffId));
+            for (long id : optionIds) {
+                enableOption(contract, optionDAO.read(id));
+            }
+            entityTransaction.commit();
+        } catch (DAOException e) {
+            throw new ContractException("Unable to add contract");
+        } finally {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+        }
+    }
+
 }

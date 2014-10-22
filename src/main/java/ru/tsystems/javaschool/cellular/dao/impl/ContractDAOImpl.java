@@ -71,4 +71,16 @@ public class ContractDAOImpl implements ContractDAO {
         }
     }
 
+    @Override
+    public boolean checkIfNumberExists(String number) throws DAOException {
+        try {
+            long count = (Long) entityManager.createQuery("select count(c.phoneNumber) from Contract c where c.phoneNumber=:number")
+                    .setParameter("number", number)
+                    .getSingleResult();
+            return count > 0 ? true : false;
+        } catch (PersistenceException e) {
+            throw new DAOException("Unable to find: " + number, e);
+        }
+    }
+
 }

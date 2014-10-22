@@ -13,6 +13,7 @@ import ru.tsystems.javaschool.cellular.service.impl.ClientServiceImpl;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Created by ferh on 21.10.14.
@@ -29,18 +30,22 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = null;
         try {
             user = authorizationService.getUserByEmail(email);
-            if (user instanceof Client) {
+            if (user instanceof Client && user.getPassword().equals(password)) {
                 session = request.getSession();
                 session.setAttribute("client", user);
                 session.setAttribute("role", "user");
                 response.addCookie(new Cookie("email", user.getEmail()));
-                response.sendRedirect("/user/account?client_id=" + user.getId());
+                response.sendRedirect("/user/account");
             }
-            if (user instanceof Administrator) {
+            if (user instanceof Administrator && user.getPassword().equals(password)) {
                 session = request.getSession();
                 session.setAttribute("role", "admin");
                 response.addCookie(new Cookie("email", email));
                 response.sendRedirect("/admin/all_contracts");
+            } else {
+                PrintWriter out = response.getWriter();
+                out.println("<font color=red>Either user name or password is wrong.</font>");
+                request.getRequestDispatcher("login.html").include(request, response);
             }
         } catch (AuthorizationException e) {
             e.printStackTrace();

@@ -5,7 +5,6 @@ import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.exception.ClientException;
 import ru.tsystems.javaschool.cellular.exception.ContractException;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
-import ru.tsystems.javaschool.cellular.exception.TariffException;
 import ru.tsystems.javaschool.cellular.helper.Manager;
 import ru.tsystems.javaschool.cellular.service.api.ClientService;
 import ru.tsystems.javaschool.cellular.service.api.ContractService;
@@ -40,30 +39,18 @@ public class CreateAnotherContractServlet extends HttpServlet {
         }
 
         Contract contract = new Contract();
-        contract.setClient(client);
         contract.setPhoneNumber(request.getParameter("phonenumber"));
 
-        try {
-            contract.setTariff(tariffService.getTariffById(Long.parseLong(request.getParameter("tariff_id"))));
-        } catch (TariffException e) {
-            e.printStackTrace();
-        }
-        for (String optionId : request.getParameterValues("options")) {
-            try {
-                contract.addOptions(optionService.getOptionById(Long.parseLong(optionId)));
-            } catch (OptionException e) {
-                e.printStackTrace();
-            }
+        long tariff_id = Long.parseLong(request.getParameter("tariff_id"));
+        long[] optionId = new long[request.getParameterValues("options").length];
+        for (int i = 0; i < optionId.length; i++) {
+            optionId[i] = Long.parseLong(request.getParameterValues("options")[i]);
         }
         try {
-            contractService.createContract(contract);
+            contractService.addContract(contract, client, tariff_id, optionId);
         } catch (ContractException e) {
             e.printStackTrace();
-        }
-        try {
-            client.addContract(contract);
-            clientService.updateClient(client);
-        } catch (ClientException e) {
+        } catch (OptionException e) {
             e.printStackTrace();
         }
         response.sendRedirect("all_contracts");

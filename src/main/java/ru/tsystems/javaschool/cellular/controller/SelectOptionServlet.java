@@ -1,10 +1,10 @@
 package ru.tsystems.javaschool.cellular.controller;
 
 import ru.tsystems.javaschool.cellular.entity.Contract;
-import ru.tsystems.javaschool.cellular.helper.Manager;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.exception.ContractException;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
+import ru.tsystems.javaschool.cellular.helper.Manager;
 import ru.tsystems.javaschool.cellular.service.api.ContractService;
 import ru.tsystems.javaschool.cellular.service.api.OptionService;
 import ru.tsystems.javaschool.cellular.service.impl.ContractServiceImpl;
@@ -34,6 +34,11 @@ public class SelectOptionServlet extends HttpServlet {
             contract = contractService.getContractById(Long.parseLong(request.getParameter("contract_id")));
         } catch (ContractException e) {
             e.printStackTrace();
+        }
+        if (contract.isBlockedByOperator() && request.getRequestURI().contains("/user")) {
+            request.setAttribute("message", "This number is blocked by operator!");
+            request.getRequestDispatcher("errorpage.jsp").forward(request, response);
+            return;
         }
         List<Option> optionList = null;
         try {

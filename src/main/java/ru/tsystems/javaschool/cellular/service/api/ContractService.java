@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.service.api;
 
+import ru.tsystems.javaschool.cellular.entity.Client;
 import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
@@ -36,5 +37,7 @@ public interface ContractService {
     public void disableOption(Contract contract, Option option) throws OptionException;
 
     public void enableOption(Contract contract, Option option) throws OptionException;
+
+    public void addContract(Contract contract, Client client, long tariffId, long[] optionIds) throws ContractException, OptionException;
 
 }
