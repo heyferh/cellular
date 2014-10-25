@@ -6,6 +6,7 @@
     <title></title>
 </head>
 <body>
+<jsp:include page="menu.jsp"></jsp:include>
 ${message}
 </body>
 </html>

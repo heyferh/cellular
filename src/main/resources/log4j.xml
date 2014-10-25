@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+
+    <appender name="CONSOLE-ALL" class="org.apache.log4j.ConsoleAppender">
+        <param name="target" value="System.out"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ISO8601} [%5p] %m at %l%n"/>
+        </layout>
+    </appender>
+
+    <appender name="LOG-FILE-ALL" class="org.apache.log4j.FileAppender">
+        <param name="file" value="all.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ISO8601} [%5p] %c %m at %l%n"/>
+        </layout>
+    </appender>
+
+    <appender name="LOG-FILE-ERR" class="org.apache.log4j.FileAppender">
+        <param name="file" value="error.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ISO8601} [%5p] %c %m at %l%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="WARN"/>
+            <param name="LevelMax" value="ERROR"/>
+        </filter>
+    </appender>
+
+    <category name="org.hibernate" additivity="false"/>
+
+    <root>
+        <appender-ref ref="CONSOLE-ALL"/>
+        <appender-ref ref="LOG-FILE-ALL"/>
+        <appender-ref ref="LOG-FILE-ERR"/>
+    </root>
+
+</log4j:configuration>

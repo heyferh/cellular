@@ -16,6 +16,8 @@ public interface ClientService {
 
     public Client getClientByEmail(String email) throws ClientException;
 
+    public Client getClientByPhoneNumber(String phoneNumber) throws ClientException;
+
     public List<Client> getAllClients() throws ClientException;
 
     public void updateClient(Client client) throws ClientException;

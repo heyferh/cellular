@@ -28,16 +28,16 @@ public class AuthFilter implements Filter {
         String uri = request.getRequestURI();
         if (session == null && !(uri.endsWith("html") || uri.endsWith("login"))) {
             System.err.println("Unauthorized user!");
-            response.sendRedirect("login.html");
+            request.getRequestDispatcher("login.html").forward(request, response);
             return;
         } else if (session != null) {
-            if (request.getSession().getAttribute("role").equals("admin") && uri.contains("/user")) {
-                response.sendRedirect("/cellular/admin/all_contracts");
+            if (request.getSession().getAttribute("role").equals("admin") && (uri.contains("/user"))) {
+                response.sendRedirect("/admin/all_contracts");
                 return;
             }
-            if (request.getSession().getAttribute("role").equals("user") && uri.contains("/admin")) {
+            if (request.getSession().getAttribute("role").equals("user") && (uri.contains("/admin"))) {
                 Client client = (Client) request.getSession().getAttribute("client");
-                response.sendRedirect("/cellular/user/account?client_id=" + client.getId());
+                response.sendRedirect("/user/account?client_id=" + client.getId());
                 return;
             }
         }

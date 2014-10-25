@@ -34,20 +34,8 @@ public class RemoveTariffOptionsServlet extends HttpServlet {
         } catch (TariffException e) {
             e.printStackTrace();
         }
-        Option option = null;
         try {
-            option = optionService.getOptionById(Long.parseLong(request.getParameter("option_id")));
-        } catch (OptionException e) {
-            e.printStackTrace();
-        }
-        tariffService.deleteTariffOption(tariff, option);
-        try {
-            tariffService.updateTariff(tariff);
-        } catch (TariffException e) {
-            e.printStackTrace();
-        }
-        try {
-            optionService.updateOption(option);
+            tariffService.deleteTariffOption(request.getParameter("tariff_id"), request.getParameter("option_id"));
         } catch (OptionException e) {
             e.printStackTrace();
         }

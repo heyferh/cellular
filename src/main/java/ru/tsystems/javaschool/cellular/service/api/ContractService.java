@@ -32,11 +32,11 @@ public interface ContractService {
 
     public void unblock(Contract contract) throws ContractException;
 
-    public void changeTariff(Contract contract, Tariff tariff);
+    public void changeTariff(Contract contract, Tariff tariff) throws ContractException;
 
     public void disableOption(Contract contract, Option option) throws OptionException;
 
-    public void enableOption(Contract contract, Option option) throws OptionException;
+    public void enableOption(Contract contract, Option option) throws OptionException, ContractException;
 
     public void addContract(Contract contract, Client client, long tariffId, long[] optionIds) throws ContractException, OptionException;
 

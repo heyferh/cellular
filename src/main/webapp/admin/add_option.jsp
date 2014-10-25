@@ -6,6 +6,7 @@
     <title></title>
 </head>
 <body>
+<jsp:include page="menu.jsp"></jsp:include>
 <form method="post" action="add_option">
     <fieldset>
         <legend>Choose options to add</legend>

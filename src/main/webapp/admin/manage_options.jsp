@@ -6,6 +6,7 @@
     <title></title>
 </head>
 <body>
+<jsp:include page="menu.jsp"></jsp:include>
 <c:if test="${action eq 'require'}">
     <form method="POST" action="manage_required_options">
         <fieldset>

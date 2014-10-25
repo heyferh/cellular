@@ -6,6 +6,7 @@
     <title></title>
 </head>
 <body>
+<jsp:include page="menu.jsp"></jsp:include>
 <form method="POST" action="change_tariff">
     <fieldset>
         <legend>Choose tariff to replace current</legend>

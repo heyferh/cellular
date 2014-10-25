@@ -11,7 +11,10 @@ import ru.tsystems.javaschool.cellular.service.impl.AuthorizationServiceImpl;
 import ru.tsystems.javaschool.cellular.service.impl.ClientServiceImpl;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -34,13 +37,11 @@ public class LoginServlet extends HttpServlet {
                 session = request.getSession();
                 session.setAttribute("client", user);
                 session.setAttribute("role", "user");
-                response.addCookie(new Cookie("email", user.getEmail()));
                 response.sendRedirect("user/account");
             }
             if (user instanceof Administrator && user.getPassword().equals(password)) {
                 session = request.getSession();
                 session.setAttribute("role", "admin");
-                response.addCookie(new Cookie("email", email));
                 response.sendRedirect("admin/all_contracts");
             } else {
                 PrintWriter out = response.getWriter();

@@ -38,7 +38,6 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="client" items="${clientList}">
             <tr>
                 <td>${client.firstName}</td>
                 <td>${client.lastName}</td>
@@ -50,7 +49,6 @@
                     <a href="add_another_contract?client_id=${client.id}">+</a>
                 </td>
             </tr>
-        </c:forEach>
         </tbody>
     </table>
 </div>

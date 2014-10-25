@@ -6,6 +6,7 @@
     <title></title>
 </head>
 <body>
+<jsp:include page="menu.jsp"></jsp:include>
 <form method="post" action="register_new_contract">
     <fieldset>
         <legend>Please, fill the requested forms</legend>

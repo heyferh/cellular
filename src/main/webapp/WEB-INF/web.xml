@@ -3,13 +3,13 @@
         "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
+    <welcome-file-list>
+        <welcome-file>login.html</welcome-file>
+    </welcome-file-list>
     <filter>
         <filter-name>AuthFilter</filter-name>
         <filter-class>ru.tsystems.javaschool.cellular.controller.AuthFilter</filter-class>
     </filter>
-    <welcome-file-list>
-        <welcome-file>login.html</welcome-file>
-    </welcome-file-list>
     <display-name>Archetype Created Web Application</display-name>
     <servlet>
         <servlet-name>AllContractsServlet</servlet-name>
@@ -140,6 +140,7 @@
     <servlet-mapping>
         <servlet-name>AllContractsServlet</servlet-name>
         <url-pattern>/admin/all_contracts</url-pattern>
+        <url-pattern>/admin/search</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ContractServlet</servlet-name>

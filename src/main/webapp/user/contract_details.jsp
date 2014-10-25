@@ -13,6 +13,8 @@
     <p>Lastname: ${contract.client.lastName}</p>
 
     <p>Phone number: ${contract.phoneNumber}</p>
+
+    <p>Balance: ${contract.balance}</p>
 </fieldset>
 <fieldset>
     <legend>Status</legend>

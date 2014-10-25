@@ -6,6 +6,7 @@
     <title></title>
 </head>
 <body>
+<jsp:include page="menu.jsp"></jsp:include>
 <form method="post" action="create_tariff">
     Title: <input type="text" name="title">
     Price: <input type="text" name="price">

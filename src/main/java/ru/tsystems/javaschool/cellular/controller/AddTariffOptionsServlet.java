@@ -1,8 +1,10 @@
 package ru.tsystems.javaschool.cellular.controller;
 
-import ru.tsystems.javaschool.cellular.helper.Manager;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
+import ru.tsystems.javaschool.cellular.exception.OptionException;
+import ru.tsystems.javaschool.cellular.exception.TariffException;
+import ru.tsystems.javaschool.cellular.helper.Manager;
 import ru.tsystems.javaschool.cellular.service.api.OptionService;
 import ru.tsystems.javaschool.cellular.service.api.TariffService;
 import ru.tsystems.javaschool.cellular.service.impl.OptionServiceImpl;
@@ -13,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,18 +26,12 @@ public class AddTariffOptionsServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            List<Option> optionList = new ArrayList<Option>();
-            for (String id : request.getParameterValues("options")) {
-                optionList.add(optionService.getOptionById(Long.parseLong(id)));
-            }
-            Tariff tariff = tariffService.getTariffById(Long.parseLong(request.getParameter("tariff_id")));
-            for (Option option : optionList) {
-                tariffService.addOptionForTariff(tariff, option);
-            }
-            tariffService.updateTariff(tariff);
+            tariffService.addOptionForTariff(request.getParameter("tariff_id"), request.getParameterValues("options"));
             List<Tariff> tariffList = tariffService.getAllTariffs();
             response.sendRedirect("all_tariffs");
-        } catch (Exception e) {
+        } catch (TariffException e) {
+            e.printStackTrace();
+        } catch (OptionException e) {
             e.printStackTrace();
         }
     }

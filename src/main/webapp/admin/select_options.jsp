@@ -6,6 +6,7 @@
     <title></title>
 </head>
 <body>
+<jsp:include page="menu.jsp"></jsp:include>
 <fieldset>
     <legend>Choose option to enable</legend>
     <c:forEach var="option" items="${optionList}">

@@ -6,6 +6,7 @@
     <title></title>
 </head>
 <body>
+<jsp:include page="menu.jsp"></jsp:include>
 <c:forEach var="option" items="${tariff.options}">
     ${option.title} <a href="remove_option?tariff_id=${tariff.id}&option_id=${option.id}">Remove</a><br>
 </c:forEach>

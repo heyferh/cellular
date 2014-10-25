@@ -21,6 +21,7 @@ public class Contract implements Serializable {
     private String phoneNumber;
     private boolean blockedByOperator;
     private boolean blockedByClient;
+    private int balance = 1000;
 
     @OneToOne
     @JoinColumn(name = "tariff_id")
@@ -103,6 +104,14 @@ public class Contract implements Serializable {
     public void addOptions(Option option) {
 
         this.options.add(option);
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
     }
 
     @Override

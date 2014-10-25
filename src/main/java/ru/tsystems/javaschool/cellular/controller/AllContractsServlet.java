@@ -20,6 +20,14 @@ public class AllContractsServlet extends HttpServlet {
     private ClientService clientService = new ClientServiceImpl(Manager.getEntityManager());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Client client = null;
+        try {
+            client = clientService.getClientByPhoneNumber(request.getParameter("phonenumber"));
+        } catch (ClientException e) {
+            e.printStackTrace();
+        }
+        request.setAttribute("client", client);
+        request.getRequestDispatcher("search_results.jsp").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

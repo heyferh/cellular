@@ -7,6 +7,7 @@
     <title></title>
 </head>
 <body>
+<jsp:include page="menu.jsp"></jsp:include>
 <fieldset>
     <legend>Client information</legend>
     <p>Name: ${contract.client.firstName}</p>
@@ -14,6 +15,8 @@
     <p>Lastname: ${contract.client.lastName}</p>
 
     <p>Phone number: ${contract.phoneNumber}</p>
+
+    <p>Balance: ${contract.balance}</p>
 </fieldset>
 <fieldset>
     <legend>Status</legend>

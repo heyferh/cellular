@@ -6,6 +6,7 @@
     <title></title>
 </head>
 <body>
+<jsp:include page="menu.jsp"></jsp:include>
 <fieldset>
     <legend>All tariffs</legend>
     <c:forEach var="tariff" items="${tariffList}">

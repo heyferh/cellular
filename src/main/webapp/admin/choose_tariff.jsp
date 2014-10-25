@@ -6,6 +6,7 @@
     <title></title>
 </head>
 <body>
+<jsp:include page="menu.jsp"></jsp:include>
 <c:if test="${empty client_id}">
     <form method="POST" action="fill_forms">
         <fieldset>
