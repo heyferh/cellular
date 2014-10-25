@@ -33,7 +33,9 @@ public class SelectTariffServlet extends HttpServlet {
             request.setAttribute("contract", contract);
             request.getRequestDispatcher("contract_details.jsp").forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
     }
 
@@ -42,18 +44,22 @@ public class SelectTariffServlet extends HttpServlet {
         try {
             currentContract = contractService.getContractById(Long.parseLong(request.getParameter("contract_id")));
         } catch (ContractException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         if (currentContract.isBlockedByOperator() && request.getRequestURI().contains("/user")) {
             request.setAttribute("message", "This number is blocked by operator!");
-            request.getRequestDispatcher("errorpage.jsp").forward(request, response);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
         List<Tariff> tariffList = null;
         try {
             tariffList = tariffService.getAllTariffs();
         } catch (TariffException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
 
         tariffList.remove(currentContract.getTariff());

@@ -30,7 +30,7 @@ public class DisableOptionServlet extends HttpServlet {
             Contract contract = contractService.getContractById(Long.parseLong(request.getParameter("contract_id")));
             if (contract.isBlockedByOperator() && request.getRequestURI().contains("/user")) {
                 request.setAttribute("message", "This number is blocked by operator!");
-                request.getRequestDispatcher("errorpage.jsp").forward(request, response);
+                request.getRequestDispatcher("error.jsp").forward(request, response);
                 return;
             }
             Option option = optionService.getOptionById(Long.parseLong(request.getParameter("option_id")));
@@ -39,7 +39,9 @@ public class DisableOptionServlet extends HttpServlet {
             request.setAttribute("contract", contract);
             request.getRequestDispatcher("contract_details.jsp").forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
     }
 }

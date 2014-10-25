@@ -31,7 +31,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             return userDAO.getUserByEmail(email);
         } catch (DAOException e) {
             logger.error("Getting user by email: " + email + " fails.");
-            throw new AuthorizationException();
+            throw new AuthorizationException("Getting user by email: " + email + " fails.");
         }
     }
 }

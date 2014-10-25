@@ -52,7 +52,7 @@ public class ContractServiceImpl implements ContractService {
             entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while creating contract: " + contract);
-            throw new ContractException();
+            throw new ContractException("Error while creating contract: " + contract.getPhoneNumber());
         } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
@@ -67,7 +67,7 @@ public class ContractServiceImpl implements ContractService {
             return contractDAO.get(id);
         } catch (DAOException e) {
             logger.error("Error while getting contract by id: " + id);
-            throw new ContractException();
+            throw new ContractException("Error while getting contract by id: " + id);
         }
     }
 
@@ -77,8 +77,8 @@ public class ContractServiceImpl implements ContractService {
             logger.info("Getting all contracts");
             return contractDAO.getAll();
         } catch (DAOException e) {
-            logger.error("Error while gettin all contracts");
-            throw new ContractException();
+            logger.error("Error while getting all contracts");
+            throw new ContractException("Error while getting all contracts");
         }
     }
 
@@ -92,7 +92,7 @@ public class ContractServiceImpl implements ContractService {
             entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while updating contract: " + contract);
-            throw new ContractException();
+            throw new ContractException("Error while updating contract: " + contract.getPhoneNumber());
         } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
@@ -110,7 +110,7 @@ public class ContractServiceImpl implements ContractService {
             entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while deleting contract: " + contract);
-            throw new ContractException();
+            throw new ContractException("Error while deleting contract: " + contract.getPhoneNumber());
         } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
@@ -148,7 +148,7 @@ public class ContractServiceImpl implements ContractService {
             contract.setBlockedByClient(true);
         } else {
             logger.warn("Contract " + contract + " is already blocked");
-            throw new ContractException("Contract " + contract + " is already blocked");
+            throw new ContractException("Contract " + contract.getPhoneNumber() + " is already blocked");
         }
     }
 
@@ -213,7 +213,7 @@ public class ContractServiceImpl implements ContractService {
         }
         logger.info("Adding option: " + option);
         if (contract.getBalance() < option.getActivationCost() + option.getCost()) {
-            logger.error("Not enough money to activate option: " + option+" to contract: " + contract);
+            logger.error("Not enough money to activate option: " + option + " to contract: " + contract);
             throw new ContractException("Not enough money");
         }
         contract.setBalance(contract.getBalance() - option.getActivationCost() - option.getCost());
@@ -228,7 +228,7 @@ public class ContractServiceImpl implements ContractService {
             entityTransaction.begin();
             if (contractDAO.checkIfNumberExists(contract.getPhoneNumber())) {
                 logger.error("Number: " + contract.getPhoneNumber() + " already exists");
-                throw new ContractException();
+                throw new ContractException("Number: " + contract.getPhoneNumber() + " already exists");
             }
             contractDAO.create(contract);
             client.addContract(contract);

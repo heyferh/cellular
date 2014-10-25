@@ -52,9 +52,13 @@ public class CreateContractServlet extends HttpServlet {
         try {
             contractService.addContract(contract, client, tariff_id, optionId);
         } catch (ContractException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         } catch (OptionException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         response.sendRedirect("all_contracts");
     }
@@ -65,7 +69,9 @@ public class CreateContractServlet extends HttpServlet {
         try {
             tariffList = tariffService.getAllTariffs();
         } catch (TariffException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         request.setAttribute("tariffList", tariffList);
         request.getRequestDispatcher("choose_tariff.jsp").forward(request, response);

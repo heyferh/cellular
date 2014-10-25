@@ -35,7 +35,9 @@ public class CreateAnotherContractServlet extends HttpServlet {
         try {
             client = clientService.getClientById(Long.parseLong(request.getParameter("client_id")));
         } catch (ClientException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
 
         Contract contract = new Contract();
@@ -49,9 +51,13 @@ public class CreateAnotherContractServlet extends HttpServlet {
         try {
             contractService.addContract(contract, client, tariff_id, optionId);
         } catch (ContractException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         } catch (OptionException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         response.sendRedirect("all_contracts");
     }

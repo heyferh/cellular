@@ -34,7 +34,9 @@ public class EnableOptionServlet extends HttpServlet {
             contractService.enableOption(contract, option);
             contractService.updateContract(contract);
         } catch (Exception e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         request.setAttribute("contract", contract);
         request.getRequestDispatcher("contract_details.jsp").forward(request, response);

@@ -23,5 +23,5 @@ public interface OptionService {
 
     public void manageIncompatibleOptions(long id, String[] ids) throws OptionException;
 
-    public void manageRequiredOptions(long id, String[] ids);
+    public void manageRequiredOptions(long id, String[] ids) throws OptionException;
 }

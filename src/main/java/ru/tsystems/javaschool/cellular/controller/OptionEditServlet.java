@@ -31,7 +31,9 @@ public class OptionEditServlet extends HttpServlet {
             optionService.deleteOption(option);
             optionList = optionService.getAllOptions();
         } catch (OptionException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         request.setAttribute("optionList", optionList);
         request.getRequestDispatcher("all_options.jsp").forward(request, response);

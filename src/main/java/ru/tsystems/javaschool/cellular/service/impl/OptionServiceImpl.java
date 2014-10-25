@@ -40,7 +40,7 @@ public class OptionServiceImpl implements OptionService {
             entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Unable to create option: " + option);
-            throw new OptionException();
+            throw new OptionException("Unable to create option: " + option.getTitle());
         } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
@@ -55,7 +55,7 @@ public class OptionServiceImpl implements OptionService {
             return optionDAO.get(id);
         } catch (DAOException e) {
             logger.error("Unable to get option by id: " + id);
-            throw new OptionException();
+            throw new OptionException("Unable to get option by id: " + id);
         }
     }
 
@@ -66,7 +66,7 @@ public class OptionServiceImpl implements OptionService {
             return optionDAO.getAll();
         } catch (DAOException e) {
             logger.error("Unable to get all options");
-            throw new OptionException();
+            throw new OptionException("Unable to get all options");
         }
     }
 
@@ -80,7 +80,7 @@ public class OptionServiceImpl implements OptionService {
             entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Unable to update option: " + option);
-            throw new OptionException();
+            throw new OptionException("Unable to update option: " + option.getTitle());
         } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
@@ -96,15 +96,15 @@ public class OptionServiceImpl implements OptionService {
             entityTransaction.begin();
             for (Tariff tariff : tariffDAO.getAll()) {
                 if (tariff.getOptions().contains(option)) {
-                    logger.error("Unable to delete option: " + option + ". There is tariff: " + tariff + " using this option");
-                    throw new OptionException("Unable to delete option: " + option + ". There is tariff: " + tariff + " using this option");
+                    logger.error("Unable to delete option: " + option.getTitle() + ". There is tariff: " + tariff.getTitle() + " using this option");
+                    throw new OptionException("Unable to delete option: " + option.getTitle() + ". There is tariff: " + tariff.getTitle() + " using this option");
                 }
             }
             optionDAO.delete(option);
             entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Unable to delete option: " + option);
-            throw new OptionException();
+            throw new OptionException("Unable to delete option: " + option.getTitle());
         } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
@@ -119,7 +119,7 @@ public class OptionServiceImpl implements OptionService {
             return optionDAO.getOptionsForTariff(tariff_id);
         } catch (DAOException e) {
             logger.error("Unable to get options for tariff: " + tariff_id);
-            throw new OptionException();
+            throw new OptionException("Unable to get options for tariff: " + tariff_id);
         }
     }
 
@@ -151,7 +151,7 @@ public class OptionServiceImpl implements OptionService {
             entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while editing incompatible options");
-            throw new OptionException();
+            throw new OptionException("Error while editing incompatible options");
         } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
@@ -160,7 +160,7 @@ public class OptionServiceImpl implements OptionService {
     }
 
     @Override
-    public void manageRequiredOptions(long id, String[] ids) {
+    public void manageRequiredOptions(long id, String[] ids) throws OptionException {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
             entityTransaction.begin();
@@ -176,7 +176,7 @@ public class OptionServiceImpl implements OptionService {
             entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while editing required options");
-            e.printStackTrace();
+            throw new OptionException("Error while editing required options");
         } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();

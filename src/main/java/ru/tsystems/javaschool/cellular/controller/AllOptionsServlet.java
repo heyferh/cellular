@@ -28,7 +28,9 @@ public class AllOptionsServlet extends HttpServlet {
             optionService.createOption(option);
             request.setAttribute("optionList", optionService.getAllOptions());
         } catch (OptionException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         request.getRequestDispatcher("all_options.jsp").forward(request, response);
     }
@@ -38,7 +40,9 @@ public class AllOptionsServlet extends HttpServlet {
         try {
             optionList = optionService.getAllOptions();
         } catch (OptionException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         request.setAttribute("optionList", optionList);
         request.getRequestDispatcher("all_options.jsp").forward(request, response);

@@ -26,7 +26,9 @@ public class BlockUnblockServlet extends HttpServlet {
         try {
             contract = contractService.getContractById(Long.parseLong(request.getParameter("contract_id")));
         } catch (ContractException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         try {
             if (request.getRequestURI().endsWith("unblock")) {
@@ -36,7 +38,9 @@ public class BlockUnblockServlet extends HttpServlet {
             }
             contractService.updateContract(contract);
         } catch (ContractException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         request.setAttribute("contract", contract);
         request.getRequestDispatcher("contract_details.jsp").forward(request, response);

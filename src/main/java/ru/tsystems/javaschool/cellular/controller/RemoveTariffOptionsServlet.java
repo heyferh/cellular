@@ -1,10 +1,9 @@
 package ru.tsystems.javaschool.cellular.controller;
 
-import ru.tsystems.javaschool.cellular.helper.Manager;
-import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
 import ru.tsystems.javaschool.cellular.exception.TariffException;
+import ru.tsystems.javaschool.cellular.helper.Manager;
 import ru.tsystems.javaschool.cellular.service.api.OptionService;
 import ru.tsystems.javaschool.cellular.service.api.TariffService;
 import ru.tsystems.javaschool.cellular.service.impl.OptionServiceImpl;
@@ -32,12 +31,16 @@ public class RemoveTariffOptionsServlet extends HttpServlet {
         try {
             tariff = tariffService.getTariffById(Long.parseLong(request.getParameter("tariff_id")));
         } catch (TariffException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         try {
             tariffService.deleteTariffOption(request.getParameter("tariff_id"), request.getParameter("option_id"));
         } catch (OptionException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         request.setAttribute("tariff", tariff);
         request.getRequestDispatcher("edit_options.jsp").forward(request, response);

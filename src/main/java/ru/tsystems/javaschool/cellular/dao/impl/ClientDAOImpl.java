@@ -26,8 +26,8 @@ public class ClientDAOImpl extends CommonDAOImpl<Client> implements ClientDAO {
             logger.info("Getting client:" + client);
             return client;
         } catch (PersistenceException e) {
-            logger.error("Searching for client with phone number: " + email + " fails");
-            throw new DAOException("Searching for client with phone number: " + email + " fails", e);
+            logger.error("Searching for client with email: " + email + " fails");
+            throw new DAOException("Searching for client with email: " + email + " fails", e);
         }
     }
 

@@ -29,13 +29,17 @@ public class FillFormsServlet extends HttpServlet {
         try {
             optionList = optionService.getOptionsForTariff(Long.parseLong(request.getParameter("tariff_id")));
         } catch (OptionException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         Tariff tariff = null;
         try {
             tariff = tariffService.getTariffById(Long.parseLong(request.getParameter("tariff_id")));
         } catch (TariffException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         request.setAttribute("tariff", tariff);
         request.setAttribute("optionList", optionList);

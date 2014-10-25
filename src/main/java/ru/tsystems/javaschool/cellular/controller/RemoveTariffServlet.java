@@ -31,7 +31,9 @@ public class RemoveTariffServlet extends HttpServlet {
             tariffService.deleteTariff(tariff);
             tariffList = tariffService.getAllTariffs();
         } catch (TariffException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         request.setAttribute("tariffList", tariffList);
         request.getRequestDispatcher("all_tariffs.jsp").forward(request, response);

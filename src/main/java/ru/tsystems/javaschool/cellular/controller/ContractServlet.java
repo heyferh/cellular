@@ -27,7 +27,9 @@ public class ContractServlet extends HttpServlet {
         try {
             contract = contractService.getContractById(Long.parseLong(request.getParameter("id")));
         } catch (ContractException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
 
         request.setAttribute("contract", contract);

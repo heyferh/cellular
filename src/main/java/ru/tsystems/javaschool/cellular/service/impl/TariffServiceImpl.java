@@ -52,7 +52,7 @@ public class TariffServiceImpl implements TariffService {
             for (Option option : optionList) {
                 for (Option requiredOption : option.getRequiredOptions()) {
                     if (!optionList.contains(requiredOption)) {
-                        throw new TariffException("Unable to create tariff." + " Option: " + option + " requires: " + requiredOption);
+                        throw new TariffException("Unable to create tariff." + " Option: " + option.getTitle() + " requires: " + requiredOption.getTitle());
                     }
                 }
             }
@@ -63,7 +63,7 @@ public class TariffServiceImpl implements TariffService {
             entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while creating tariff: " + tariff);
-            throw new TariffException();
+            throw new TariffException("Error while creating tariff: " + tariff.getTitle());
         } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
@@ -78,9 +78,7 @@ public class TariffServiceImpl implements TariffService {
             return tariffDAO.get(id);
         } catch (DAOException e) {
             logger.error("Error while getting tariff by id: " + id);
-            throw new TariffException(
-
-            );
+            throw new TariffException("Error while getting tariff by id: " + id);
         }
     }
 
@@ -91,7 +89,7 @@ public class TariffServiceImpl implements TariffService {
             return tariffDAO.getAll();
         } catch (DAOException e) {
             logger.error("Error while getting all tariffs");
-            throw new TariffException();
+            throw new TariffException("Error while getting all tariffs");
         }
     }
 
@@ -105,7 +103,7 @@ public class TariffServiceImpl implements TariffService {
             entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while updating tariff");
-            throw new TariffException();
+            throw new TariffException("Error while updating tariff");
         } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
@@ -122,14 +120,14 @@ public class TariffServiceImpl implements TariffService {
             for (Contract contract : contractDAO.getAll()) {
                 if (contract.getTariff().equals(tariff)) {
                     logger.error("Unable to delete tariff: " + tariff + ". There is a contract: " + contract + " that uses this tariff.");
-                    throw new TariffException("Unable to delete tariff: " + tariff + ". There is a contract: " + contract + " that uses this tariff.");
+                    throw new TariffException("Unable to delete tariff: " + tariff.getTitle() + ". There is a contract: " + contract.getPhoneNumber() + " that uses this tariff.");
                 }
             }
             tariffDAO.delete(tariff);
             entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while deleting tariff");
-            throw new TariffException();
+            throw new TariffException("Error while deleting tariff");
         } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
@@ -150,7 +148,7 @@ public class TariffServiceImpl implements TariffService {
             for (Option option : optionList) {
                 for (Option requiredOption : option.getRequiredOptions()) {
                     if (!tariff.getOptions().contains(requiredOption) && !optionList.contains(requiredOption)) {
-                        throw new OptionException("Unable to add option: " + option + ".Requires: " + requiredOption);
+                        throw new OptionException("Unable to add option: " + option.getTitle() + ".Requires: " + requiredOption.getTitle());
                     }
                 }
             }
@@ -160,7 +158,7 @@ public class TariffServiceImpl implements TariffService {
             tariffDAO.update(tariff);
             entityTransaction.commit();
         } catch (DAOException e) {
-            e.printStackTrace();
+            throw new OptionException("Error while adding option to tariff");
         } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
@@ -178,14 +176,14 @@ public class TariffServiceImpl implements TariffService {
 
             for (Option srcOption : tariff.getOptions()) {
                 if (srcOption.getRequiredOptions().contains(option)) {
-                    throw new OptionException("Unable to delete option while it is required for: " + srcOption);
+                    throw new OptionException("Unable to delete option: " + option.getTitle() + " while it is required for: " + srcOption.getTitle());
                 }
             }
             tariff.getOptions().remove(option);
             tariffDAO.update(tariff);
             entityTransaction.commit();
         } catch (DAOException e) {
-            e.printStackTrace();
+            throw new OptionException("Error while deletin tariff option");
         } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();

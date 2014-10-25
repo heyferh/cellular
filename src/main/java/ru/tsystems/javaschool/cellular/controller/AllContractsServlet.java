@@ -24,7 +24,9 @@ public class AllContractsServlet extends HttpServlet {
         try {
             client = clientService.getClientByPhoneNumber(request.getParameter("phonenumber"));
         } catch (ClientException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         request.setAttribute("client", client);
         request.getRequestDispatcher("search_results.jsp").forward(request, response);
@@ -36,9 +38,10 @@ public class AllContractsServlet extends HttpServlet {
         try {
             clientList = clientService.getAllClients();
         } catch (ClientException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
-
         request.setAttribute("clientList", clientList);
         request.getRequestDispatcher("all_contracts.jsp").forward(request, response);
     }

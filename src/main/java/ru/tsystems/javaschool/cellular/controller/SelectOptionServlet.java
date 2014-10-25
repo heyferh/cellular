@@ -33,18 +33,22 @@ public class SelectOptionServlet extends HttpServlet {
         try {
             contract = contractService.getContractById(Long.parseLong(request.getParameter("contract_id")));
         } catch (ContractException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         if (contract.isBlockedByOperator() && request.getRequestURI().contains("/user")) {
             request.setAttribute("message", "This number is blocked by operator!");
-            request.getRequestDispatcher("errorpage.jsp").forward(request, response);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
         List<Option> optionList = null;
         try {
             optionList = optionService.getOptionsForTariff(contract.getTariff().getId());
         } catch (OptionException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         optionList.removeAll(contract.getOptions());
         request.setAttribute("optionList", optionList);

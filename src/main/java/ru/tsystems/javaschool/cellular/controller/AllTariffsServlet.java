@@ -29,7 +29,9 @@ public class AllTariffsServlet extends HttpServlet {
             request.setAttribute("tariffList", tariffList);
             request.getRequestDispatcher("all_tariffs.jsp").forward(request, response);
         } catch (TariffException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
     }
 }

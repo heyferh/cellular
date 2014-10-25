@@ -37,7 +37,7 @@ public class ClientServiceImpl implements ClientService {
             entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while creating: " + client);
-            throw new ClientException();
+            throw new ClientException("Error while creating: " + client.getFirstName()+" "+client.getLastName());
         } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
@@ -52,7 +52,7 @@ public class ClientServiceImpl implements ClientService {
             return clientDAO.get(id);
         } catch (DAOException e) {
             logger.error("Error while getting client with id: " + id);
-            throw new ClientException();
+            throw new ClientException("Error while getting client with id: " + id);
         }
     }
 
@@ -63,7 +63,7 @@ public class ClientServiceImpl implements ClientService {
             return clientDAO.findClientByEmail(email);
         } catch (DAOException e) {
             logger.error("Error while getting client with email: " + email);
-            throw new ClientException();
+            throw new ClientException("Error while getting client with email: " + email);
         }
     }
 
@@ -72,7 +72,8 @@ public class ClientServiceImpl implements ClientService {
         try {
             return clientDAO.getClientByNumber(phoneNumber);
         } catch (DAOException e) {
-            throw new ClientException();
+            logger.error("Error while getting client by phone number: "+phoneNumber);
+            throw new ClientException("Error while getting client by phone number: "+phoneNumber);
         }    }
 
     @Override
@@ -84,7 +85,7 @@ public class ClientServiceImpl implements ClientService {
             return lst;
         } catch (DAOException e) {
             logger.error("Error while getting all clients");
-            throw new ClientException();
+            throw new ClientException("Error while getting all clients");
         }
 
     }
@@ -99,7 +100,7 @@ public class ClientServiceImpl implements ClientService {
             entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while updating client: " + client);
-            throw new ClientException();
+            throw new ClientException("Error while updating client: " + client.getFirstName() + " " + client.getLastName());
         } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
@@ -117,7 +118,7 @@ public class ClientServiceImpl implements ClientService {
             entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while deleting client: " + client);
-            throw new ClientException();
+            throw new ClientException("Error while deleting client: " + client.getFirstName()+" "+client.getLastName());
         } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();

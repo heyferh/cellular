@@ -30,9 +30,13 @@ public class AddTariffOptionsServlet extends HttpServlet {
             List<Tariff> tariffList = tariffService.getAllTariffs();
             response.sendRedirect("all_tariffs");
         } catch (TariffException e) {
-            e.printStackTrace();
+            request.setAttribute("message", e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         } catch (OptionException e) {
-            e.printStackTrace();
+            request.setAttribute("message", e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
     }
 
@@ -45,10 +49,16 @@ public class AddTariffOptionsServlet extends HttpServlet {
             request.setAttribute("tariff_id", request.getParameter("tariff_id"));
             request.setAttribute("optionList", optionList);
             request.getRequestDispatcher("add_option.jsp").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
+
+
+        } catch (OptionException e) {
+            request.setAttribute("message", e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        } catch (TariffException e) {
+            request.setAttribute("message", e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
-
-
     }
 }

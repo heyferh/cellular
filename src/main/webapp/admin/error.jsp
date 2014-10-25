@@ -4,9 +4,18 @@
 <html>
 <head>
     <title>Error</title>
+    <style>
+        .alert-danger {
+            margin: 40px 400px;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 <jsp:include page="menu.jsp"></jsp:include>
-${message}
+<div class="alert-danger">
+    <p onclick="history.go(-1);">${message}<br>Press to return.</p>
+</div>
 </body>
 </html>

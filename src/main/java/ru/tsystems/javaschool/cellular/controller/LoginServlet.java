@@ -49,7 +49,9 @@ public class LoginServlet extends HttpServlet {
                 request.getRequestDispatcher("login.html").include(request, response);
             }
         } catch (AuthorizationException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
     }
 

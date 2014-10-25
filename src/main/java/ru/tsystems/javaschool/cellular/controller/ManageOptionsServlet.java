@@ -27,7 +27,9 @@ public class ManageOptionsServlet extends HttpServlet {
                 optionService.manageIncompatibleOptions(Long.parseLong(request.getParameter("option_id")), request.getParameterValues("incompatible"));
             }
         } catch (OptionException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         response.sendRedirect("all_options");
     }
@@ -40,7 +42,9 @@ public class ManageOptionsServlet extends HttpServlet {
             optionList = optionService.getAllOptions();
             request.setAttribute("option", option);
         } catch (OptionException e) {
-            e.printStackTrace();
+            request.setAttribute("message",e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         if (request.getParameter("action").equals("require")) {
             optionList.removeAll(option.getRequiredOptions());
