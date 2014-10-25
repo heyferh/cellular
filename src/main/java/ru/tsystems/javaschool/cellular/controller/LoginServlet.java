@@ -45,7 +45,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect("admin/all_contracts");
             } else {
                 PrintWriter out = response.getWriter();
-                out.println("<font color=red>Either user name or password is wrong.</font>");
+                out.println("<div align=center><font color=red>Either user name or password is wrong.</font></div>");
                 request.getRequestDispatcher("login.html").include(request, response);
             }
         } catch (AuthorizationException e) {

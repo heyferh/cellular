@@ -3,7 +3,7 @@
 <%@ page isELIgnored="false" %>
 <html>
 <head>
-    <title></title>
+    <title>Error</title>
 </head>
 <body>
 ${message}

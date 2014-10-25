@@ -52,7 +52,7 @@ public class TariffServiceImpl implements TariffService {
             for (Option option : optionList) {
                 for (Option requiredOption : option.getRequiredOptions()) {
                     if (!optionList.contains(requiredOption)) {
-                        throw new TariffException("Unable to create tariff." + " Option: " + option + " reqiores: " + requiredOption);
+                        throw new TariffException("Unable to create tariff." + " Option: " + option + " requires: " + requiredOption);
                     }
                 }
             }
@@ -78,7 +78,9 @@ public class TariffServiceImpl implements TariffService {
             return tariffDAO.get(id);
         } catch (DAOException e) {
             logger.error("Error while getting tariff by id: " + id);
-            throw new TariffException();
+            throw new TariffException(
+
+            );
         }
     }
 

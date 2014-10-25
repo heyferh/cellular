@@ -3,7 +3,7 @@
 <%@ page isELIgnored="false" %>
 <html>
 <head>
-    <title></title>
+    <title>All contracts</title>
     <style>
         .bs-example {
             margin: 40px 350px;
@@ -21,7 +21,7 @@
 <div align="center">
     <form class="navbar-form" role="search" action="search" method="POST">
         <div class="form-group">
-            <input type="text" class="form-control" placeholder="Search" name="phonenumber">
+            <input type="text" class="form-control" name="phonenumber">
         </div>
         <input type="submit" class="btn-primary bttn" value="Search">
     </form>

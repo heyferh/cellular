@@ -3,29 +3,38 @@
 <%@ page isELIgnored="false" %>
 <html>
 <head>
-    <title></title>
+    <title>Create</title>
+    <style>
+        .form-group {
+            margin: 40px 400px;
+        }
+    </style>
 </head>
 <body>
 <jsp:include page="menu.jsp"></jsp:include>
-<fieldset>
-    <legend>Create new option</legend>
-    <form method="post" action="all_options">
-        <p>Title: <input type="text" name="title"></p>
+<div class="form-group">
+    <fieldset>
+        <legend>Create new option</legend>
+        <form method="post" action="all_options">
+            <p><input type="text" class="form-control" name="title" placeholder="Title"></p>
 
-        <p>Activation cost: <input type="number" name="activationcost"></p>
+            <p><input type="number" class="form-control" name="activationcost" placeholder="Activation Cost"></p>
 
-        <p>Cost: <input type="number" name="cost"></p>
+            <p><input type="number" class="form-control" name="cost" placeholder="Cost"></p>
 
-        <p><input type="submit"></p>
-    </form>
-</fieldset>
-<fieldset>
-    <legend>Options</legend>
-    <c:forEach var="option" items="${optionList}">
-        <p><a href="delete_option?option_id=${option.id}">Remove</a> ${option.title}
-            <a href="manage_options?option_id=${option.id}&action=require">Manage requirements</a>
-            <a href="manage_options?option_id=${option.id}&action=incompatible">Manage compatibilities </a></p>
-    </c:forEach>
-</fieldset>
+            <p><input type="submit" value="Create"></p>
+        </form>
+    </fieldset>
+</div>
+<div class="form-group">
+    <fieldset>
+        <legend>Options</legend>
+        <c:forEach var="option" items="${optionList}">
+            <a href="delete_option?option_id=${option.id}">Remove</a><br> Title: ${option.title}<br>
+                <a href="manage_options?option_id=${option.id}&action=require">Manage requirements</a> |
+                <a href="manage_options?option_id=${option.id}&action=incompatible">Manage compatibilities </a><br><hr>
+        </c:forEach>
+    </fieldset>
+</div>
 </body>
 </html>

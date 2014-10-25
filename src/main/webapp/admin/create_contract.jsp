@@ -3,43 +3,51 @@
 <%@ page isELIgnored="false" %>
 <html>
 <head>
-    <title></title>
+    <title>Create contract</title>
+    <style>
+        .form-group {
+            margin: 40px 500px;
+        }
+    </style>
 </head>
 <body>
 <jsp:include page="menu.jsp"></jsp:include>
-<form method="post" action="add_contract">
-    <fieldset>
-        <legend>Please, fill the requested forms</legend>
+<div class="form-group">
+    <form method="post" action="add_contract">
+        <fieldset>
+            <legend>Fill forms</legend>
+            <p><input type="text" class="form-control" name="firstname" placeholder="First name"></p>
 
-        <p>First name: <input type="text" name="firstname"></p>
+            <p><input type="text" class="form-control" name="lastname" placeholder="Last name"></p>
 
-        <p>Last name: <input type="text" name="lastname"></p>
+            <p><input type="date" class="form-control" name="dayofbirth" placeholder="BD"></p>
 
-        <p> Day of birth: <input type="date" name="dayofbirth"></p>
+            <p><input type="number" class="form-control" name="idcard" placeholder="ID Card"></p>
 
-        <p>ID card: <input type="number" name="idcard"></p>
+            <p><input type="text" class="form-control" name="address" placeholder="Address"></p>
 
-        <p>Address: <input type="text" name="address"></p>
+            <p><input type="email" class="form-control" name="email" placeholder="Email"></p>
 
-        <p>Email: <input type="email" name="email"></p>
+            <p><input type="password" class="form-control" name="password" placeholder="Password"></p>
 
-        <p>Password: <input type="password" name="password"></p>
-
-        <p>Phone number: <input type="number" name="phonenumber"></p>
-    </fieldset>
-    <fieldset>
-        <p>Your tariff is: ${tariff.title}</p>
-        <legend>Choose options to add</legend>
-        <c:forEach var="option" items="${optionList}">
-            <input type="checkbox" name="options" value="${option.id}">
-            Title: ${option.title}
-            Activation cost: ${option.activationCost}
-            Cost: ${option.cost}
-            <br>
-        </c:forEach>
-        <input type="hidden" name="tariff_id" value="${tariff.id}">
-        <input type="submit">
-    </fieldset>
-</form>
+            <p><input type="number" class="form-control" name="phonenumber" placeholder="Phone Number"></p>
+        </fieldset>
+        <fieldset>
+            <legend>Your tariff is: ${tariff.title}
+                <br>
+                Choose options
+            </legend>
+            <c:forEach var="option" items="${optionList}">
+                <input type="checkbox" name="options" value="${option.id}">
+                Title: ${option.title}
+                Activation cost: ${option.activationCost}
+                Cost: ${option.cost}
+                <br>
+            </c:forEach>
+            <input type="hidden" name="tariff_id" value="${tariff.id}">
+            <input type="submit">
+        </fieldset>
+    </form>
+</div>
 </body>
 </html>
