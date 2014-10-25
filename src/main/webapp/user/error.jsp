@@ -13,7 +13,7 @@
     </style>
 </head>
 <body>
-<jsp:include page="menu.jsp"></jsp:include>
+<jsp:include page="header.jsp"></jsp:include>
 <div class="alert-danger">
     <p onclick="history.go(-1);">${message}<br>Press to return.</p>
 </div>

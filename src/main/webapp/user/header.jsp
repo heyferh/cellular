@@ -23,7 +23,7 @@
 </head>
 <body>
 <div class="alert-info" align="right">
-    Welcome, ${client.firstName} ${client.lastName}<br>
+    <a href="account">Welcome, ${client.firstName} ${client.lastName}</a><br>
     <a href="logout">Logout </a>
 </div>
 </body>
