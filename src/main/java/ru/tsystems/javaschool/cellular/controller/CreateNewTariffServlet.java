@@ -29,6 +29,9 @@ public class CreateNewTariffServlet extends HttpServlet {
             StringBuilder builder = new StringBuilder();
             builder.append(Validator.checkString(request.getParameter("title")));
             builder.append(Validator.checkNumber(request.getParameter("price")));
+            if (request.getParameterValues("options") == null) {
+                builder.append("Choose options! ");
+            }
             if (builder.length() > 0) {
                 request.setAttribute("message", builder.toString());
                 request.getRequestDispatcher("error.jsp").forward(request, response);

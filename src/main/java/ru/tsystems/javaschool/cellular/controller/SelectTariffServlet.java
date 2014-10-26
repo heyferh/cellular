@@ -25,6 +25,11 @@ public class SelectTariffServlet extends HttpServlet {
     ContractService contractService = new ContractServiceImpl(Manager.getEntityManager());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getParameter("tariff_id") == null) {
+            request.setAttribute("message", "Choose tariff! ");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
         try {
             Contract contract = contractService.getContractById(Long.parseLong(request.getParameter("contract_id")));
             Tariff tariff = tariffService.getTariffById(Long.parseLong(request.getParameter("new_tariff")));
@@ -33,7 +38,7 @@ public class SelectTariffServlet extends HttpServlet {
             request.setAttribute("contract", contract);
             request.getRequestDispatcher("contract_details.jsp").forward(request, response);
         } catch (Exception e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }

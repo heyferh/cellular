@@ -25,6 +25,12 @@ public class AddTariffOptionsServlet extends HttpServlet {
     private TariffService tariffService = new TariffServiceImpl(Manager.getEntityManager());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (request.getParameterValues("options") == null) {
+            request.setAttribute("message", "Choose options!");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
         try {
             tariffService.addOptionForTariff(request.getParameter("tariff_id"), request.getParameterValues("options"));
             List<Tariff> tariffList = tariffService.getAllTariffs();

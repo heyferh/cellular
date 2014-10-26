@@ -14,6 +14,11 @@ public class Validator {
 
     public static String checkPassword(String src) {
         StringBuilder builder = new StringBuilder();
+        if (src.equals("")) {
+            logger.error("String is empty!");
+            builder.append("String is empty!");
+            return builder.toString();
+        }
         if (src.length() < 4) {
             logger.error("Password must be at least 4 symbols.");
             builder.append("Password must be at least 4 symbols.");
@@ -27,6 +32,11 @@ public class Validator {
 
     public static String checkString(String src) {
         StringBuilder builder = new StringBuilder();
+        if (src.equals("")) {
+            logger.error("String is empty!");
+            builder.append("String is empty!");
+            return builder.toString();
+        }
         if (src.length() > 255) {
             logger.error("Too big string.");
             builder.append("Too big string.");
@@ -36,6 +46,11 @@ public class Validator {
 
     public static String checkNumber(String src) {
         StringBuilder builder = new StringBuilder();
+        if (src.equals("")) {
+            logger.error("String is empty!");
+            builder.append("String is empty!");
+            return builder.toString();
+        }
         if (src.length() > 6) {
             logger.error("Too big value.");
             builder.append("Too big value.");
@@ -49,7 +64,12 @@ public class Validator {
 
     public static String checkPhoneNumber(String src) {
         StringBuilder builder = new StringBuilder();
-        if (src.length() > 10) {
+        if (src.equals("")) {
+            logger.error("String is empty!");
+            builder.append("String is empty!");
+            return builder.toString();
+        }
+        if (src.length() != 11) {
             logger.error("Phone number must be in format: XXXYYYZZZZ.");
             builder.append("Phone number must be in format: XXXYYYZZZZ.");
         }
@@ -64,6 +84,11 @@ public class Validator {
 
     public static String checkEmail(String src) {
         StringBuilder builder = new StringBuilder();
+        if (src.equals("")) {
+            logger.error("String is empty!");
+            builder.append("String is empty!");
+            return builder.toString();
+        }
         if (src.startsWith("@")) {
             logger.error("Email can't start with @.");
             builder.append("Email can't start with @.");
@@ -83,6 +108,11 @@ public class Validator {
         Date currentDate = new Date();
         StringBuilder builder = new StringBuilder();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        if (src.equals("")) {
+            logger.error("String is empty!");
+            builder.append("String is empty!");
+            return builder.toString();
+        }
         try {
             Date date = format.parse(src);
             if (date.compareTo(currentDate) > 0) {

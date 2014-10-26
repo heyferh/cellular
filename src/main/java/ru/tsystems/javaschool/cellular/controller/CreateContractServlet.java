@@ -29,8 +29,6 @@ import java.util.List;
  */
 public class CreateContractServlet extends HttpServlet {
     TariffService tariffService = new TariffServiceImpl(Manager.getEntityManager());
-    ClientService clientService = new ClientServiceImpl(Manager.getEntityManager());
-    OptionService optionService = new OptionServiceImpl(Manager.getEntityManager());
     ContractService contractService = new ContractServiceImpl(Manager.getEntityManager());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,6 +40,9 @@ public class CreateContractServlet extends HttpServlet {
         builder.append(Validator.checkNumber(request.getParameter("idcard")));
         builder.append(Validator.checkDate(request.getParameter("dayofbirth")));
         builder.append(Validator.checkPassword(request.getParameter("password")));
+        if (request.getParameterValues("options") == null) {
+            builder.append("Choose options! ");
+        }
         if (builder.length() > 0) {
             request.setAttribute("message", builder.toString());
             request.getRequestDispatcher("error.jsp").forward(request, response);

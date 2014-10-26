@@ -24,15 +24,19 @@ import java.util.List;
  */
 public class AddAnotherContractServlet extends HttpServlet {
     TariffService tariffService = new TariffServiceImpl(Manager.getEntityManager());
-    ClientService clientService = new ClientServiceImpl(Manager.getEntityManager());
     OptionService optionService = new OptionServiceImpl(Manager.getEntityManager());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getParameter("tariff_id") == null) {
+            request.setAttribute("message", "Choose tariff! ");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
         List<Option> optionList = null;
         try {
             optionList = optionService.getOptionsForTariff(Long.parseLong(request.getParameter("tariff_id")));
         } catch (OptionException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
@@ -40,7 +44,7 @@ public class AddAnotherContractServlet extends HttpServlet {
         try {
             tariff = tariffService.getTariffById(Long.parseLong(request.getParameter("tariff_id")));
         } catch (TariffException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }

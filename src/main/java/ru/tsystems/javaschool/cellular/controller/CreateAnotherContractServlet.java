@@ -9,12 +9,8 @@ import ru.tsystems.javaschool.cellular.helper.Manager;
 import ru.tsystems.javaschool.cellular.helper.Validator;
 import ru.tsystems.javaschool.cellular.service.api.ClientService;
 import ru.tsystems.javaschool.cellular.service.api.ContractService;
-import ru.tsystems.javaschool.cellular.service.api.OptionService;
-import ru.tsystems.javaschool.cellular.service.api.TariffService;
 import ru.tsystems.javaschool.cellular.service.impl.ClientServiceImpl;
 import ru.tsystems.javaschool.cellular.service.impl.ContractServiceImpl;
-import ru.tsystems.javaschool.cellular.service.impl.OptionServiceImpl;
-import ru.tsystems.javaschool.cellular.service.impl.TariffServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,12 +24,15 @@ import java.io.IOException;
 public class CreateAnotherContractServlet extends HttpServlet {
     ClientService clientService = new ClientServiceImpl(Manager.getEntityManager());
     ContractService contractService = new ContractServiceImpl(Manager.getEntityManager());
-    TariffService tariffService = new TariffServiceImpl(Manager.getEntityManager());
-    OptionService optionService = new OptionServiceImpl(Manager.getEntityManager());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         StringBuilder builder = new StringBuilder();
         builder.append(Validator.checkPhoneNumber(request.getParameter("phonenumber")));
+        if (request.getParameterValues("options") == null) {
+            request.setAttribute("message", "Choose options! ");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
         if (builder.length() > 0) {
             request.setAttribute("message", builder.toString());
             request.getRequestDispatcher("error.jsp").forward(request, response);

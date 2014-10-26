@@ -43,15 +43,11 @@ public class LoginServlet extends HttpServlet {
                 session = request.getSession();
                 session.setAttribute("role", "admin");
                 response.sendRedirect("admin/all_contracts");
-            } else {
-                PrintWriter out = response.getWriter();
-                out.println("<div align=center><font color=red>Either user name or password is wrong.</font></div>");
-                request.getRequestDispatcher("login.html").include(request, response);
             }
         } catch (AuthorizationException e) {
-            request.setAttribute("message",e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-            return;
+            PrintWriter out = response.getWriter();
+            out.println("<div align=center><font color=red>Either user name or password is wrong.</font></div>");
+            request.getRequestDispatcher("login.html").include(request, response);
         }
     }
 
