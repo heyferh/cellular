@@ -26,7 +26,6 @@ public class ClientServiceImpl implements ClientService {
     }
 
 
-
     @Override
     public void createClient(Client client) throws ClientException {
         EntityTransaction entityTransaction = entityManager.getTransaction();
@@ -37,7 +36,7 @@ public class ClientServiceImpl implements ClientService {
             entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while creating: " + client);
-            throw new ClientException("Error while creating: " + client.getFirstName()+" "+client.getLastName());
+            throw new ClientException("Error while creating: " + client.getFirstName() + " " + client.getLastName());
         } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();

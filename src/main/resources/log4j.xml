@@ -10,14 +10,14 @@
     </appender>
 
     <appender name="LOG-FILE-ALL" class="org.apache.log4j.FileAppender">
-        <param name="file" value="all.log"/>
+        <param name="file" value="/Users/ferh/Documents/Dropbox/workspace/Cellular/cellular/logs/all.log"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{ISO8601} [%5p] %c %m at %l%n"/>
         </layout>
     </appender>
 
     <appender name="LOG-FILE-ERR" class="org.apache.log4j.FileAppender">
-        <param name="file" value="error.log"/>
+        <param name="file" value="/Users/ferh/Documents/Dropbox/workspace/Cellular/cellular/logs/err.log"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{ISO8601} [%5p] %c %m at %l%n"/>
         </layout>
@@ -30,6 +30,7 @@
     <category name="org.hibernate" additivity="false"/>
 
     <root>
+        <priority value="TRACE"/>
         <appender-ref ref="CONSOLE-ALL"/>
         <appender-ref ref="LOG-FILE-ALL"/>
         <appender-ref ref="LOG-FILE-ERR"/>

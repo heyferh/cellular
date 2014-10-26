@@ -4,6 +4,7 @@ import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
 import ru.tsystems.javaschool.cellular.helper.Manager;
+import ru.tsystems.javaschool.cellular.helper.Validator;
 import ru.tsystems.javaschool.cellular.service.api.OptionService;
 import ru.tsystems.javaschool.cellular.service.api.TariffService;
 import ru.tsystems.javaschool.cellular.service.impl.OptionServiceImpl;
@@ -25,6 +26,14 @@ public class CreateNewTariffServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            StringBuilder builder = new StringBuilder();
+            builder.append(Validator.checkString(request.getParameter("title")));
+            builder.append(Validator.checkNumber(request.getParameter("price")));
+            if (builder.length() > 0) {
+                request.setAttribute("message", builder.toString());
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+                return;
+            }
             Tariff tariff = new Tariff(request.getParameter("title"), Integer.valueOf(request.getParameter("price")));
             tariffService.createTariff(tariff, request.getParameterValues("options"));
 

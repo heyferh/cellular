@@ -39,5 +39,4 @@ public class ContractDAOImpl extends CommonDAOImpl<Contract> implements Contract
             throw new DAOException("Unable to find: " + number, e);
         }
     }
-
 }

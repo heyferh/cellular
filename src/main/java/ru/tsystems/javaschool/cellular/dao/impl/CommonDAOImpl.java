@@ -3,6 +3,7 @@ package ru.tsystems.javaschool.cellular.dao.impl;
 import org.apache.log4j.Logger;
 import ru.tsystems.javaschool.cellular.dao.api.CommonDAO;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
+import ru.tsystems.javaschool.cellular.helper.DAOTransaction;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;

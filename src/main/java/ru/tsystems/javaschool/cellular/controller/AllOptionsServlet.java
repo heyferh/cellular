@@ -3,6 +3,7 @@ package ru.tsystems.javaschool.cellular.controller;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
 import ru.tsystems.javaschool.cellular.helper.Manager;
+import ru.tsystems.javaschool.cellular.helper.Validator;
 import ru.tsystems.javaschool.cellular.service.api.OptionService;
 import ru.tsystems.javaschool.cellular.service.impl.OptionServiceImpl;
 
@@ -20,6 +21,15 @@ public class AllOptionsServlet extends HttpServlet {
     OptionService optionService = new OptionServiceImpl(Manager.getEntityManager());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        StringBuilder builder = new StringBuilder();
+        builder.append(Validator.checkNumber(request.getParameter("activationcost")));
+        builder.append(Validator.checkNumber(request.getParameter("cost")));
+        builder.append(Validator.checkString(request.getParameter("title")));
+        if (builder.length() > 0) {
+            request.setAttribute("message", builder.toString());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
         Option option = new Option();
         option.setActivationCost(Integer.parseInt(request.getParameter("activationcost")));
         option.setCost(Integer.parseInt(request.getParameter("cost")));
@@ -28,7 +38,7 @@ public class AllOptionsServlet extends HttpServlet {
             optionService.createOption(option);
             request.setAttribute("optionList", optionService.getAllOptions());
         } catch (OptionException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
@@ -40,7 +50,7 @@ public class AllOptionsServlet extends HttpServlet {
         try {
             optionList = optionService.getAllOptions();
         } catch (OptionException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }

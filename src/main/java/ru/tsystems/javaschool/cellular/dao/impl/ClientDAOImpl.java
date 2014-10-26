@@ -3,6 +3,7 @@ package ru.tsystems.javaschool.cellular.dao.impl;
 import ru.tsystems.javaschool.cellular.dao.api.ClientDAO;
 import ru.tsystems.javaschool.cellular.entity.Client;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
+import ru.tsystems.javaschool.cellular.helper.DAOTransaction;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
@@ -12,9 +13,7 @@ import javax.persistence.Query;
  * Created by ferh on 09.10.14.
  */
 public class ClientDAOImpl extends CommonDAOImpl<Client> implements ClientDAO {
-
     public ClientDAOImpl(EntityManager entityManager) {
-
         super(entityManager, Client.class);
     }
 

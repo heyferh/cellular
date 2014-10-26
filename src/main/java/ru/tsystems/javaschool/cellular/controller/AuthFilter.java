@@ -28,7 +28,7 @@ public class AuthFilter implements Filter {
         String uri = request.getRequestURI();
         if (session == null && !(uri.endsWith("html") || uri.endsWith("login"))) {
             System.err.println("Unauthorized user!");
-            request.getRequestDispatcher("login.html").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/login.html");
             return;
         } else if (session != null) {
             if (request.getSession().getAttribute("role").equals("admin") && (uri.contains("/user"))) {

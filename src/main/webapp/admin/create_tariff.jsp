@@ -17,7 +17,7 @@
         <legend>Create new tariff</legend>
     <form method="post" action="create_tariff">
         <p><input type="text" class="form-control" name="title" placeholder="Title"></p>
-        <p><input type="text" class="form-control" name="price" placeholder="Price"></p>
+        <p><input type="number" class="form-control" name="price" placeholder="Price"></p>
         <fieldset>
             <legend>Available options</legend>
             <c:forEach var="option" items="${optionList}">

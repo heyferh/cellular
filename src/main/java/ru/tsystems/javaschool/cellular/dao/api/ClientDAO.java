@@ -3,8 +3,6 @@ package ru.tsystems.javaschool.cellular.dao.api;
 import ru.tsystems.javaschool.cellular.entity.Client;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
 
-import java.util.List;
-
 /**
  * Created by ferh on 16.10.14.
  */

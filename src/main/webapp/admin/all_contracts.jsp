@@ -16,7 +16,7 @@
 </head>
 <body>
 <jsp:include page="menu.jsp"></jsp:include>
-<h2 align="center">All contracts</h2>
+<h3 align="center">All contracts</h3>
 
 <div align="center">
     <form class="navbar-form" role="search" action="search" method="POST">

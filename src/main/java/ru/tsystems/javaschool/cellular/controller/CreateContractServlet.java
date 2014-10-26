@@ -7,6 +7,7 @@ import ru.tsystems.javaschool.cellular.exception.ContractException;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
 import ru.tsystems.javaschool.cellular.exception.TariffException;
 import ru.tsystems.javaschool.cellular.helper.Manager;
+import ru.tsystems.javaschool.cellular.helper.Validator;
 import ru.tsystems.javaschool.cellular.service.api.ClientService;
 import ru.tsystems.javaschool.cellular.service.api.ContractService;
 import ru.tsystems.javaschool.cellular.service.api.OptionService;
@@ -33,6 +34,20 @@ public class CreateContractServlet extends HttpServlet {
     ContractService contractService = new ContractServiceImpl(Manager.getEntityManager());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        StringBuilder builder = new StringBuilder();
+        builder.append(Validator.checkEmail(request.getParameter("email")));
+        builder.append(Validator.checkString(request.getParameter("address")));
+        builder.append(Validator.checkString(request.getParameter("firstname")));
+        builder.append(Validator.checkString(request.getParameter("lastname")));
+        builder.append(Validator.checkNumber(request.getParameter("idcard")));
+        builder.append(Validator.checkDate(request.getParameter("dayofbirth")));
+        builder.append(Validator.checkPassword(request.getParameter("password")));
+        if (builder.length() > 0) {
+            request.setAttribute("message", builder.toString());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
+
         Client client = new Client();
         client.setEmail(request.getParameter("email"));
         client.setAddress(request.getParameter("address"));
@@ -52,11 +67,11 @@ public class CreateContractServlet extends HttpServlet {
         try {
             contractService.addContract(contract, client, tariff_id, optionId);
         } catch (ContractException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         } catch (OptionException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
@@ -69,7 +84,7 @@ public class CreateContractServlet extends HttpServlet {
         try {
             tariffList = tariffService.getAllTariffs();
         } catch (TariffException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
