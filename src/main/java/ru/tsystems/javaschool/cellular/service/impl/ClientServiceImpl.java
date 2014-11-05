@@ -59,7 +59,7 @@ public class ClientServiceImpl implements ClientService {
     public Client getClientByEmail(String email) throws ClientException {
         try {
             logger.info("Getting client by email: " + email);
-            return clientDAO.findClientByEmail(email);
+            return clientDAO.getClientByEmail(email);
         } catch (DAOException e) {
             logger.error("Error while getting client with email: " + email);
             throw new ClientException("Error while getting client with email: " + email);
