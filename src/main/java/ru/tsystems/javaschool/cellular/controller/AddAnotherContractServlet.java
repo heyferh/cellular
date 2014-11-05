@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
@@ -23,8 +24,10 @@ import java.util.List;
  * Created by ferh on 19.10.14.
  */
 public class AddAnotherContractServlet extends HttpServlet {
-    TariffService tariffService = new TariffServiceImpl(Manager.getEntityManager());
-    OptionService optionService = new OptionServiceImpl(Manager.getEntityManager());
+    @Autowired
+    TariffService tariffService;
+    @Autowired
+    OptionService optionService;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getParameter("tariff_id") == null) {
@@ -60,7 +63,7 @@ public class AddAnotherContractServlet extends HttpServlet {
             tariffList = tariffService.getAllTariffs();
 
         } catch (TariffException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }

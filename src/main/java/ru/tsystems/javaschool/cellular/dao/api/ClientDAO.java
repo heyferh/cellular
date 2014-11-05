@@ -15,7 +15,7 @@ public interface ClientDAO extends CommonDAO<Client> {
      * @return Client object if it exists.
      * @throws DAOException if there's no such email in database.
      */
-    public Client findClientByEmail(String email) throws DAOException;
+    public Client getClientByEmail(String email) throws DAOException;
 
     /**
      * Finds client by phone number.

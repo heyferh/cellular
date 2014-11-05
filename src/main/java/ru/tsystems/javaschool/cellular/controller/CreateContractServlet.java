@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.tsystems.javaschool.cellular.entity.Client;
 import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
@@ -28,8 +29,10 @@ import java.util.List;
  * Created by ferh on 18.10.14.
  */
 public class CreateContractServlet extends HttpServlet {
-    TariffService tariffService = new TariffServiceImpl(Manager.getEntityManager());
-    ContractService contractService = new ContractServiceImpl(Manager.getEntityManager());
+    @Autowired
+    TariffService tariffService;
+    @Autowired
+    ContractService contractService;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         StringBuilder builder = new StringBuilder();

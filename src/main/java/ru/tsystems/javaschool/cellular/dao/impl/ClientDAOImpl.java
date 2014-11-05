@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.dao.impl;
 
+import org.springframework.stereotype.Repository;
 import ru.tsystems.javaschool.cellular.dao.api.ClientDAO;
 import ru.tsystems.javaschool.cellular.entity.Client;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
@@ -15,10 +16,11 @@ import static ru.tsystems.javaschool.cellular.exception.DAOException.ERROR_CODE.
 /**
  * Created by ferh on 09.10.14.
  */
+@Repository
 public class ClientDAOImpl extends CommonDAOImpl<Client> implements ClientDAO {
 
     public ClientDAOImpl(EntityManager entityManager) {
-        super(entityManager, Client.class);
+        super(Client.class);
     }
 
     public Client getClientByEmail(String email) throws DAOException {

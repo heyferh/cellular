@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.tsystems.javaschool.cellular.entity.Client;
 import ru.tsystems.javaschool.cellular.exception.ClientException;
 import ru.tsystems.javaschool.cellular.helper.Manager;
@@ -17,14 +18,15 @@ import java.util.List;
  * Created by ferh on 13.10.14.
  */
 public class AllContractsServlet extends HttpServlet {
-    private ClientService clientService = new ClientServiceImpl(Manager.getEntityManager());
+    @Autowired
+    private ClientService clientService;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Client client = null;
         try {
             client = clientService.getClientByPhoneNumber(request.getParameter("phonenumber"));
         } catch (ClientException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
@@ -38,7 +40,7 @@ public class AllContractsServlet extends HttpServlet {
         try {
             clientList = clientService.getAllClients();
         } catch (ClientException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }

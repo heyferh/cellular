@@ -14,7 +14,7 @@ import java.util.Set;
 public class Tariff implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tariff_id")
     private long id;
 

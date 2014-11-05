@@ -1,14 +1,12 @@
 package ru.tsystems.javaschool.cellular.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
 import ru.tsystems.javaschool.cellular.exception.ContractException;
 import ru.tsystems.javaschool.cellular.exception.TariffException;
-import ru.tsystems.javaschool.cellular.helper.Manager;
 import ru.tsystems.javaschool.cellular.service.api.ContractService;
 import ru.tsystems.javaschool.cellular.service.api.TariffService;
-import ru.tsystems.javaschool.cellular.service.impl.ContractServiceImpl;
-import ru.tsystems.javaschool.cellular.service.impl.TariffServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,8 +19,10 @@ import java.util.List;
  * Created by ferh on 15.10.14.
  */
 public class SelectTariffServlet extends HttpServlet {
-    TariffService tariffService = new TariffServiceImpl(Manager.getEntityManager());
-    ContractService contractService = new ContractServiceImpl(Manager.getEntityManager());
+    @Autowired
+    TariffService tariffService;
+    @Autowired
+    ContractService contractService;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getParameter("tariff_id") == null) {
@@ -49,7 +49,7 @@ public class SelectTariffServlet extends HttpServlet {
         try {
             currentContract = contractService.getContractById(Long.parseLong(request.getParameter("contract_id")));
         } catch (ContractException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
@@ -62,7 +62,7 @@ public class SelectTariffServlet extends HttpServlet {
         try {
             tariffList = tariffService.getAllTariffs();
         } catch (TariffException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }

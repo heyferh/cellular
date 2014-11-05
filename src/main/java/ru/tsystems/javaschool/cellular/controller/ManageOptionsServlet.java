@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
 import ru.tsystems.javaschool.cellular.helper.Manager;
@@ -17,7 +18,8 @@ import java.util.List;
  * Created by ferh on 19.10.14.
  */
 public class ManageOptionsServlet extends HttpServlet {
-    OptionService optionService = new OptionServiceImpl(Manager.getEntityManager());
+    @Autowired
+    OptionService optionService;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -27,7 +29,7 @@ public class ManageOptionsServlet extends HttpServlet {
                 optionService.manageIncompatibleOptions(Long.parseLong(request.getParameter("option_id")), request.getParameterValues("incompatible"));
             }
         } catch (OptionException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
@@ -42,7 +44,7 @@ public class ManageOptionsServlet extends HttpServlet {
             optionList = optionService.getAllOptions();
             request.setAttribute("option", option);
         } catch (OptionException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }

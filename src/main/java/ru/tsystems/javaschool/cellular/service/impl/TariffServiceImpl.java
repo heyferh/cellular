@@ -1,6 +1,8 @@
 package ru.tsystems.javaschool.cellular.service.impl;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.tsystems.javaschool.cellular.dao.api.ContractDAO;
 import ru.tsystems.javaschool.cellular.dao.api.OptionDAO;
 import ru.tsystems.javaschool.cellular.dao.api.TariffDAO;
@@ -17,25 +19,25 @@ import ru.tsystems.javaschool.cellular.service.api.TariffService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by ferh on 11.10.14.
  */
+@Service
 public class TariffServiceImpl implements TariffService {
     private final Logger logger = Logger.getLogger(TariffService.class);
+    @PersistenceContext
     private EntityManager entityManager;
-    private TariffDAO tariffDAO;
-    private ContractDAO contractDAO;
-    private OptionDAO optionDAO;
 
-    public TariffServiceImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
-        this.tariffDAO = new TariffDAOImpl(entityManager);
-        this.contractDAO = new ContractDAOImpl(entityManager);
-        this.optionDAO = new OptionDAOImpl(entityManager);
-    }
+    @Autowired
+    private TariffDAO tariffDAO;
+    @Autowired
+    private ContractDAO contractDAO;
+    @Autowired
+    private OptionDAO optionDAO;
 
     @Override
     public void createTariff(Tariff tariff, String[] optionId) throws TariffException {

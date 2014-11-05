@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.exception.ContractException;
@@ -21,8 +22,10 @@ import java.util.List;
  * Created by ferh on 15.10.14.
  */
 public class SelectOptionServlet extends HttpServlet {
-    private ContractService contractService = new ContractServiceImpl(Manager.getEntityManager());
-    private OptionService optionService = new OptionServiceImpl(Manager.getEntityManager());
+    @Autowired
+    private ContractService contractService;
+    @Autowired
+    private OptionService optionService;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -33,7 +36,7 @@ public class SelectOptionServlet extends HttpServlet {
         try {
             contract = contractService.getContractById(Long.parseLong(request.getParameter("contract_id")));
         } catch (ContractException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
@@ -46,7 +49,7 @@ public class SelectOptionServlet extends HttpServlet {
         try {
             optionList = optionService.getOptionsForTariff(contract.getTariff().getId());
         } catch (OptionException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }

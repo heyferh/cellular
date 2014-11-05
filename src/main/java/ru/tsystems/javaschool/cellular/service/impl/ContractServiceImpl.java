@@ -1,14 +1,12 @@
 package ru.tsystems.javaschool.cellular.service.impl;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.tsystems.javaschool.cellular.dao.api.ClientDAO;
 import ru.tsystems.javaschool.cellular.dao.api.ContractDAO;
 import ru.tsystems.javaschool.cellular.dao.api.OptionDAO;
 import ru.tsystems.javaschool.cellular.dao.api.TariffDAO;
-import ru.tsystems.javaschool.cellular.dao.impl.ClientDAOImpl;
-import ru.tsystems.javaschool.cellular.dao.impl.ContractDAOImpl;
-import ru.tsystems.javaschool.cellular.dao.impl.OptionDAOImpl;
-import ru.tsystems.javaschool.cellular.dao.impl.TariffDAOImpl;
 import ru.tsystems.javaschool.cellular.entity.Client;
 import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.entity.Option;
@@ -20,27 +18,26 @@ import ru.tsystems.javaschool.cellular.service.api.ContractService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Set;
 
 /**
  * Created by ferh on 11.10.14.
  */
+@Service
 public class ContractServiceImpl implements ContractService {
     private final Logger logger = Logger.getLogger(ContractService.class);
+    @PersistenceContext
     private EntityManager entityManager;
+    @Autowired
     private ContractDAO contractDAO;
+    @Autowired
     private ClientDAO clientDAO;
+    @Autowired
     private OptionDAO optionDAO;
+    @Autowired
     private TariffDAO tariffDAO;
-
-    public ContractServiceImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
-        this.contractDAO = new ContractDAOImpl(entityManager);
-        this.clientDAO = new ClientDAOImpl(entityManager);
-        this.optionDAO = new OptionDAOImpl(entityManager);
-        this.tariffDAO = new TariffDAOImpl(entityManager);
-    }
 
     @Override
     public void createContract(Contract contract) throws ContractException {

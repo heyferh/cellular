@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.dao.impl;
 
+import org.springframework.stereotype.Repository;
 import ru.tsystems.javaschool.cellular.dao.api.ContractDAO;
 import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
@@ -14,9 +15,10 @@ import static ru.tsystems.javaschool.cellular.exception.DAOException.ERROR_CODE.
 /**
  * Created by ferh on 09.10.14.
  */
+@Repository
 public class ContractDAOImpl extends CommonDAOImpl<Contract> implements ContractDAO {
     public ContractDAOImpl(EntityManager entityManager) {
-        super(entityManager, Contract.class);
+        super(Contract.class);
     }
 
     public Contract getContractByPhoneNumber(String phoneNumber) throws DAOException {

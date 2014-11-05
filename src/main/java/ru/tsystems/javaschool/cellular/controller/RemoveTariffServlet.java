@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.tsystems.javaschool.cellular.helper.Manager;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
 import ru.tsystems.javaschool.cellular.exception.TariffException;
@@ -17,7 +18,8 @@ import java.util.List;
  * Created by ferh on 15.10.14.
  */
 public class RemoveTariffServlet extends HttpServlet {
-    private TariffService tariffService = new TariffServiceImpl(Manager.getEntityManager());
+    @Autowired
+    private TariffService tariffService;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -31,7 +33,7 @@ public class RemoveTariffServlet extends HttpServlet {
             tariffService.deleteTariff(tariff);
             tariffList = tariffService.getAllTariffs();
         } catch (TariffException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }

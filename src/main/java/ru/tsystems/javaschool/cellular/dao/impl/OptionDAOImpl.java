@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.dao.impl;
 
+import org.springframework.stereotype.Repository;
 import ru.tsystems.javaschool.cellular.dao.api.OptionDAO;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
@@ -15,9 +16,10 @@ import static ru.tsystems.javaschool.cellular.exception.DAOException.ERROR_CODE.
 /**
  * Created by ferh on 09.10.14.
  */
+@Repository
 public class OptionDAOImpl extends CommonDAOImpl<Option> implements OptionDAO {
     public OptionDAOImpl(EntityManager entityManager) {
-        super(entityManager, Option.class);
+        super(Option.class);
     }
 
     public List<Option> getOptionsForTariff(String title) throws DAOException {

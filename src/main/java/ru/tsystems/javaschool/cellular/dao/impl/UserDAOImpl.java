@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.dao.impl;
 
+import org.springframework.stereotype.Repository;
 import ru.tsystems.javaschool.cellular.dao.api.UserDAO;
 import ru.tsystems.javaschool.cellular.entity.User;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
@@ -14,11 +15,12 @@ import static ru.tsystems.javaschool.cellular.exception.DAOException.ERROR_CODE.
 /**
  * Created by ferh on 17.10.14.
  */
+@Repository
 public class UserDAOImpl extends CommonDAOImpl<User> implements UserDAO {
 
 
     public UserDAOImpl(EntityManager entityManager) {
-        super(entityManager, User.class);
+        super(User.class);
     }
 
     @Override

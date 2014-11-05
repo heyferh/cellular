@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
 import ru.tsystems.javaschool.cellular.helper.Manager;
@@ -18,7 +19,8 @@ import java.util.List;
  * Created by ferh on 19.10.14.
  */
 public class AllOptionsServlet extends HttpServlet {
-    OptionService optionService = new OptionServiceImpl(Manager.getEntityManager());
+    @Autowired
+    OptionService optionService;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         StringBuilder builder = new StringBuilder();

@@ -1,6 +1,8 @@
 package ru.tsystems.javaschool.cellular.service.impl;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.tsystems.javaschool.cellular.dao.api.ClientDAO;
 import ru.tsystems.javaschool.cellular.dao.impl.ClientDAOImpl;
 import ru.tsystems.javaschool.cellular.entity.Client;
@@ -10,21 +12,19 @@ import ru.tsystems.javaschool.cellular.service.api.ClientService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
  * Created by ferh on 09.10.14.
  */
+@Service
 public class ClientServiceImpl implements ClientService {
     private final Logger logger = Logger.getLogger(ClientService.class);
+    @PersistenceContext
     private EntityManager entityManager;
+    @Autowired
     private ClientDAO clientDAO;
-
-    public ClientServiceImpl(EntityManager entityManager) {
-        clientDAO = new ClientDAOImpl(entityManager);
-        this.entityManager = entityManager;
-    }
-
 
     @Override
     public void createClient(Client client) throws ClientException {
@@ -59,7 +59,7 @@ public class ClientServiceImpl implements ClientService {
     public Client getClientByEmail(String email) throws ClientException {
         try {
             logger.info("Getting client by email: " + email);
-            return clientDAO.findClientByEmail(email);
+            return clientDAO.getClientByEmail(email);
         } catch (DAOException e) {
             logger.error("Error while getting client with email: " + email);
             throw new ClientException("Error while getting client with email: " + email);

@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.tsystems.javaschool.cellular.entity.Client;
 import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.exception.ClientException;
@@ -22,8 +23,10 @@ import java.io.IOException;
  * Created by ferh on 19.10.14.
  */
 public class CreateAnotherContractServlet extends HttpServlet {
-    ClientService clientService = new ClientServiceImpl(Manager.getEntityManager());
-    ContractService contractService = new ContractServiceImpl(Manager.getEntityManager());
+    @Autowired
+    ClientService clientService;
+    @Autowired
+    ContractService contractService;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         StringBuilder builder = new StringBuilder();

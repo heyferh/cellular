@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
 import ru.tsystems.javaschool.cellular.exception.TariffException;
@@ -19,8 +20,10 @@ import java.io.IOException;
  * Created by ferh on 15.10.14.
  */
 public class RemoveTariffOptionsServlet extends HttpServlet {
-    private OptionService optionService = new OptionServiceImpl(Manager.getEntityManager());
-    private TariffService tariffService = new TariffServiceImpl(Manager.getEntityManager());
+    @Autowired
+    private OptionService optionService;
+    @Autowired
+    private TariffService tariffService;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -31,14 +34,14 @@ public class RemoveTariffOptionsServlet extends HttpServlet {
         try {
             tariff = tariffService.getTariffById(Long.parseLong(request.getParameter("tariff_id")));
         } catch (TariffException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
         try {
             tariffService.deleteTariffOption(request.getParameter("tariff_id"), request.getParameter("option_id"));
         } catch (OptionException e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }

@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.helper.Manager;
@@ -18,8 +19,10 @@ import java.io.IOException;
  * Created by ferh on 15.10.14.
  */
 public class DisableOptionServlet extends HttpServlet {
-    private ContractService contractService = new ContractServiceImpl(Manager.getEntityManager());
-    private OptionService optionService = new OptionServiceImpl(Manager.getEntityManager());
+    @Autowired
+    private ContractService contractService;
+    @Autowired
+    private OptionService optionService;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -39,7 +42,7 @@ public class DisableOptionServlet extends HttpServlet {
             request.setAttribute("contract", contract);
             request.getRequestDispatcher("contract_details.jsp").forward(request, response);
         } catch (Exception e) {
-            request.setAttribute("message",e.getMessage());
+            request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }

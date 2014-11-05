@@ -1,14 +1,13 @@
 package ru.tsystems.javaschool.cellular.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import ru.tsystems.javaschool.cellular.entity.Administrator;
 import ru.tsystems.javaschool.cellular.entity.Client;
 import ru.tsystems.javaschool.cellular.entity.User;
 import ru.tsystems.javaschool.cellular.exception.AuthorizationException;
-import ru.tsystems.javaschool.cellular.helper.Manager;
 import ru.tsystems.javaschool.cellular.service.api.AuthorizationService;
 import ru.tsystems.javaschool.cellular.service.api.ClientService;
-import ru.tsystems.javaschool.cellular.service.impl.AuthorizationServiceImpl;
-import ru.tsystems.javaschool.cellular.service.impl.ClientServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,9 +20,12 @@ import java.io.PrintWriter;
 /**
  * Created by ferh on 21.10.14.
  */
+@Controller
 public class LoginServlet extends HttpServlet {
-    ClientService clientService = new ClientServiceImpl(Manager.getEntityManager());
-    AuthorizationService authorizationService = new AuthorizationServiceImpl(Manager.getEntityManager());
+    @Autowired
+    ClientService clientService;
+    @Autowired
+    AuthorizationService authorizationService;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");

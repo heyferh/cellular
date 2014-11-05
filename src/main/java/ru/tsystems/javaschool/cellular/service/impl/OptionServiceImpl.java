@@ -1,10 +1,10 @@
 package ru.tsystems.javaschool.cellular.service.impl;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.tsystems.javaschool.cellular.dao.api.OptionDAO;
 import ru.tsystems.javaschool.cellular.dao.api.TariffDAO;
-import ru.tsystems.javaschool.cellular.dao.impl.OptionDAOImpl;
-import ru.tsystems.javaschool.cellular.dao.impl.TariffDAOImpl;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
@@ -13,22 +13,21 @@ import ru.tsystems.javaschool.cellular.service.api.OptionService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
  * Created by ferh on 11.10.14.
  */
+@Service
 public class OptionServiceImpl implements OptionService {
     private final Logger logger = Logger.getLogger(OptionService.class);
+    @PersistenceContext
     private EntityManager entityManager;
+    @Autowired
     private OptionDAO optionDAO;
+    @Autowired
     private TariffDAO tariffDAO;
-
-    public OptionServiceImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
-        this.optionDAO = new OptionDAOImpl(entityManager);
-        this.tariffDAO = new TariffDAOImpl(entityManager);
-    }
 
     @Override
     public void createOption(Option option) throws OptionException {

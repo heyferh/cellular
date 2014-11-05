@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.tsystems.javaschool.cellular.entity.Client;
 import ru.tsystems.javaschool.cellular.helper.Manager;
 import ru.tsystems.javaschool.cellular.service.api.AuthorizationService;
@@ -15,7 +16,8 @@ import java.io.IOException;
  * Created by ferh on 21.10.14.
  */
 public class AuthFilter implements Filter {
-    AuthorizationService authorizationService = new AuthorizationServiceImpl(Manager.getEntityManager());
+    @Autowired
+    AuthorizationService authorizationService;
 
     public void destroy() {
     }
