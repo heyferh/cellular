@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by ferh on 09.10.14.
  */
-@Service
+@Service("clientService")
 public class ClientServiceImpl implements ClientService {
     private final Logger logger = Logger.getLogger(ClientService.class);
     @PersistenceContext

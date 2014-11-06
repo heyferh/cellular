@@ -15,7 +15,7 @@ import static ru.tsystems.javaschool.cellular.exception.DAOException.ERROR_CODE.
 /**
  * Created by ferh on 09.10.14.
  */
-@Repository
+@Repository("ContractDAO")
 public class ContractDAOImpl extends CommonDAOImpl<Contract> implements ContractDAO {
     public ContractDAOImpl(EntityManager entityManager) {
         super(Contract.class);

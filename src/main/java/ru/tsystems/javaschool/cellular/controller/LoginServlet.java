@@ -1,6 +1,7 @@
 package ru.tsystems.javaschool.cellular.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import ru.tsystems.javaschool.cellular.entity.Administrator;
 import ru.tsystems.javaschool.cellular.entity.Client;
@@ -25,7 +26,12 @@ public class LoginServlet extends HttpServlet {
     @Autowired
     ClientService clientService;
     @Autowired
+    @Qualifier("authorization")
     AuthorizationService authorizationService;
+
+    public void setAuthorizationService(AuthorizationService authorizationService) {
+        this.authorizationService = authorizationService;
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");

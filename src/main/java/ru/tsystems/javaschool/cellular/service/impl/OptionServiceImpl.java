@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by ferh on 11.10.14.
  */
-@Service
+@Service("optionService")
 public class OptionServiceImpl implements OptionService {
     private final Logger logger = Logger.getLogger(OptionService.class);
     @PersistenceContext

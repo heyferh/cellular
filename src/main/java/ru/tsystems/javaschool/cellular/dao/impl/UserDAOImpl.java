@@ -15,7 +15,7 @@ import static ru.tsystems.javaschool.cellular.exception.DAOException.ERROR_CODE.
 /**
  * Created by ferh on 17.10.14.
  */
-@Repository
+@Repository("UserDAO")
 public class UserDAOImpl extends CommonDAOImpl<User> implements UserDAO {
 
 

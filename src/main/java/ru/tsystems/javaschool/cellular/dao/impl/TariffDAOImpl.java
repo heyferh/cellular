@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 /**
  * Created by ferh on 09.10.14.
  */
-@Repository
+@Repository("TariffDAO")
 public class TariffDAOImpl extends CommonDAOImpl<Tariff> implements TariffDAO {
     public TariffDAOImpl(EntityManager entityManager) {
         super(Tariff.class);

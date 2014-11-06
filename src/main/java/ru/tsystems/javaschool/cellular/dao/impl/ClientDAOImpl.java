@@ -16,10 +16,10 @@ import static ru.tsystems.javaschool.cellular.exception.DAOException.ERROR_CODE.
 /**
  * Created by ferh on 09.10.14.
  */
-@Repository
+@Repository("ClientDAO")
 public class ClientDAOImpl extends CommonDAOImpl<Client> implements ClientDAO {
 
-    public ClientDAOImpl(EntityManager entityManager) {
+    public ClientDAOImpl() {
         super(Client.class);
     }
 

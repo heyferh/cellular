@@ -16,7 +16,7 @@ import static ru.tsystems.javaschool.cellular.exception.DAOException.ERROR_CODE.
 /**
  * Created by ferh on 09.10.14.
  */
-@Repository
+@Repository("OptionDAO")
 public class OptionDAOImpl extends CommonDAOImpl<Option> implements OptionDAO {
     public OptionDAOImpl(EntityManager entityManager) {
         super(Option.class);

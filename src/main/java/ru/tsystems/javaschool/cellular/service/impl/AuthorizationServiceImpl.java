@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
 /**
  * Created by ferh on 17.10.14.
  */
-@Service
+@Service("authorizationService")
 public class AuthorizationServiceImpl implements AuthorizationService {
     private final Logger logger = Logger.getLogger(AuthorizationService.class);
     @PersistenceContext
