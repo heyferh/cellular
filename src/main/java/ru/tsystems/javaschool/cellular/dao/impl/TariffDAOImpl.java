@@ -11,6 +11,9 @@ import javax.persistence.EntityManager;
  */
 @Repository("TariffDAO")
 public class TariffDAOImpl extends CommonDAOImpl<Tariff> implements TariffDAO {
+    public TariffDAOImpl() {
+    }
+
     public TariffDAOImpl(EntityManager entityManager) {
         super(Tariff.class);
     }

@@ -24,6 +24,9 @@ public abstract class CommonDAOImpl<T> implements CommonDAO<T> {
     EntityManager entityManager;
     private Class<T> type;
 
+    protected CommonDAOImpl() {
+
+    }
     protected CommonDAOImpl(Class<T> type) {
         this.type = type;
     }

@@ -26,7 +26,6 @@ public class LoginServlet extends HttpServlet {
     @Autowired
     ClientService clientService;
     @Autowired
-    @Qualifier("authorization")
     AuthorizationService authorizationService;
 
     public void setAuthorizationService(AuthorizationService authorizationService) {

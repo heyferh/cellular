@@ -23,6 +23,9 @@ public class UserDAOImpl extends CommonDAOImpl<User> implements UserDAO {
         super(User.class);
     }
 
+    public UserDAOImpl() {
+    }
+
     @Override
     public User getUserByEmail(String email) throws DAOException {
         try {

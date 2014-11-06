@@ -21,6 +21,9 @@ public class ContractDAOImpl extends CommonDAOImpl<Contract> implements Contract
         super(Contract.class);
     }
 
+    public ContractDAOImpl() {
+    }
+
     public Contract getContractByPhoneNumber(String phoneNumber) throws DAOException {
         try {
             logger.info("Getting contract " + phoneNumber);

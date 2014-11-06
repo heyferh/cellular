@@ -22,6 +22,10 @@ public class OptionDAOImpl extends CommonDAOImpl<Option> implements OptionDAO {
         super(Option.class);
     }
 
+
+    public OptionDAOImpl() {
+    }
+
     public List<Option> getOptionsForTariff(String title) throws DAOException {
         List<Option> optionList = null;
         try {
