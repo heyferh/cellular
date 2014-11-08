@@ -20,9 +20,6 @@ import static ru.tsystems.javaschool.cellular.exception.DAOException.ERROR_CODE.
 public class ClientDAOImpl extends CommonDAOImpl<Client> implements ClientDAO {
 
     public ClientDAOImpl() {
-    }
-
-    public ClientDAOImpl(EntityManager entityManager) {
         super(Client.class);
     }
 

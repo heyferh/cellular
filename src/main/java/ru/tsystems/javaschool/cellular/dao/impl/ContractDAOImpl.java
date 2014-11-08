@@ -5,7 +5,6 @@ import ru.tsystems.javaschool.cellular.dao.api.ContractDAO;
 import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
@@ -17,11 +16,9 @@ import static ru.tsystems.javaschool.cellular.exception.DAOException.ERROR_CODE.
  */
 @Repository("ContractDAO")
 public class ContractDAOImpl extends CommonDAOImpl<Contract> implements ContractDAO {
-    public ContractDAOImpl(EntityManager entityManager) {
-        super(Contract.class);
-    }
 
     public ContractDAOImpl() {
+        super(Contract.class);
     }
 
     public Contract getContractByPhoneNumber(String phoneNumber) throws DAOException {

@@ -25,7 +25,7 @@ import java.util.Set;
 /**
  * Created by ferh on 11.10.14.
  */
-@Service("contractService")
+@Service("ContractService")
 public class ContractServiceImpl implements ContractService {
     private final Logger logger = Logger.getLogger(ContractService.class);
     @PersistenceContext

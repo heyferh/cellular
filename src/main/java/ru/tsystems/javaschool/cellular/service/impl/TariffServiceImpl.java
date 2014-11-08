@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by ferh on 11.10.14.
  */
-@Service("tariffService")
+@Service("TariffService")
 public class TariffServiceImpl implements TariffService {
     private final Logger logger = Logger.getLogger(TariffService.class);
     @PersistenceContext

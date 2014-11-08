@@ -4,17 +4,13 @@ import org.springframework.stereotype.Repository;
 import ru.tsystems.javaschool.cellular.dao.api.TariffDAO;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
 
-import javax.persistence.EntityManager;
-
 /**
  * Created by ferh on 09.10.14.
  */
 @Repository("TariffDAO")
 public class TariffDAOImpl extends CommonDAOImpl<Tariff> implements TariffDAO {
-    public TariffDAOImpl() {
-    }
 
-    public TariffDAOImpl(EntityManager entityManager) {
+    public TariffDAOImpl() {
         super(Tariff.class);
     }
 }

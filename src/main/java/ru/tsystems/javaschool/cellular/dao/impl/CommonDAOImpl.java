@@ -2,6 +2,7 @@ package ru.tsystems.javaschool.cellular.dao.impl;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.javaschool.cellular.dao.api.CommonDAO;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
 
@@ -16,17 +17,16 @@ import static ru.tsystems.javaschool.cellular.exception.DAOException.ERROR_CODE.
 /**
  * Created by ferh on 22.10.14.
  */
+@Transactional
 @Repository
 public abstract class CommonDAOImpl<T> implements CommonDAO<T> {
     protected final Logger logger = Logger.getLogger("DAO");
 
     @PersistenceContext
     EntityManager entityManager;
+
     private Class<T> type;
 
-    protected CommonDAOImpl() {
-
-    }
     protected CommonDAOImpl(Class<T> type) {
         this.type = type;
     }

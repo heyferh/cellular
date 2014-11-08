@@ -5,7 +5,6 @@ import ru.tsystems.javaschool.cellular.dao.api.OptionDAO;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
 
-import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import java.util.List;
@@ -18,12 +17,9 @@ import static ru.tsystems.javaschool.cellular.exception.DAOException.ERROR_CODE.
  */
 @Repository("OptionDAO")
 public class OptionDAOImpl extends CommonDAOImpl<Option> implements OptionDAO {
-    public OptionDAOImpl(EntityManager entityManager) {
-        super(Option.class);
-    }
-
 
     public OptionDAOImpl() {
+        super(Option.class);
     }
 
     public List<Option> getOptionsForTariff(String title) throws DAOException {

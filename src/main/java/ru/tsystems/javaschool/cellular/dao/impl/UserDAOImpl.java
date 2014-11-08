@@ -5,7 +5,6 @@ import ru.tsystems.javaschool.cellular.dao.api.UserDAO;
 import ru.tsystems.javaschool.cellular.entity.User;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
@@ -18,12 +17,8 @@ import static ru.tsystems.javaschool.cellular.exception.DAOException.ERROR_CODE.
 @Repository("UserDAO")
 public class UserDAOImpl extends CommonDAOImpl<User> implements UserDAO {
 
-
-    public UserDAOImpl(EntityManager entityManager) {
-        super(User.class);
-    }
-
     public UserDAOImpl() {
+        super(User.class);
     }
 
     @Override

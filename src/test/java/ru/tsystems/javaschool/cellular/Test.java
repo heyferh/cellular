@@ -6,19 +6,17 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import ru.tsystems.javaschool.cellular.entity.Client;
 import ru.tsystems.javaschool.cellular.exception.ClientException;
-import ru.tsystems.javaschool.cellular.exception.DAOException;
 import ru.tsystems.javaschool.cellular.service.api.ClientService;
 
 /**
  * Created by ferh on 03.11.14.
  */
-@ContextConfiguration(locations = "/applicationContext.xml")
-public class Test extends AbstractJUnit4SpringContextTests{
+public class Test extends AbstractJUnit4SpringContextTests {
     @Autowired
     ClientService clientService;
 
     @org.junit.Test
-    public void test() throws ClientException, DAOException {
+    public void test() throws ClientException {
         Client client = new Client();
         clientService.createClient(client);
         Assert.assertEquals(clientService.getAllClients().size(), 1);

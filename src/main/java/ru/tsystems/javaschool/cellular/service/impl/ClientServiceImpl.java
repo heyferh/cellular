@@ -3,8 +3,8 @@ package ru.tsystems.javaschool.cellular.service.impl;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.javaschool.cellular.dao.api.ClientDAO;
-import ru.tsystems.javaschool.cellular.dao.impl.ClientDAOImpl;
 import ru.tsystems.javaschool.cellular.entity.Client;
 import ru.tsystems.javaschool.cellular.exception.ClientException;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
@@ -18,7 +18,8 @@ import java.util.List;
 /**
  * Created by ferh on 09.10.14.
  */
-@Service("clientService")
+@Transactional
+@Service("ClientService")
 public class ClientServiceImpl implements ClientService {
     private final Logger logger = Logger.getLogger(ClientService.class);
     @PersistenceContext
@@ -28,19 +29,19 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void createClient(Client client) throws ClientException {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
+//        EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
-            entityTransaction.begin();
+//            entityTransaction.begin();
             logger.info("Creating client: " + client);
             clientDAO.create(client);
-            entityTransaction.commit();
+//            entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while creating: " + client);
             throw new ClientException("Error while creating: " + client.getFirstName() + " " + client.getLastName());
-        } finally {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
+//        } finally {
+//            if (entityTransaction.isActive()) {
+//                entityTransaction.rollback();
+//            }
         }
     }
 
@@ -71,9 +72,10 @@ public class ClientServiceImpl implements ClientService {
         try {
             return clientDAO.getClientByNumber(phoneNumber);
         } catch (DAOException e) {
-            logger.error("Error while getting client by phone number: "+phoneNumber);
-            throw new ClientException("Error while getting client by phone number: "+phoneNumber);
-        }    }
+            logger.error("Error while getting client by phone number: " + phoneNumber);
+            throw new ClientException("Error while getting client by phone number: " + phoneNumber);
+        }
+    }
 
     @Override
     public List<Client> getAllClients() throws ClientException {
@@ -117,7 +119,7 @@ public class ClientServiceImpl implements ClientService {
             entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while deleting client: " + client);
-            throw new ClientException("Error while deleting client: " + client.getFirstName()+" "+client.getLastName());
+            throw new ClientException("Error while deleting client: " + client.getFirstName() + " " + client.getLastName());
         } finally {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
