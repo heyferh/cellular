@@ -17,7 +17,6 @@ import static ru.tsystems.javaschool.cellular.exception.DAOException.ERROR_CODE.
 /**
  * Created by ferh on 22.10.14.
  */
-@Transactional
 @Repository
 public abstract class CommonDAOImpl<T> implements CommonDAO<T> {
     protected final Logger logger = Logger.getLogger("DAO");
