@@ -10,9 +10,6 @@ import ru.tsystems.javaschool.cellular.exception.ClientException;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
 import ru.tsystems.javaschool.cellular.service.api.ClientService;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
@@ -22,26 +19,18 @@ import java.util.List;
 @Service("ClientService")
 public class ClientServiceImpl implements ClientService {
     private final Logger logger = Logger.getLogger(ClientService.class);
-    @PersistenceContext
-    private EntityManager entityManager;
+
     @Autowired
     private ClientDAO clientDAO;
 
     @Override
     public void createClient(Client client) throws ClientException {
-//        EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
-//            entityTransaction.begin();
             logger.info("Creating client: " + client);
             clientDAO.create(client);
-//            entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while creating: " + client);
             throw new ClientException("Error while creating: " + client.getFirstName() + " " + client.getLastName());
-//        } finally {
-//            if (entityTransaction.isActive()) {
-//                entityTransaction.rollback();
-//            }
         }
     }
 
@@ -93,37 +82,23 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void updateClient(Client client) throws ClientException {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
-            entityTransaction.begin();
             logger.info("Updating client: " + client);
             clientDAO.update(client);
-            entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while updating client: " + client);
             throw new ClientException("Error while updating client: " + client.getFirstName() + " " + client.getLastName());
-        } finally {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
         }
     }
 
     @Override
     public void deleteClient(Client client) throws ClientException {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
-            entityTransaction.begin();
             logger.info("Deleting client: " + client);
             clientDAO.delete(client);
-            entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while deleting client: " + client);
             throw new ClientException("Error while deleting client: " + client.getFirstName() + " " + client.getLastName());
-        } finally {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
         }
     }
 }
