@@ -3,6 +3,7 @@ package ru.tsystems.javaschool.cellular.service.impl;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.javaschool.cellular.dao.api.ClientDAO;
 import ru.tsystems.javaschool.cellular.dao.api.ContractDAO;
 import ru.tsystems.javaschool.cellular.dao.api.OptionDAO;
@@ -16,20 +17,17 @@ import ru.tsystems.javaschool.cellular.exception.DAOException;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
 import ru.tsystems.javaschool.cellular.service.api.ContractService;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Set;
 
 /**
  * Created by ferh on 11.10.14.
  */
+@Transactional
 @Service("ContractService")
 public class ContractServiceImpl implements ContractService {
     private final Logger logger = Logger.getLogger(ContractService.class);
-    @PersistenceContext
-    private EntityManager entityManager;
+
     @Autowired
     private ContractDAO contractDAO;
     @Autowired
@@ -41,19 +39,12 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public void createContract(Contract contract) throws ContractException {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
-            entityTransaction.begin();
             logger.info("Creating contract: " + contract);
             contractDAO.create(contract);
-            entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while creating contract: " + contract);
             throw new ContractException("Error while creating contract: " + contract.getPhoneNumber());
-        } finally {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
         }
     }
 
@@ -81,37 +72,23 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public void updateContract(Contract contract) throws ContractException {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
-            entityTransaction.begin();
             logger.info("Updating contract: " + contract);
             contractDAO.update(contract);
-            entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while updating contract: " + contract);
             throw new ContractException("Error while updating contract: " + contract.getPhoneNumber());
-        } finally {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
         }
     }
 
     @Override
     public void deleteContract(Contract contract) throws ContractException {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
-            entityTransaction.begin();
             logger.info("Deleting contract: " + contract);
             contractDAO.delete(contract);
-            entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while deleting contract: " + contract);
             throw new ContractException("Error while deleting contract: " + contract.getPhoneNumber());
-        } finally {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
         }
     }
 
@@ -220,9 +197,7 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public void addContract(Contract contract, Client client, long tariffId, long[] optionIds) throws ContractException, OptionException {
         logger.info("Adding new contract: " + contract);
-        EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
-            entityTransaction.begin();
             if (contractDAO.checkIfNumberExists(contract.getPhoneNumber())) {
                 logger.error("Number: " + contract.getPhoneNumber() + " already exists");
                 throw new ContractException("Number: " + contract.getPhoneNumber() + " already exists");
@@ -236,14 +211,9 @@ public class ContractServiceImpl implements ContractService {
                 logger.info("Enabling option: " + id);
                 enableOption(contract, optionDAO.get(id));
             }
-            entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Unable to add contract");
             throw new ContractException("Unable to add contract");
-        } finally {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
         }
     }
 

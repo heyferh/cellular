@@ -2,7 +2,6 @@ package ru.tsystems.javaschool.cellular.dao.impl;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.javaschool.cellular.dao.api.CommonDAO;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
 
@@ -87,7 +86,7 @@ public abstract class CommonDAOImpl<T> implements CommonDAO<T> {
     public void delete(T object) throws DAOException {
         try {
             logger.info("Deleting " + object);
-            entityManager.remove(object);
+            entityManager.remove(entityManager.contains(object) ? object : entityManager.merge(object));
         } catch (PersistenceException e) {
             logger.error("Deleting " + object + " fails.");
             throw new DAOException(PERSISTENCE_EXCEPTION, e);

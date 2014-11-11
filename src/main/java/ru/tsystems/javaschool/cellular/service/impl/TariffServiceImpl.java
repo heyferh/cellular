@@ -3,12 +3,10 @@ package ru.tsystems.javaschool.cellular.service.impl;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.javaschool.cellular.dao.api.ContractDAO;
 import ru.tsystems.javaschool.cellular.dao.api.OptionDAO;
 import ru.tsystems.javaschool.cellular.dao.api.TariffDAO;
-import ru.tsystems.javaschool.cellular.dao.impl.ContractDAOImpl;
-import ru.tsystems.javaschool.cellular.dao.impl.OptionDAOImpl;
-import ru.tsystems.javaschool.cellular.dao.impl.TariffDAOImpl;
 import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
@@ -17,20 +15,16 @@ import ru.tsystems.javaschool.cellular.exception.OptionException;
 import ru.tsystems.javaschool.cellular.exception.TariffException;
 import ru.tsystems.javaschool.cellular.service.api.TariffService;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by ferh on 11.10.14.
  */
+@Transactional
 @Service("TariffService")
 public class TariffServiceImpl implements TariffService {
     private final Logger logger = Logger.getLogger(TariffService.class);
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Autowired
     private TariffDAO tariffDAO;
@@ -42,15 +36,14 @@ public class TariffServiceImpl implements TariffService {
     @Override
     public void createTariff(Tariff tariff, String[] optionId) throws TariffException {
         logger.info("Creating tariff: " + tariff);
-        EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
-            entityTransaction.begin();
             tariffDAO.create(tariff);
 
             List<Option> optionList = new ArrayList<Option>();
-            for (String id : optionId) {
-                optionList.add(optionDAO.get(Long.parseLong(id)));
-            }
+            if (optionId != null)
+                for (String id : optionId) {
+                    optionList.add(optionDAO.get(Long.parseLong(id)));
+                }
             for (Option option : optionList) {
                 for (Option requiredOption : option.getRequiredOptions()) {
                     if (!optionList.contains(requiredOption)) {
@@ -62,14 +55,9 @@ public class TariffServiceImpl implements TariffService {
                 tariff.addOptions(option);
             }
             tariffDAO.update(tariff);
-            entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while creating tariff: " + tariff);
             throw new TariffException("Error while creating tariff: " + tariff.getTitle());
-        } finally {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
         }
     }
 
@@ -98,27 +86,18 @@ public class TariffServiceImpl implements TariffService {
     @Override
     public void updateTariff(Tariff tariff) throws TariffException {
         logger.info("Updating tariff");
-        EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
-            entityTransaction.begin();
             tariffDAO.update(tariff);
-            entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while updating tariff");
             throw new TariffException("Error while updating tariff");
-        } finally {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
         }
     }
 
     @Override
     public void deleteTariff(Tariff tariff) throws TariffException {
         logger.info("Deleting tariff");
-        EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
-            entityTransaction.begin();
             for (Contract contract : contractDAO.getAll()) {
                 if (contract.getTariff().equals(tariff)) {
                     logger.error("Unable to delete tariff: " + tariff + ". There is a contract: " + contract + " that uses this tariff.");
@@ -126,22 +105,15 @@ public class TariffServiceImpl implements TariffService {
                 }
             }
             tariffDAO.delete(tariff);
-            entityTransaction.commit();
         } catch (DAOException e) {
             logger.error("Error while deleting tariff");
             throw new TariffException("Error while deleting tariff");
-        } finally {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
         }
     }
 
     @Override
     public void addOptionForTariff(String tariff_id, String[] optionId) throws OptionException {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
-            entityTransaction.begin();
             Tariff tariff = tariffDAO.get(Long.parseLong(tariff_id));
             List<Option> optionList = new ArrayList<Option>();
             for (String id : optionId) {
@@ -158,21 +130,14 @@ public class TariffServiceImpl implements TariffService {
                 tariff.addOptions(option);
             }
             tariffDAO.update(tariff);
-            entityTransaction.commit();
         } catch (DAOException e) {
             throw new OptionException("Error while adding option to tariff");
-        } finally {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
         }
     }
 
     @Override
     public void deleteTariffOption(String tariff_id, String option_id) throws OptionException {
-        EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
-            entityTransaction.begin();
             Tariff tariff = tariffDAO.get(Long.parseLong(tariff_id));
             Option option = optionDAO.get(Long.parseLong(option_id));
 
@@ -183,13 +148,8 @@ public class TariffServiceImpl implements TariffService {
             }
             tariff.getOptions().remove(option);
             tariffDAO.update(tariff);
-            entityTransaction.commit();
         } catch (DAOException e) {
             throw new OptionException("Error while deletin tariff option");
-        } finally {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
         }
     }
 

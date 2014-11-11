@@ -66,7 +66,7 @@ public interface OptionService {
      * @param ids new options ids.
      * @throws OptionException if there are exceptions while getting options.
      */
-    public void manageIncompatibleOptions(long id, String[] ids) throws OptionException;
+    public void manageIncompatibleOptions(long id, long[] ids) throws OptionException;
     /**
      * Set required options to option with given id.
      *
@@ -74,5 +74,5 @@ public interface OptionService {
      * @param ids new options ids.
      * @throws OptionException if there are exceptions while getting options.
      */
-    public void manageRequiredOptions(long id, String[] ids) throws OptionException;
+    public void manageRequiredOptions(long id, long[] ids) throws OptionException;
 }
