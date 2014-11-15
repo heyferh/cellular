@@ -1,11 +1,27 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page isELIgnored="false" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Add contract</title>
+    <script>
+        function deleteTariff(id) {
+            $.ajax({
+                url: 'delete?id=' + id,
+                type: 'GET',
+                success: function (data) {
+                    if ($.isEmptyObject(data)) {
+                        location.href = "all";
+                    } else {
+                        $('#deleteError').prepend(data).show();
+                    }
+
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 <jsp:include page="navigation.jsp"></jsp:include>
@@ -23,6 +39,8 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
+                        <div id="deleteError" class="alert alert-danger alert-dismissable" style="display: none">
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
@@ -36,11 +54,15 @@
                                 <c:forEach var="tariff" items="${tariffList}">
                                     <tr>
                                         <td>
-                                            <a href="${pageContext.request.contextPath}/tariff/delete?id=${tariff.id}">
-                                                <i id="deleteTariff" class="fa fa-times fa-fw"></i>
+                                            <a class="deleteTariff" onclick="deleteTariff(${tariff.id})">
+                                                <i class="fa fa-times fa-fw"></i>
                                             </a>
                                         </td>
-                                        <td>${tariff.title}</td>
+                                        <td>
+                                            <a href="edit?id=${tariff.id}">
+                                                    ${tariff.title}
+                                            </a>
+                                        </td>
                                         <td>${tariff.cost}</td>
                                     </tr>
                                 </c:forEach>
@@ -59,15 +81,21 @@
                     <div class="panel-heading">
                         Add new tariff
                     </div>
-                    <form action="${pageContext.request.contextPath}/tariff/add" method="post">
+                    <form:form action="${pageContext.request.contextPath}/tariff/add" commandName="tariffBean">
                         <div class="panel-body">
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Forms</label>
-                                    <input name="title" type="text" class="form-control" placeholder="Enter title">
+                                    Title:
+                                    <form:input path="title" name="title" type="text" class="form-control"
+                                                placeholder="Enter title"/>
+                                    <form:errors path="title" cssClass="error"/>
                                 </div>
                                 <div class="form-group">
-                                    <input name="cost" type="number" class="form-control" placeholder="Enter cost">
+                                    Cost:
+                                    <form:input path="cost" name="cost" type="number" class="form-control"
+                                                placeholder="Enter cost"/>
+                                    <form:errors path="cost" cssClass="error"/>
                                 </div>
                                 <input type="submit" class="btn btn-primary" value="OK">
                             </div>
@@ -85,7 +113,7 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </form:form>
                 </div>
 
             </div>

@@ -3,10 +3,7 @@ package ru.tsystems.javaschool.cellular.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
@@ -29,7 +26,6 @@ public class OptionController {
         ModelAndView modelAndView = new ModelAndView("all_options");
         try {
             modelAndView.addObject("optionList", optionService.getAllOptions());
-            modelAndView.addObject("optionBean", new Option());
         } catch (OptionException e) {
             e.printStackTrace();
         }
@@ -58,11 +54,36 @@ public class OptionController {
     }
 
     @RequestMapping(value = "delete", method = RequestMethod.GET)
-    public ModelAndView deleteOption(@RequestParam("id") long id) {
-        ModelAndView modelAndView = new ModelAndView("all_options");
-        modelAndView.addObject("optionBean", new Option());
+    @ResponseBody
+    public String deleteOption(@RequestParam("id") long id) {
         try {
             optionService.deleteOption(optionService.getOptionById(id));
+        } catch (OptionException e) {
+            return e.getMessage();
+        }
+        return "";
+    }
+
+    @RequestMapping(value = "edit", method = RequestMethod.GET)
+    public ModelAndView editOption(@RequestParam("id") long id) {
+        ModelAndView modelAndView = new ModelAndView("edit_options");
+        try {
+            modelAndView.addObject("optionList", optionService.getAllOptions());
+            modelAndView.addObject("option", optionService.getOptionById(id));
+        } catch (OptionException e) {
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "manage", method = RequestMethod.POST)
+    public ModelAndView manageOptions(@RequestParam("option_id") long id,
+                                      @RequestParam(value = "required", required = false) long[] requiredOptions,
+                                      @RequestParam(value = "incompatible", required = false) long[] incompatibleOptions) {
+        ModelAndView modelAndView = new ModelAndView("all_options");
+        try {
+            optionService.manageIncompatibleOptions(id, incompatibleOptions);
+            optionService.manageRequiredOptions(id, requiredOptions);
             modelAndView.addObject("optionList", optionService.getAllOptions());
         } catch (OptionException e) {
             e.printStackTrace();

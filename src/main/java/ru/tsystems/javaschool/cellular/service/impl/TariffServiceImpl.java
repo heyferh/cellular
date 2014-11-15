@@ -34,15 +34,13 @@ public class TariffServiceImpl implements TariffService {
     private OptionDAO optionDAO;
 
     @Override
-    public void createTariff(Tariff tariff, String[] optionId) throws TariffException {
+    public void createTariff(Tariff tariff, long[] optionId) throws TariffException {
         logger.info("Creating tariff: " + tariff);
         try {
-            tariffDAO.create(tariff);
-
             List<Option> optionList = new ArrayList<Option>();
             if (optionId != null)
-                for (String id : optionId) {
-                    optionList.add(optionDAO.get(Long.parseLong(id)));
+                for (long id : optionId) {
+                    optionList.add(optionDAO.get(id));
                 }
             for (Option option : optionList) {
                 for (Option requiredOption : option.getRequiredOptions()) {
@@ -51,6 +49,7 @@ public class TariffServiceImpl implements TariffService {
                     }
                 }
             }
+            tariffDAO.create(tariff);
             for (Option option : optionList) {
                 tariff.addOptions(option);
             }
@@ -112,12 +111,12 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
-    public void addOptionForTariff(String tariff_id, String[] optionId) throws OptionException {
+    public void addOptionForTariff(long tariff_id, long[] optionId) throws OptionException {
         try {
-            Tariff tariff = tariffDAO.get(Long.parseLong(tariff_id));
+            Tariff tariff = tariffDAO.get(tariff_id);
             List<Option> optionList = new ArrayList<Option>();
-            for (String id : optionId) {
-                optionList.add(optionDAO.get(Long.parseLong(id)));
+            for (long id : optionId) {
+                optionList.add(optionDAO.get(id));
             }
             for (Option option : optionList) {
                 for (Option requiredOption : option.getRequiredOptions()) {
@@ -136,10 +135,10 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
-    public void deleteTariffOption(String tariff_id, String option_id) throws OptionException {
+    public void deleteTariffOption(long tariff_id, long option_id) throws OptionException {
         try {
-            Tariff tariff = tariffDAO.get(Long.parseLong(tariff_id));
-            Option option = optionDAO.get(Long.parseLong(option_id));
+            Tariff tariff = tariffDAO.get(tariff_id);
+            Option option = optionDAO.get(option_id);
 
             for (Option srcOption : tariff.getOptions()) {
                 if (srcOption.getRequiredOptions().contains(option)) {

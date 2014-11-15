@@ -14,6 +14,9 @@
     <mvc:annotation-driven/>
     <mvc:resources mapping="/app/**" location="/app/"/>
 
+    <bean id="tariffBean" scope="session" class="ru.tsystems.javaschool.cellular.entity.Tariff"></bean>
+    <bean id="optionBean" scope="session" class="ru.tsystems.javaschool.cellular.entity.Option"></bean>
+
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
         <property name="persistenceUnitName" value="PU"/>
     </bean>
@@ -29,6 +32,7 @@
         <property name="suffix">
             <value>.jsp</value>
         </property>
+        <property name="exposeContextBeansAsAttributes" value="true" />
     </bean>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>

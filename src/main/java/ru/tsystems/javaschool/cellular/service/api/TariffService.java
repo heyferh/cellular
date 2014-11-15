@@ -17,7 +17,7 @@ public interface TariffService {
      * @param optionId options which are depend on this tariff.
      * @throws TariffException if options were choosen incorrect.
      */
-    public void createTariff(Tariff tariff, String[] optionId) throws TariffException;
+    public void createTariff(Tariff tariff, long[] optionId) throws TariffException;
 
     /**
      * Gets tariff by given id.
@@ -59,7 +59,7 @@ public interface TariffService {
      * @param optionId  array of options.
      * @throws OptionException if there are errors with requirements or incompatibilities.
      */
-    public void addOptionForTariff(String tariff_id, String[] optionId) throws OptionException;
+    public void addOptionForTariff(long tariff_id, long[] optionId) throws OptionException;
 
     /**
      * Delete tariff option.
@@ -68,6 +68,6 @@ public interface TariffService {
      * @param option_id option to remove.
      * @throws OptionException if there are errors with requirements or incompatibilities.
      */
-    public void deleteTariffOption(String tariff_id, String option_id) throws OptionException;
+    public void deleteTariffOption(long tariff_id, long option_id) throws OptionException;
 
 }

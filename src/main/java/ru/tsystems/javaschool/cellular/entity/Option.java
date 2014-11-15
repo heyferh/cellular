@@ -1,8 +1,10 @@
 package ru.tsystems.javaschool.cellular.entity;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -22,10 +24,13 @@ public class Option implements Serializable {
     private long id;
 
     @NotEmpty(message = "Title must not be empty")
+    @Length(max = 32, message = "Max length is 32")
     private String title;
-    @Min(value = 0, message = "Most be non-negative integer value")
+
+    @Min(value = 0, message = "Must be non-negative integer value")
     private int cost;
-    @Min(value = 0, message = "Most be non-negative integer value")
+
+    @Min(value = 0, message = "Must be non-negative integer value")
     private int activationCost;
 
     @ManyToMany(fetch = FetchType.EAGER)

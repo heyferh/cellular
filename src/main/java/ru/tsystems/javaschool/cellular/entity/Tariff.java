@@ -1,6 +1,10 @@
 package ru.tsystems.javaschool.cellular.entity;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +22,11 @@ public class Tariff implements Serializable {
     @Column(name = "tariff_id")
     private long id;
 
+    @NotEmpty(message = "Title must not be empty")
+    @Length(max = 32, message = "Max length is 32")
     private String title;
+
+    @Min(value = 0, message = "Must be non-negative integer value")
     private int cost;
 
     @ManyToMany(fetch = FetchType.EAGER)

@@ -81,6 +81,17 @@ public class OptionServiceImpl implements OptionService {
                     throw new OptionException("Unable to delete option: " + option.getTitle() + ". There is tariff: " + tariff.getTitle() + " using this option");
                 }
             }
+            for (Option srcOption : optionDAO.getAll()) {
+                if (srcOption.getRequiredOptions().contains(option)) {
+                    logger.error("Unable to delete option: " + option.getTitle() + ". It is required for option: " + srcOption.getTitle());
+                    throw new OptionException("Unable to delete option: " + option.getTitle() + ". It is required for option: " + srcOption.getTitle());
+                }
+            }
+            for (Option srcOption : optionDAO.getAll()) {
+                if (srcOption.getIncompatibleOptions().contains(option)) {
+                    srcOption.getIncompatibleOptions().remove(option);
+                }
+            }
             optionDAO.delete(option);
         } catch (DAOException e) {
             logger.error("Unable to delete option: " + option);
