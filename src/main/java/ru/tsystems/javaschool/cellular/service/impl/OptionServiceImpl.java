@@ -4,12 +4,15 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.tsystems.javaschool.cellular.dao.api.ContractDAO;
 import ru.tsystems.javaschool.cellular.dao.api.OptionDAO;
 import ru.tsystems.javaschool.cellular.dao.api.TariffDAO;
+import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
+import ru.tsystems.javaschool.cellular.service.api.ContractService;
 import ru.tsystems.javaschool.cellular.service.api.OptionService;
 
 import java.util.List;
@@ -23,7 +26,11 @@ public class OptionServiceImpl implements OptionService {
     private final Logger logger = Logger.getLogger(OptionService.class);
 
     @Autowired
+    ContractDAO contractDAO;
+
+    @Autowired
     private OptionDAO optionDAO;
+
     @Autowired
     private TariffDAO tariffDAO;
 
@@ -79,6 +86,12 @@ public class OptionServiceImpl implements OptionService {
                 if (tariff.getOptions().contains(option)) {
                     logger.error("Unable to delete option: " + option.getTitle() + ". There is tariff: " + tariff.getTitle() + " using this option");
                     throw new OptionException("Unable to delete option: " + option.getTitle() + ". There is tariff: " + tariff.getTitle() + " using this option");
+                }
+            }
+            for (Contract contract : contractDAO.getAll()) {
+                if (contract.getOptions().contains(option)) {
+                    logger.error("Unable to delete option: " + option.getTitle() + ". There is contract: " + contract.getPhoneNumber() + " using this option");
+                    throw new OptionException("Unable to delete option: " + option.getTitle() + ". There is contract: " + contract.getPhoneNumber() + " using this option");
                 }
             }
             for (Option srcOption : optionDAO.getAll()) {

@@ -52,12 +52,43 @@
             font-weight: bold;
         }
     </style>
+    <script>
+        function getOptions(tariff_id) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/option/get_options?tariff_id=' + tariff_id,
+                type: 'GET',
+                success: function (data) {
+                    $(".options").empty();
+                    data.forEach(function (elem, index, array) {
+                        $(".options").append(
+                                        "<div><label>" +
+                                        "<input name='option_id' type='checkbox' value=" + elem.id + ">" + elem.title +
+                                        ". Cost: " + elem.cost + ". Activation cost: " + elem.activationCost + "" +
+                                        "</label></div>");
+                    })
+
+                }
+            });
+        }
+        function checkNumber() {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/contract/check_number',
+                type: 'POST',
+                data: {'number': $("#phoneNumber").val()},
+                success: function (data) {
+                    if (!$.isEmptyObject(data)) {
+                        $("#phoneError").text(data);
+                    } else {
+                        $("#phoneError").empty();
+                    }
+                }
+            });
+        }
+    </script>
 </head>
+
 <body>
-
 <div id="wrapper">
-
-    <!-- Navigation -->
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -66,14 +97,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html">eCare administration panel</a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/contract/all">logo.png</a>
         </div>
         <!-- /.navbar-header -->
 
         <ul class="nav navbar-top-links navbar-right">
             <li>Username
             </li>
-            <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+            <li><a href="${pageContext.request.contextPath}/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
             </li>
         </ul>
         <!-- /.navbar-top-links -->
@@ -82,34 +113,24 @@
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="index.html"><i class="fa fa-plus-circle fa-fw"></i> Create contract</a>
+                        <a href="${pageContext.request.contextPath}/contract/new">
+                            <i class="fa fa-plus-circle fa-fw"></i> Create contract
+                        </a>
                     </li>
                     <li>
-                        <a href="tables.html"><i class="fa fa-navicon fa-fw"></i> All contracts</a>
+                        <a href="${pageContext.request.contextPath}/contract/all">
+                            <i class="fa fa-navicon fa-fw"></i> Contracts
+                        </a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Tariffs<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="flot.html">All tariffs</a>
-                            </li>
-                            <li>
-                                <a href="morris.html">Manage tariff options</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
+                        <a href="${pageContext.request.contextPath}/tariff/all">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Tariffs
+                        </a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-gears fa-fw"></i> Options<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="flot.html">All options</a>
-                            </li>
-                            <li>
-                                <a href="morris.html">Manage options</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
+                        <a href="${pageContext.request.contextPath}/option/all">
+                            <i class="fa fa-gears fa-fw"></i> Options
+                        </a>
                     </li>
                 </ul>
             </div>

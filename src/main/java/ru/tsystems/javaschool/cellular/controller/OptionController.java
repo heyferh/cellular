@@ -10,6 +10,8 @@ import ru.tsystems.javaschool.cellular.exception.OptionException;
 import ru.tsystems.javaschool.cellular.service.api.OptionService;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ferh on 09.11.14.
@@ -89,5 +91,19 @@ public class OptionController {
             e.printStackTrace();
         }
         return modelAndView;
+    }
+
+    @RequestMapping(value = "get_options", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Option> getOptionsForTariff(@RequestParam("tariff_id") long id) {
+        try {
+            List<Option> optionList = new ArrayList<Option>();
+            for (Option option : optionService.getOptionsForTariff(id)) {
+                optionList.add(new Option(option.getId(), option.getTitle(), option.getCost(), option.getActivationCost()));
+            }
+            return optionList;
+        } catch (OptionException e) {
+            return null;
+        }
     }
 }

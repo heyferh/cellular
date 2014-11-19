@@ -138,15 +138,18 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public void changeTariff(Contract contract, Tariff tariff) throws ContractException {
+    public void changeTariff(Contract contract, Tariff tariff, List<Option> options) throws ContractException, OptionException {
         if (contract.getBalance() < tariff.getCost()) {
-            logger.error("Not enough money to connect: " + tariff + " to contract: " + contract);
+            logger.error("Not enough money to add: " + tariff + " to contract: " + contract);
             throw new ContractException("Not enough money");
         }
         logger.info("Changing tarriff to: " + tariff);
         contract.setBalance(contract.getBalance() - tariff.getCost());
         contract.setTariff(tariff);
         contract.getOptions().clear();
+        for (Option option : options) {
+            enableOption(contract, option);
+        }
     }
 
     @Override
@@ -214,6 +217,38 @@ public class ContractServiceImpl implements ContractService {
         } catch (DAOException e) {
             logger.error("Unable to add contract");
             throw new ContractException("Unable to add contract");
+        }
+    }
+
+    @Override
+    public void addOneMoreContract(Contract contract, Client client, long tariffId, long[] optionIds) throws ContractException, OptionException {
+        logger.info("Adding new contract: " + contract);
+        try {
+            if (contractDAO.checkIfNumberExists(contract.getPhoneNumber())) {
+                logger.error("Number: " + contract.getPhoneNumber() + " already exists");
+                throw new ContractException("Number: " + contract.getPhoneNumber() + " already exists");
+            }
+            contractDAO.create(contract);
+            client.addContract(contract);
+            contract.setClient(client);
+            contract.setTariff(tariffDAO.get(tariffId));
+            for (long id : optionIds) {
+                logger.info("Enabling option: " + id);
+                enableOption(contract, optionDAO.get(id));
+            }
+        } catch (DAOException e) {
+            logger.error("Unable to add contract");
+            throw new ContractException("Unable to add contract");
+        }
+
+    }
+
+    @Override
+    public boolean checkIfNumberExists(String number) throws ContractException {
+        try {
+            return contractDAO.checkIfNumberExists(number);
+        } catch (DAOException e) {
+            throw new ContractException("Unable to check.");
         }
     }
 

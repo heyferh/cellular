@@ -87,14 +87,7 @@ public interface ContractService {
      */
     public void unblock(Contract contract) throws ContractException;
 
-    /**
-     * Changing given contracts current tariff.
-     *
-     * @param contract given contract.
-     * @param tariff   new tariff.
-     * @throws ContractException if there's no money to pay for tariff.
-     */
-    public void changeTariff(Contract contract, Tariff tariff) throws ContractException;
+    public void changeTariff(Contract contract, Tariff tariff, List<Option> options) throws ContractException, OptionException;
 
     /**
      * Disable option on given contract.
@@ -127,4 +120,7 @@ public interface ContractService {
      */
     public void addContract(Contract contract, Client client, long tariffId, long[] optionIds) throws ContractException, OptionException;
 
+    public void addOneMoreContract(Contract contract, Client client, long tariffId, long[] optionIds) throws ContractException, OptionException;
+
+    public boolean checkIfNumberExists(String number) throws ContractException;
 }

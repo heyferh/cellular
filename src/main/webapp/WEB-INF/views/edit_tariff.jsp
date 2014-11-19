@@ -67,6 +67,7 @@
                                             <th></th>
                                             <th>Title</th>
                                             <th>Cost</th>
+                                            <th>Activation Cost</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -79,6 +80,7 @@
                                                 </td>
                                                 <td>${option.title}</td>
                                                 <td>${option.cost}</td>
+                                                <td>${option.activationCost}</td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>
@@ -96,6 +98,7 @@
                                             <th></th>
                                             <th>Title</th>
                                             <th>Cost</th>
+                                            <th>Activation cost</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -108,6 +111,7 @@
                                                 </td>
                                                 <td>${option.title}</td>
                                                 <td>${option.cost}</td>
+                                                <td>${option.activationCost}</td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>

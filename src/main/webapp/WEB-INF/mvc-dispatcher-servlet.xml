@@ -16,6 +16,7 @@
 
     <bean id="tariffBean" scope="session" class="ru.tsystems.javaschool.cellular.entity.Tariff"></bean>
     <bean id="optionBean" scope="session" class="ru.tsystems.javaschool.cellular.entity.Option"></bean>
+    <bean id="clientBean" scope="session" class="ru.tsystems.javaschool.cellular.entity.Client"></bean>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
         <property name="persistenceUnitName" value="PU"/>

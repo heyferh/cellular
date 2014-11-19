@@ -137,7 +137,7 @@ public class Contract implements Serializable {
 
     @Override
     public int hashCode() {
-        return phoneNumber.hashCode();
+        return (int) (id ^ (id >>> 32));
     }
 }
 

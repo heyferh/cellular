@@ -50,7 +50,8 @@ public class Option implements Serializable {
     public Option() {
     }
 
-    public Option(String title, int cost, int activationCost) {
+    public Option(long id, String title, int cost, int activationCost) {
+        this.id = id;
         this.title = title;
         this.cost = cost;
         this.activationCost = activationCost;

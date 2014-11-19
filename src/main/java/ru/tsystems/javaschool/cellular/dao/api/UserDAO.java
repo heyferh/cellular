@@ -6,7 +6,7 @@ import ru.tsystems.javaschool.cellular.exception.DAOException;
 /**
  * Created by ferh on 17.10.14.
  */
-public interface UserDAO {
+public interface UserDAO extends CommonDAO<User>{
     /**
      * Gets User object by given email.
      *
