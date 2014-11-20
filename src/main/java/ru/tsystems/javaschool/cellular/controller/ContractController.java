@@ -221,7 +221,7 @@ public class ContractController {
     public String changeTariff(@RequestParam("contract_id") long contract_id,
                                @RequestParam("tariff_id") long tariff_id,
                                @RequestParam("option_id") long[] options) {
-        List<Option> optionList = new ArrayList<>();
+        List<Option> optionList = new ArrayList<Option>();
         try {
             for (long id : options) {
                 optionList.add(optionService.getOptionById(id));

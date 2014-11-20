@@ -251,5 +251,4 @@ public class ContractServiceImpl implements ContractService {
             throw new ContractException("Unable to check.");
         }
     }
-
 }
