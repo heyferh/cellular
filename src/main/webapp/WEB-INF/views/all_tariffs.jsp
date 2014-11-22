@@ -81,7 +81,7 @@
                     <div class="panel-heading">
                         Add new tariff
                     </div>
-                    <form:form action="${pageContext.request.contextPath}/tariff/add" commandName="tariffBean">
+                    <form:form action="${pageContext.request.contextPath}/admin/tariff/add" commandName="tariffBean">
                         <div class="panel-body">
                             <div class="col-lg-6">
                                 <div class="form-group">

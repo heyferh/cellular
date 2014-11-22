@@ -61,7 +61,7 @@
                                             </c:otherwise>
                                         </c:choose>
                                         <td>
-                                            <a href="${pageContext.request.contextPath}/contract/add_another?client_id=${client.id}">
+                                            <a href="${pageContext.request.contextPath}/admin/contract/add_another?client_id=${client.id}">
                                                 <i class="fa fa-plus fa-fw"></i>
                                             </a>
                                         </td>

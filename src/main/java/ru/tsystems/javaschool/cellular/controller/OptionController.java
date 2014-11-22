@@ -17,7 +17,7 @@ import java.util.List;
  * Created by ferh on 09.11.14.
  */
 @Controller
-@RequestMapping(value = "option")
+@RequestMapping(value = "admin/option")
 public class OptionController {
 
     @Autowired

@@ -33,8 +33,9 @@
         <property name="suffix">
             <value>.jsp</value>
         </property>
-        <property name="exposeContextBeansAsAttributes" value="true" />
+        <property name="exposeContextBeansAsAttributes" value="true"/>
     </bean>
+
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>

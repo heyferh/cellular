@@ -19,7 +19,7 @@ import java.util.List;
  * Created by ferh on 09.11.14.
  */
 @Controller
-@RequestMapping(value = "tariff")
+@RequestMapping(value = "admin/tariff")
 public class TariffController {
 
     @Autowired

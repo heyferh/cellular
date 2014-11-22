@@ -12,17 +12,16 @@ import javax.persistence.*;
 @Entity
 @Table(name = "USERS")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class User {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected long id;
 
-    @Email()
-    @NotEmpty(message = "Email must not be empty")
+    @NotEmpty
     @Length(max = 32, message = "Max length is 64")
     protected String email;
 
-    @NotEmpty(message = "Password must not be empty")
+    @NotEmpty
     @Length(min = 6, max = 32, message = "Min length - 6, Max - 32")
     protected String password;
 

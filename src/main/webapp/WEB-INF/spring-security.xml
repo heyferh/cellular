@@ -5,6 +5,8 @@
              xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <beans:import resource="mvc-dispatcher-servlet.xml"></beans:import>
+
     <!-- Configuring RoleVoter bean to use custom access roles, by default roles
         should be in the form ROLE_{XXX} -->
     <beans:bean id="roleVoter"
@@ -22,9 +24,9 @@
           access-decision-manager-ref="accessDecisionManager">
         <intercept-url pattern="/admin/**" access="Admin"/>
         <intercept-url pattern="/user/**" access="User"/>
-        <form-login login-page="/login" authentication-failure-url="/denied"
+        <form-login login-page="/login" authentication-failure-url="/auth-failure"
                     username-parameter="email" password-parameter="password"
-                    default-target-url="/home"/>
+                    default-target-url="/main-controller"/>
         <logout invalidate-session="true" logout-success-url="/login"
                 logout-url="/j_spring_security_logout"/>
         <access-denied-handler error-page="/denied"/>
@@ -42,14 +44,4 @@
     <beans:bean id="userDetailsService"
                 class="ru.tsystems.javaschool.cellular.service.impl.AuthorizationServiceImpl"/>
 
-    <!-- MySQL DB DataSource -->
-    <beans:bean id="dataSource"
-                class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-
-        <beans:property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <beans:property name="url"
-                        value="jdbc:mysql://localhost:3306/cellular"/>
-        <beans:property name="username" value="ferh"/>
-        <beans:property name="password" value="ferh"/>
-    </beans:bean>
 </beans:beans>

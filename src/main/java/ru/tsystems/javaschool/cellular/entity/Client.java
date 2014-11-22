@@ -1,10 +1,12 @@
 package ru.tsystems.javaschool.cellular.entity;
 
+import com.sun.javafx.beans.annotations.NonNull;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import java.io.Serializable;
 import java.util.Date;
@@ -19,23 +21,24 @@ import java.util.Set;
 @NamedQuery(name = "Client.getAll", query = "SELECT c FROM Client c")
 public class Client extends User implements Serializable {
 
-    @NotEmpty(message = "must not be empty")
+    @NotEmpty
     @Length(max = 32, message = "Max length is 32")
     private String firstName;
 
-    @NotEmpty(message = "must not be empty")
+    @NotEmpty
     @Length(max = 32, message = "Max length is 32")
     private String lastName;
 
-    @Past(message = "must not be in future")
+    @NotNull
+    @Past(message = "may not be in future")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dayOfBirth;
 
-    @NotEmpty(message = "must not be empty")
+    @NotEmpty
     @Length(max = 32, message = "Max length is 32")
     private String idCard;
 
-    @NotEmpty(message = "must not be empty")
+    @NotEmpty
     @Length(max = 32, message = "Max length is 128")
     private String address;
 

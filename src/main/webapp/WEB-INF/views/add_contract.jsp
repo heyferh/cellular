@@ -6,7 +6,7 @@
     <script>
         function getOptions(tariff_id) {
             $.ajax({
-                url: '${pageContext.request.contextPath}/option/get_options?tariff_id=' + tariff_id,
+                url: '${pageContext.request.contextPath}/admin/option/get_options?tariff_id=' + tariff_id,
                 type: 'GET',
                 success: function (data) {
                     $(".options").empty();
@@ -23,7 +23,7 @@
         }
         function checkNumber() {
             $.ajax({
-                url: '${pageContext.request.contextPath}/contract/check_number',
+                url: '${pageContext.request.contextPath}/admin/contract/check_number',
                 type: 'POST',
                 data: {'number': $("#phoneNumber").val()},
                 success: function (data) {

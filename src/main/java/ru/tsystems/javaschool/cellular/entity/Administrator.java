@@ -1,6 +1,7 @@
 package ru.tsystems.javaschool.cellular.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**

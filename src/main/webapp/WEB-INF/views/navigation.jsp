@@ -55,7 +55,7 @@
     <script>
         function getOptions(tariff_id) {
             $.ajax({
-                url: '${pageContext.request.contextPath}/option/get_options?tariff_id=' + tariff_id,
+                url: '${pageContext.request.contextPath}/admin/option/get_options?tariff_id=' + tariff_id,
                 type: 'GET',
                 success: function (data) {
                     $(".options").empty();
@@ -72,7 +72,7 @@
         }
         function checkNumber() {
             $.ajax({
-                url: '${pageContext.request.contextPath}/contract/check_number',
+                url: '${pageContext.request.contextPath}/admin/contract/check_number',
                 type: 'POST',
                 data: {'number': $("#phoneNumber").val()},
                 success: function (data) {
@@ -97,14 +97,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="${pageContext.request.contextPath}/contract/all">logo.png</a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/admin/contract/all">logo.png</a>
         </div>
         <!-- /.navbar-header -->
 
         <ul class="nav navbar-top-links navbar-right">
-            <li>Username
+            <li>${pageContext.request.userPrincipal.name}
             </li>
-            <li><a href="${pageContext.request.contextPath}/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+            <li><a href="${pageContext.request.contextPath}/j_spring_security_logout"><i
+                    class="fa fa-sign-out fa-fw"></i> Logout</a>
             </li>
         </ul>
         <!-- /.navbar-top-links -->
@@ -113,22 +114,22 @@
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="${pageContext.request.contextPath}/contract/new">
+                        <a href="${pageContext.request.contextPath}/admin/contract/new">
                             <i class="fa fa-plus-circle fa-fw"></i> Create contract
                         </a>
                     </li>
                     <li>
-                        <a href="${pageContext.request.contextPath}/contract/all">
+                        <a href="${pageContext.request.contextPath}/admin/contract/all">
                             <i class="fa fa-navicon fa-fw"></i> Contracts
                         </a>
                     </li>
                     <li>
-                        <a href="${pageContext.request.contextPath}/tariff/all">
+                        <a href="${pageContext.request.contextPath}/admin/tariff/all">
                             <i class="fa fa-bar-chart-o fa-fw"></i> Tariffs
                         </a>
                     </li>
                     <li>
-                        <a href="${pageContext.request.contextPath}/option/all">
+                        <a href="${pageContext.request.contextPath}/admin/option/all">
                             <i class="fa fa-gears fa-fw"></i> Options
                         </a>
                     </li>

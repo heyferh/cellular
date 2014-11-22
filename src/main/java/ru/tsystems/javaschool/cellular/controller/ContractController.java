@@ -1,6 +1,7 @@
 package ru.tsystems.javaschool.cellular.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ import java.util.Set;
  * Created by ferh on 16.11.14.
  */
 @Controller
-@RequestMapping(value = "contract")
+@RequestMapping(value = "admin/contract")
 public class ContractController {
     @Autowired
     ContractService contractService;
