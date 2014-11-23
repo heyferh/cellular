@@ -22,8 +22,6 @@
 
     <http authentication-manager-ref="dao-auth"
           access-decision-manager-ref="accessDecisionManager">
-        <!--<intercept-url pattern="/admin/**" access="Admin"/>-->
-        <!--<intercept-url pattern="/user/**" access="User"/>-->
         <form-login login-page="/login" authentication-failure-url="/auth-failure"
                     username-parameter="email" password-parameter="password"
                     default-target-url="/home"/>
@@ -38,8 +36,14 @@
 
     <authentication-manager id="dao-auth">
         <authentication-provider user-service-ref="userDetailsService">
+            <password-encoder ref="encoder"/>
         </authentication-provider>
     </authentication-manager>
+
+    <beans:bean id="encoder"
+                class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+        <beans:constructor-arg name="strength" value="11" />
+    </beans:bean>
 
     <beans:bean id="userDetailsService"
                 class="ru.tsystems.javaschool.cellular.service.impl.AuthorizationServiceImpl"/>

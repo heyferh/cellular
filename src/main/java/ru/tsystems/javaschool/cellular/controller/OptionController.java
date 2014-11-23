@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,9 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "option")
 public class OptionController {
+
+    @Autowired
+    private Logger logger;
 
     @Autowired
     OptionService optionService;
@@ -75,7 +79,9 @@ public class OptionController {
     public ModelAndView editOption(@RequestParam("id") long id) {
         ModelAndView modelAndView = new ModelAndView("edit_options");
         try {
-            modelAndView.addObject("optionList", optionService.getAllOptions());
+            List<Option> optionList = optionService.getAllOptions();
+            optionList.remove(optionService.getOptionById(id));
+            modelAndView.addObject("optionList", optionList);
             modelAndView.addObject("option", optionService.getOptionById(id));
         } catch (OptionException e) {
             e.printStackTrace();
@@ -99,7 +105,7 @@ public class OptionController {
         return modelAndView;
     }
 
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "get_options", method = RequestMethod.GET)
     @ResponseBody
     public List<Option> getOptionsForTariff(@RequestParam("tariff_id") long id) {

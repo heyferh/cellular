@@ -20,8 +20,8 @@ import ru.tsystems.javaschool.cellular.service.api.AuthorizationService;
 @Transactional
 @Service("AuthorizationService")
 public class AuthorizationServiceImpl implements AuthorizationService, UserDetailsService {
-    private final Logger logger = Logger.getLogger(AuthorizationService.class);
-
+    @Autowired
+    private Logger logger;
     @Autowired
     UserDAO userDAO;
 

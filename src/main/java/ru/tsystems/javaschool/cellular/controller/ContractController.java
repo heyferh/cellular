@@ -1,7 +1,9 @@
 package ru.tsystems.javaschool.cellular.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,10 @@ import java.util.Set;
 @Controller
 @RequestMapping(value = "contract")
 public class ContractController {
+
+    @Autowired
+    private Logger logger;
+
     @Autowired
     ContractService contractService;
 
@@ -63,14 +69,18 @@ public class ContractController {
     public ModelAndView addNewContract(@Valid @ModelAttribute("clientBean") Client client,
                                        BindingResult result,
                                        @RequestParam("phoneNumber") String phoneNumber,
-                                       @RequestParam("tariff_id") long tariff_id,
-                                       @RequestParam("option_id") long[] option_id) {
+                                       @RequestParam(value = "tariff_id") long tariff_id,
+                                       @RequestParam(value = "option_id") long[] option_id) {
         ModelAndView modelAndView = new ModelAndView("create_contract");
         try {
             if (result.hasErrors() || contractService.checkIfNumberExists(phoneNumber)) {
                 modelAndView.addObject("tariffList", tariffService.getAllTariffs());
+                modelAndView.addObject("phoneNumberError", "is already exist");
                 return modelAndView;
             }
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String hashedPassword = passwordEncoder.encode(client.getPassword());
+            client.setPassword(hashedPassword);
             contractService.addContract(new Contract(phoneNumber, false, false), client, tariff_id, option_id);
         } catch (ContractException e) {
             e.printStackTrace();

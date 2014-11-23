@@ -7,6 +7,14 @@
 
 <head>
     <script>
+        function addTariff() {
+            if ($("#cost").val().length == 0) {
+                $("#costError").html("may not be empty").show();
+            }
+            if ($("#cost").val().length > 0) {
+                this.submit();
+            }
+        }
         function deleteTariff(id) {
             $.ajax({
                 url: 'delete?id=' + id,
@@ -81,21 +89,22 @@
                     <div class="panel-heading">
                         Add new tariff
                     </div>
-                    <form:form action="${pageContext.request.contextPath}/tariff/add" commandName="tariffBean">
+                    <form:form action="${pageContext.request.contextPath}/tariff/add" commandName="tariffBean"
+                               onsubmit="addTariff();return false;">
                         <div class="panel-body">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Forms</label>
                                     Title:
+                                    <form:errors path="title" cssClass="error"/>
                                     <form:input path="title" name="title" type="text" class="form-control"
                                                 placeholder="Enter title"/>
-                                    <form:errors path="title" cssClass="error"/>
                                 </div>
                                 <div class="form-group">
                                     Cost:
+                                    <span id="costError" class="error" style="display: none"></span>
+                                    <form:errors path="cost" cssClass="error"/>
                                     <form:input path="cost" name="cost" type="number" class="form-control"
                                                 placeholder="Enter cost"/>
-                                    <form:errors path="cost" cssClass="error"/>
                                 </div>
                                 <input type="submit" class="btn btn-primary" value="OK">
                             </div>

@@ -7,6 +7,18 @@
 
 <head>
     <script>
+        function addOption() {
+            if ($("#cost").val().length == 0) {
+                $("#costError").html("may not be empty").show();
+            }
+            if ($("#activationCost").val().length == 0) {
+                $("#activationCostError").html("may not be empty").show();
+            }
+            if ($("#cost").val().length > 0 &&
+                    $("#activationCost").val().length > 0) {
+                this.submit();
+            }
+        }
         function deleteOption(id) {
             $.ajax({
                 url: 'delete?id=' + id,
@@ -88,30 +100,33 @@
                         Add new option
                     </div>
                     <!-- /.panel-heading -->
-                    <form:form action="${pageContext.request.contextPath}/option/all" commandName="optionBean">
+                    <form:form action="${pageContext.request.contextPath}/option/all" commandName="optionBean"
+                               onsubmit="addOption();return false;">
                         <div class="panel-body">
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     Title:
+                                    <form:errors path="title" cssClass="error"/>
                                     <form:input path="title" name="title" type="text" class="form-control"
                                                 placeholder="Enter title"
                                                 id="title"/>
-                                    <form:errors path="title" cssClass="error"/>
                                 </div>
                                 <div class="form-group">
                                     Cost:
+                                    <span id="costError" class="error" style="display: none"></span>
+                                    <form:errors path="cost" cssClass="error"/>
                                     <form:input path="cost" name="cost" type="number" class="form-control"
                                                 placeholder="Enter cost"
-                                                 id="cost"/>
-                                    <form:errors path="cost" cssClass="error"/>
+                                                id="cost"/>
                                 </div>
                                 <div class="form-group">
                                     Activation Cost:
+                                    <span id="activationCostError" class="error" style="display: none"></span>
+                                    <form:errors path="activationCost" cssClass="error"/>
                                     <form:input path="activationCost" name="activationCost" type="number"
                                                 class="form-control"
                                                 placeholder="Enter activation cost"
                                                 id="activationCost"/>
-                                    <form:errors path="activationCost" cssClass="error"/>
                                 </div>
                                 <input id="submit" type="submit" class="btn btn-primary" value="OK">
                             </div>

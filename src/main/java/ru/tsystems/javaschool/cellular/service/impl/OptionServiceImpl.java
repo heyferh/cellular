@@ -23,8 +23,8 @@ import java.util.List;
 @Transactional
 @Service("OptionService")
 public class OptionServiceImpl implements OptionService {
-    private final Logger logger = Logger.getLogger(OptionService.class);
-
+    @Autowired
+    private Logger logger;
     @Autowired
     ContractDAO contractDAO;
 

@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,9 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "tariff")
 public class TariffController {
+
+    @Autowired
+    private Logger logger;
 
     @Autowired
     TariffService tariffService;
@@ -51,6 +55,7 @@ public class TariffController {
                                      @RequestParam(value = "options", required = false) long[] optionsID) {
         ModelAndView modelAndView = new ModelAndView("all_tariffs");
         try {
+            modelAndView.addObject("tariffList", tariffService.getAllTariffs());
             modelAndView.addObject("optionList", optionService.getAllOptions());
             if (result.hasErrors()) {
                 return modelAndView;

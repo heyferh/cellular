@@ -31,6 +31,25 @@
             font-weight: bold;
         }
     </style>
+    <script>
+        function getOptions(tariff_id) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/option/get_options?tariff_id=' + tariff_id,
+                type: 'GET',
+                success: function (data) {
+                    $(".options").empty();
+                    data.forEach(function (elem, index, array) {
+                        $(".options").append(
+                                        "<div><label>" +
+                                        "<input name='option_id' type='checkbox' value=" + elem.id + ">" + elem.title +
+                                        ". Cost: " + elem.cost + ". Activation cost: " + elem.activationCost + "" +
+                                        "</label></div>");
+                    })
+
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 

@@ -20,7 +20,9 @@
     <bean id="tariffBean" scope="session" class="ru.tsystems.javaschool.cellular.entity.Tariff"></bean>
     <bean id="optionBean" scope="session" class="ru.tsystems.javaschool.cellular.entity.Option"></bean>
     <bean id="clientBean" scope="session" class="ru.tsystems.javaschool.cellular.entity.Client"></bean>
-
+    <bean id="logger" class="org.apache.log4j.Logger" factory-method="getLogger">
+        <constructor-arg type="java.lang.String" value="MyLogger"/>
+    </bean>
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
         <property name="persistenceUnitName" value="PU"/>
     </bean>

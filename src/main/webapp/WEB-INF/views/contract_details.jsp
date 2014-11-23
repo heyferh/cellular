@@ -39,25 +39,27 @@
             var options = $("input[name='option_id']:checked").map(function () {
                 return parseInt($(this).val());
             }).get();
-            console.log(options);
-            console.log(options[0] + " " + options[1] + " " + options[2]);
-            $.ajax({
-                traditional: true,
-                url: 'change_tariff',
-                type: 'POST',
-                data: {
-                    tariff_id: $("input[name='tariff_id']:checked").val(),
-                    contract_id:${contract.id},
-                    option_id: options
-                },
-                success: function (data) {
-                    if ($.isEmptyObject(data)) {
-                        location.reload();
-                    } else {
-                        $('#changeTariffError').html(data).show();
+            if ($("input[name='option_id']:checked").size() == 0) {
+                $('#changeTariffError').html("Choose tariff and options").show();
+            } else {
+                $.ajax({
+                    traditional: true,
+                    url: 'change_tariff',
+                    type: 'POST',
+                    data: {
+                        tariff_id: $("input[name='tariff_id']:checked").val(),
+                        contract_id:${contract.id},
+                        option_id: options
+                    },
+                    success: function (data) {
+                        if ($.isEmptyObject(data)) {
+                            location.reload();
+                        } else {
+                            $('#changeTariffError').html(data).show();
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     </script>
 </head>

@@ -24,12 +24,16 @@ import java.util.List;
 @Transactional
 @Service("TariffService")
 public class TariffServiceImpl implements TariffService {
-    private final Logger logger = Logger.getLogger(TariffService.class);
+
+    @Autowired
+    private Logger logger;
 
     @Autowired
     private TariffDAO tariffDAO;
+
     @Autowired
     private ContractDAO contractDAO;
+
     @Autowired
     private OptionDAO optionDAO;
 

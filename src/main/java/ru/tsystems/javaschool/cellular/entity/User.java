@@ -22,7 +22,7 @@ public class User {
     protected String email;
 
     @NotEmpty
-    @Length(min = 6, max = 32, message = "Min length - 6, Max - 32")
+    @Length(min = 6, max = 64, message = "Min length - 6, Max - 64")
     protected String password;
 
     public String getPassword() {

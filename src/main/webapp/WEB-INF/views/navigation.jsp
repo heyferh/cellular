@@ -58,9 +58,9 @@
                 data: {'number': $("#phoneNumber").val()},
                 success: function (data) {
                     if (!$.isEmptyObject(data)) {
-                        $("#phoneError").text(data);
+                        $("#phoneNumberError").text(data);
                     } else {
-                        $("#phoneError").empty();
+                        $("#phoneNumberError").empty();
                     }
                 }
             });

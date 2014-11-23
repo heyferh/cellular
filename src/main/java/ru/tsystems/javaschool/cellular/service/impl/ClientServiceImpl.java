@@ -18,8 +18,8 @@ import java.util.List;
 @Transactional
 @Service("ClientService")
 public class ClientServiceImpl implements ClientService {
-    private final Logger logger = Logger.getLogger(ClientService.class);
-
+    @Autowired
+    private Logger logger;
     @Autowired
     private ClientDAO clientDAO;
 

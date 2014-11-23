@@ -17,6 +17,7 @@ import ru.tsystems.javaschool.cellular.exception.DAOException;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
 import ru.tsystems.javaschool.cellular.service.api.ContractService;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,8 +27,8 @@ import java.util.Set;
 @Transactional
 @Service("ContractService")
 public class ContractServiceImpl implements ContractService {
-    private final Logger logger = Logger.getLogger(ContractService.class);
-
+    @Autowired
+    private Logger logger;
     @Autowired
     private ContractDAO contractDAO;
     @Autowired
@@ -147,6 +148,14 @@ public class ContractServiceImpl implements ContractService {
         contract.setBalance(contract.getBalance() - tariff.getCost());
         contract.setTariff(tariff);
         contract.getOptions().clear();
+        Set<Option> requiredOptions = new HashSet<Option>();
+        for (Option option : options) {
+            requiredOptions.addAll(option.getRequiredOptions());
+        }
+        options.removeAll(requiredOptions);
+        for (Option option : requiredOptions) {
+            enableOption(contract, option);
+        }
         for (Option option : options) {
             enableOption(contract, option);
         }
