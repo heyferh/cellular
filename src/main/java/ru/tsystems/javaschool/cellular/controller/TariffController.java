@@ -1,6 +1,7 @@
 package ru.tsystems.javaschool.cellular.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ import java.util.List;
  * Created by ferh on 09.11.14.
  */
 @Controller
-@RequestMapping(value = "admin/tariff")
+@RequestMapping(value = "tariff")
 public class TariffController {
 
     @Autowired
@@ -28,6 +29,7 @@ public class TariffController {
     @Autowired
     OptionService optionService;
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "all", method = RequestMethod.GET)
     public ModelAndView getAllTariffs() {
         ModelAndView modelAndView = new ModelAndView("all_tariffs");
@@ -42,6 +44,7 @@ public class TariffController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public ModelAndView addNewTariff(@Valid @ModelAttribute("tariffBean") Tariff tariff,
                                      BindingResult result,
@@ -62,6 +65,7 @@ public class TariffController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "delete", method = RequestMethod.GET)
     @ResponseBody
     public String deleteTariff(@RequestParam("id") long id) {
@@ -74,6 +78,7 @@ public class TariffController {
         return "";
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "edit", method = RequestMethod.GET)
     public ModelAndView editTariff(@RequestParam("id") long id) {
         ModelAndView modelAndView = new ModelAndView("edit_tariff");
@@ -91,6 +96,7 @@ public class TariffController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "disable", method = RequestMethod.GET)
     @ResponseBody
     public String disableTariffOption(@RequestParam("id") long id,
@@ -103,6 +109,7 @@ public class TariffController {
         return "";
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "enable", method = RequestMethod.GET)
     @ResponseBody
     public String enableTariffOption(@RequestParam("id") long id,

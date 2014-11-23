@@ -29,7 +29,7 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <form action=${pageContext.request.contextPath}/admin/option/manage method="POST">
+                            <form action=${pageContext.request.contextPath}/option/manage method="POST">
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Required options</label>

@@ -9,12 +9,12 @@
     <script>
         function enableOption(contract_id, option_id) {
             $.ajax({
-                url: 'enable_option',
+                url: '${pageContext.request.contextPath}/enable_option',
                 type: 'GET',
-                data: {contract_id: contract_id, option_id: option_id},
+                data: {contract_id: contract_id, option_id: option_id, client_id:${client.id}},
                 success: function (data) {
                     if ($.isEmptyObject(data)) {
-                        location.href = "contract_details?id=" + contract_id;
+                        location.reload();
                     } else {
                         $('#deleteError').html(data).show();
                     }
@@ -23,12 +23,12 @@
         }
         function disableOption(contract_id, option_id) {
             $.ajax({
-                url: 'disable_option',
+                url: '${pageContext.request.contextPath}/disable_option',
                 type: 'GET',
-                data: {contract_id: contract_id, option_id: option_id},
+                data: {contract_id: contract_id, option_id: option_id, client_id:${client.id}},
                 success: function (data) {
                     if ($.isEmptyObject(data)) {
-                        location.href = "contract_details?id=" + contract_id;
+                        location.reload();
                     } else {
                         $('#deleteError').html(data).show();
                     }
@@ -39,16 +39,15 @@
             var options = $("input[name='option_id']:checked").map(function () {
                 return parseInt($(this).val());
             }).get();
-            console.log(options);
-            console.log(options[0] + " " + options[1] + " " + options[2]);
             $.ajax({
                 traditional: true,
-                url: 'change_tariff',
+                url: '${pageContext.request.contextPath}/change_tariff',
                 type: 'POST',
                 data: {
                     tariff_id: $("input[name='tariff_id']:checked").val(),
                     contract_id:${contract.id},
-                    option_id: options
+                    option_id: options,
+                    client_id:${client.id}
                 },
                 success: function (data) {
                     if ($.isEmptyObject(data)) {
@@ -63,7 +62,30 @@
 </head>
 
 <body>
-<c:import url="navigation.jsp"></c:import>
+<c:import url="imports.jsp"></c:import>
+<div id="wrapper">
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/contract/all">logo.png</a>
+        </div>
+        <!-- /.navbar-header -->
+
+        <ul class="nav navbar-top-links navbar-right">
+            <li>${pageContext.request.userPrincipal.name}
+            </li>
+            <li><a href="${pageContext.request.contextPath}/j_spring_security_logout"><i
+                    class="fa fa-sign-out fa-fw"></i> Logout</a>
+            </li>
+        </ul>
+        <!-- /.navbar-top-links -->
+    </nav>
+</div>
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
@@ -119,20 +141,28 @@
                         <p>
                             <c:choose>
                                 <c:when test="${contract.blockedByOperator}">
-                                    Blocked <a href="unblock?id=${contract.id}"><i class="fa fa-unlock fa-fw"></i></a>
+                                    Blocked
                                 </c:when>
                                 <c:otherwise>
-                                    Active <a href="block?id=${contract.id}"><i class="fa fa-lock fa-fw"></i></a>
+                                    <c:choose>
+                                        <c:when test="${contract.blockedByClient}">
+                                            Blocked <a href="unblock?id=${contract.id}&clientID=${client.id}"><i
+                                                class="fa fa-unlock fa-fw"></i></a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            Active <a href="block?id=${contract.id}&clientID=${client.id}"><i
+                                                class="fa fa-lock fa-fw"></i></a>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </c:otherwise>
                             </c:choose>
-
                         </p>
 
                         <p>
                             <select class="form-control" onchange="javascript:location.href = this.value;">
                                 <option selected disabled>choose contract</option>
                                 <c:forEach var="contract" items="${client.contracts}">
-                                    <option value="?id=${contract.id}">${contract.phoneNumber}</option>
+                                    <option value="?id=${contract.id}&clientID=${client.id}">${contract.phoneNumber}</option>
                                 </c:forEach>
                             </select>
                         </p>
@@ -260,4 +290,5 @@
 </div>
 <!-- /#page-wrapper -->
 </body>
+
 </html>

@@ -1,6 +1,7 @@
 package ru.tsystems.javaschool.cellular.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +18,13 @@ import java.util.List;
  * Created by ferh on 09.11.14.
  */
 @Controller
-@RequestMapping(value = "admin/option")
+@RequestMapping(value = "option")
 public class OptionController {
 
     @Autowired
     OptionService optionService;
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "all", method = RequestMethod.GET)
     public ModelAndView getAllOptions() {
         ModelAndView modelAndView = new ModelAndView("all_options");
@@ -34,6 +36,7 @@ public class OptionController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "all", method = RequestMethod.POST)
     public ModelAndView addNewOption(@Valid @ModelAttribute("optionBean") Option option,
                                      BindingResult result,
@@ -55,6 +58,7 @@ public class OptionController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "delete", method = RequestMethod.GET)
     @ResponseBody
     public String deleteOption(@RequestParam("id") long id) {
@@ -66,6 +70,7 @@ public class OptionController {
         return "";
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "edit", method = RequestMethod.GET)
     public ModelAndView editOption(@RequestParam("id") long id) {
         ModelAndView modelAndView = new ModelAndView("edit_options");
@@ -78,6 +83,7 @@ public class OptionController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "manage", method = RequestMethod.POST)
     public ModelAndView manageOptions(@RequestParam("option_id") long id,
                                       @RequestParam(value = "required", required = false) long[] requiredOptions,
@@ -93,6 +99,7 @@ public class OptionController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "get_options", method = RequestMethod.GET)
     @ResponseBody
     public List<Option> getOptionsForTariff(@RequestParam("tariff_id") long id) {

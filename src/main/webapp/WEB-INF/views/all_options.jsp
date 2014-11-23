@@ -64,7 +64,7 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="${pageContext.request.contextPath}/admin/option/edit?id=${option.id}">
+                                            <a href="${pageContext.request.contextPath}/option/edit?id=${option.id}">
                                                     ${option.title}
                                             </a>
                                         </td>
@@ -88,7 +88,7 @@
                         Add new option
                     </div>
                     <!-- /.panel-heading -->
-                    <form:form action="${pageContext.request.contextPath}/admin/option/all" commandName="optionBean">
+                    <form:form action="${pageContext.request.contextPath}/option/all" commandName="optionBean">
                         <div class="panel-body">
                             <div class="col-lg-6">
                                 <div class="form-group">

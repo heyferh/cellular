@@ -11,7 +11,10 @@ import ru.tsystems.javaschool.cellular.entity.Client;
 import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
-import ru.tsystems.javaschool.cellular.exception.*;
+import ru.tsystems.javaschool.cellular.exception.ClientException;
+import ru.tsystems.javaschool.cellular.exception.ContractException;
+import ru.tsystems.javaschool.cellular.exception.OptionException;
+import ru.tsystems.javaschool.cellular.exception.TariffException;
 import ru.tsystems.javaschool.cellular.service.api.ClientService;
 import ru.tsystems.javaschool.cellular.service.api.ContractService;
 import ru.tsystems.javaschool.cellular.service.api.OptionService;
@@ -26,7 +29,7 @@ import java.util.Set;
  * Created by ferh on 16.11.14.
  */
 @Controller
-@RequestMapping(value = "admin/contract")
+@RequestMapping(value = "contract")
 public class ContractController {
     @Autowired
     ContractService contractService;
@@ -43,6 +46,7 @@ public class ContractController {
     @Autowired
     ClientService clientService;
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "new", method = RequestMethod.GET)
     public ModelAndView newContract() {
         ModelAndView modelAndView = new ModelAndView("create_contract");
@@ -54,6 +58,7 @@ public class ContractController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "new", method = RequestMethod.POST)
     public ModelAndView addNewContract(@Valid @ModelAttribute("clientBean") Client client,
                                        BindingResult result,
@@ -77,6 +82,7 @@ public class ContractController {
         return new ModelAndView("all_contracts");
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "check_number", method = RequestMethod.POST)
     @ResponseBody
     public String checkIfNumberExists(@RequestParam("number") String phoneNumber) {
@@ -90,8 +96,9 @@ public class ContractController {
         return "";
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "all", method = RequestMethod.GET)
-    public ModelAndView getAllContracts() throws DAOException {
+    public ModelAndView getAllContracts() {
         ModelAndView modelAndView = new ModelAndView("all_contracts");
         try {
             modelAndView.addObject("clientList", clientService.getAllClients());
@@ -101,6 +108,7 @@ public class ContractController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "add_another", method = RequestMethod.GET)
     public ModelAndView addAnotherContract(@RequestParam("client_id") long id) {
         ModelAndView modelAndView = new ModelAndView("add_contract");
@@ -113,6 +121,7 @@ public class ContractController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "add_another", method = RequestMethod.POST)
     @ResponseBody
     public String addContract(@RequestParam("client_id") long id,
@@ -133,6 +142,7 @@ public class ContractController {
         return "";
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "contract_details", method = RequestMethod.GET)
     public ModelAndView getDetails(@RequestParam("id") long contract_id) {
         ModelAndView modelAndView = new ModelAndView("contract_details");
@@ -157,6 +167,7 @@ public class ContractController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "block", method = RequestMethod.GET)
     public ModelAndView block(@RequestParam("id") long id) {
         try {
@@ -170,6 +181,7 @@ public class ContractController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "unblock", method = RequestMethod.GET)
     public ModelAndView unBlock(@RequestParam("id") long id) {
         try {
@@ -183,6 +195,7 @@ public class ContractController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "enable_option", method = RequestMethod.GET)
     @ResponseBody
     public String enableOption(@RequestParam("contract_id") long contract_id,
@@ -200,6 +213,7 @@ public class ContractController {
         return "";
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "disable_option", method = RequestMethod.GET)
     @ResponseBody
     public String disableOption(@RequestParam("contract_id") long contract_id,
@@ -217,6 +231,7 @@ public class ContractController {
         return "";
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "change_tariff", method = RequestMethod.POST)
     @ResponseBody
     public String changeTariff(@RequestParam("contract_id") long contract_id,

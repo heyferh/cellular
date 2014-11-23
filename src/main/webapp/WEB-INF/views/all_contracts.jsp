@@ -43,10 +43,9 @@
                                     <tr>
                                         <td>${client.firstName}</td>
                                         <td>${client.lastName}</td>
-                                        <td>
-                                            <a href="contract_details?id=${contract.id}">
-                                                    ${contract.phoneNumber}
-                                            </a>
+                                        <td style="cursor: pointer"
+                                            onclick="javascript:location.href='contract_details?id=${contract.id}';">
+                                                ${contract.phoneNumber}
                                         </td>
                                         <td>${contract.balance}</td>
                                         <c:choose>
@@ -60,10 +59,9 @@
                                                 <td>Active</td>
                                             </c:otherwise>
                                         </c:choose>
-                                        <td>
-                                            <a href="${pageContext.request.contextPath}/admin/contract/add_another?client_id=${client.id}">
-                                                <i class="fa fa-plus fa-fw"></i>
-                                            </a>
+                                        <td style="cursor: pointer"
+                                            onclick="javascript:location.href='${pageContext.request.contextPath}/contract/add_another?client_id=${client.id}'">
+                                            +
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -91,7 +89,5 @@
         $('#dataTables-example').dataTable();
     });
 </script>
-
 </body>
-
 </html>

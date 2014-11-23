@@ -40,8 +40,14 @@
                                     <input class="form-control" placeholder="Password" name='password' type='password'
                                            value="">
                                 </div>
+                                <c:if test="${not empty error}">
+                                    <div class="alert alert-danger">
+                                            ${error}
+                                    </div>
+                                </c:if>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <input class="btn btn-lg btn-primary btn-block" type="submit" name="submit" value="Login">
+                                <input class="btn btn-lg btn-primary btn-block" type="submit" name="submit"
+                                       value="Login">
                             </fieldset>
                         </form>
                     </div>
