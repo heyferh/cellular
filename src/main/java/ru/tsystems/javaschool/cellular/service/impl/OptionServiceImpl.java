@@ -12,7 +12,6 @@ import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
 import ru.tsystems.javaschool.cellular.exception.DAOException;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
-import ru.tsystems.javaschool.cellular.service.api.ContractService;
 import ru.tsystems.javaschool.cellular.service.api.OptionService;
 
 import java.util.List;
@@ -25,8 +24,9 @@ import java.util.List;
 public class OptionServiceImpl implements OptionService {
     @Autowired
     private Logger logger;
+
     @Autowired
-    ContractDAO contractDAO;
+    private ContractDAO contractDAO;
 
     @Autowired
     private OptionDAO optionDAO;
