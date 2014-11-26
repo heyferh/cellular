@@ -2,7 +2,6 @@ package ru.tsystems.javaschool.cellular.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -11,16 +10,18 @@ import ru.tsystems.javaschool.cellular.entity.Client;
 import ru.tsystems.javaschool.cellular.entity.Contract;
 import ru.tsystems.javaschool.cellular.entity.Option;
 import ru.tsystems.javaschool.cellular.entity.Tariff;
+import ru.tsystems.javaschool.cellular.exception.CartException;
 import ru.tsystems.javaschool.cellular.exception.ContractException;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
 import ru.tsystems.javaschool.cellular.exception.TariffException;
 import ru.tsystems.javaschool.cellular.helper.AuthHelper;
+import ru.tsystems.javaschool.cellular.helper.CartBean;
 import ru.tsystems.javaschool.cellular.service.api.ClientService;
 import ru.tsystems.javaschool.cellular.service.api.ContractService;
 import ru.tsystems.javaschool.cellular.service.api.OptionService;
 import ru.tsystems.javaschool.cellular.service.api.TariffService;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -43,8 +44,10 @@ public class ClientController {
     ClientService clientService;
 
     @Autowired
-    TariffService tariffService;
+    CartBean cartBean;
 
+    @Autowired
+    TariffService tariffService;
 
     @Autowired
     AuthHelper authHelper;
@@ -123,8 +126,9 @@ public class ClientController {
             if (contract.isBlockedByOperator()) {
                 return "This contract is blocked by operator.";
             }
-            Option option = optionService.getOptionById(option_id);
-            contractService.enableOption(contract, option);
+            Set<Option> optionSet = new HashSet<Option>();
+            optionSet.add(optionService.getOptionById(option_id));
+            contractService.enableOptions(contract, optionSet);
             contractService.updateContract(contract);
         } catch (ContractException e) {
             return e.getMessage();
@@ -163,23 +167,66 @@ public class ClientController {
                                @RequestParam("client_id") long client_id,
                                @RequestParam("tariff_id") long tariff_id,
                                @RequestParam("option_id") long[] options) {
-        List<Option> optionList = new ArrayList<Option>();
+        Set<Option> optionSet = new HashSet<Option>();
         try {
             for (long id : options) {
-                optionList.add(optionService.getOptionById(id));
+                optionSet.add(optionService.getOptionById(id));
             }
             Contract contract = contractService.getContractById(contract_id);
             if (contract.isBlockedByOperator()) {
                 return "This contract is blocked by operator.";
             }
             Tariff tariff = tariffService.getTariffById(tariff_id);
-            contractService.changeTariff(contract, tariff, optionList);
+            contractService.changeTariff(contract, tariff, optionSet);
             contractService.updateContract(contract);
         } catch (OptionException e) {
             return e.getMessage();
         } catch (ContractException e) {
             return e.getMessage();
         } catch (TariffException e) {
+            return e.getMessage();
+        }
+        return "";
+    }
+
+    @PreAuthorize("hasRole('User') && this.currentUser.id == #client_id")
+    @RequestMapping(value = "add_to_cart", method = RequestMethod.GET)
+    public String addOptionToCart(@RequestParam("option_id") long option_id,
+                                  @RequestParam("client_id") long client_id,
+                                  @RequestParam("contract_id") long contract_id) {
+        try {
+            cartBean.setTariff(contractService.getContractById(contract_id).getTariff());
+            cartBean.addOption(optionService.getOptionById(option_id));
+        } catch (OptionException e) {
+            e.printStackTrace();
+        } catch (ContractException e) {
+            e.printStackTrace();
+        }
+        return "redirect:account_details?id=" + contract_id + "&clientID=" + client_id;
+    }
+
+    @PreAuthorize("hasRole('User') && this.currentUser.id == #client_id")
+    @RequestMapping(value = "remove_from_cart", method = RequestMethod.GET)
+    public String removeOptionFromCart(@RequestParam("option_id") long option_id,
+                                       @RequestParam("client_id") long client_id,
+                                       @RequestParam("contract_id") long contract_id) {
+        try {
+            cartBean.removeOption(optionService.getOptionById(option_id));
+        } catch (OptionException e) {
+            e.printStackTrace();
+        }
+        return "redirect:account_details?id=" + contract_id + "&clientID=" + client_id;
+    }
+
+    @PreAuthorize("hasRole('User') && this.currentUser.id == #client_id")
+    @RequestMapping(value = "push_options", method = RequestMethod.GET)
+    @ResponseBody
+    public String pushOptionsToCart(@RequestParam("client_id") long client_id,
+                                    @RequestParam("contract_id") long contract_id) {
+        ModelAndView modelAndView = new ModelAndView("account_details");
+        try {
+            cartBean.pushItems(contract_id);
+        } catch (CartException e) {
             return e.getMessage();
         }
         return "";

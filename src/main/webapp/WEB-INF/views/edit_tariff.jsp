@@ -74,7 +74,8 @@
                                         <c:forEach var="option" items="${tariff.options}">
                                             <tr>
                                                 <td>
-                                                    <a onclick="removeTariffOption(${option.id})">
+                                                    <a onclick="removeTariffOption(${option.id})"
+                                                       style="cursor: pointer">
                                                         <i class="fa fa-minus fa-fw"></i>
                                                     </a>
                                                 </td>
@@ -105,7 +106,7 @@
                                         <c:forEach var="option" items="${availableOptions}">
                                             <tr>
                                                 <td>
-                                                    <a onclick="addTariffOption(${option.id})">
+                                                    <a onclick="addTariffOption(${option.id})" style="cursor: pointer">
                                                         <i class="fa fa-plus fa-fw"></i>
                                                     </a>
                                                 </td>

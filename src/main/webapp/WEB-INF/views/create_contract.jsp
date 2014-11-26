@@ -33,6 +33,11 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
+                        <c:if test="${not empty optionError}">
+                            <div class="alert alert-danger alert-dismissable">
+                                    ${optionError}
+                            </div>
+                        </c:if>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 ID card:

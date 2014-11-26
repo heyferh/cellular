@@ -8,6 +8,7 @@ import ru.tsystems.javaschool.cellular.exception.ContractException;
 import ru.tsystems.javaschool.cellular.exception.OptionException;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by ferh on 11.10.14.
@@ -87,7 +88,7 @@ public interface ContractService {
      */
     public void unblock(Contract contract) throws ContractException;
 
-    public void changeTariff(Contract contract, Tariff tariff, List<Option> options) throws ContractException, OptionException;
+    public void changeTariff(Contract contract, Tariff tariff, Set<Option> options) throws ContractException, OptionException;
 
     /**
      * Disable option on given contract.
@@ -106,7 +107,7 @@ public interface ContractService {
      * @throws OptionException   if option requires another option to be enabled.
      * @throws ContractException if there's no money to pay for new option.
      */
-    public void enableOption(Contract contract, Option option) throws OptionException, ContractException;
+    public void enableOptions(Contract contract, Set<Option> optionSet) throws ContractException, OptionException;
 
     /**
      * Add new contract to an existing client.
@@ -123,4 +124,6 @@ public interface ContractService {
     public void addOneMoreContract(Contract contract, Client client, long tariffId, long[] optionIds) throws ContractException, OptionException;
 
     public boolean checkIfNumberExists(String number) throws ContractException;
+
+    public void validateOptions(Set<Option> set) throws OptionException;
 }

@@ -92,6 +92,11 @@
                     <form:form action="${pageContext.request.contextPath}/tariff/add" commandName="tariffBean"
                                onsubmit="addTariff();return false;">
                         <div class="panel-body">
+                            <c:if test="${not empty error}">
+                                <div class="alert alert-danger alert-dismissable">
+                                        ${error}
+                                </div>
+                            </c:if>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     Title:

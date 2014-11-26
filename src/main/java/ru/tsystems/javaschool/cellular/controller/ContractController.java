@@ -23,7 +23,7 @@ import ru.tsystems.javaschool.cellular.service.api.OptionService;
 import ru.tsystems.javaschool.cellular.service.api.TariffService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -72,9 +72,11 @@ public class ContractController {
                                        @RequestParam(value = "tariff_id") long tariff_id,
                                        @RequestParam(value = "option_id") long[] option_id) {
         ModelAndView modelAndView = new ModelAndView("create_contract");
+        List<Tariff> tariffList = null;
         try {
+            tariffList = tariffService.getAllTariffs();
             if (result.hasErrors() || contractService.checkIfNumberExists(phoneNumber)) {
-                modelAndView.addObject("tariffList", tariffService.getAllTariffs());
+                modelAndView.addObject("tariffList", tariffList);
                 modelAndView.addObject("phoneNumberError", "is already exist");
                 return modelAndView;
             }
@@ -82,12 +84,10 @@ public class ContractController {
             String hashedPassword = passwordEncoder.encode(client.getPassword());
             client.setPassword(hashedPassword);
             contractService.addContract(new Contract(phoneNumber, false, false), client, tariff_id, option_id);
-        } catch (ContractException e) {
-            e.printStackTrace();
-        } catch (TariffException e) {
-            e.printStackTrace();
-        } catch (OptionException e) {
-            e.printStackTrace();
+        } catch (ContractException | TariffException | OptionException e) {
+            modelAndView.addObject("optionError", e.getMessage());
+            modelAndView.addObject("tariffList", tariffList);
+            return modelAndView;
         }
         return new ModelAndView("all_contracts");
     }
@@ -212,8 +212,9 @@ public class ContractController {
                                @RequestParam("option_id") long option_id) {
         try {
             Contract contract = contractService.getContractById(contract_id);
-            Option option = optionService.getOptionById(option_id);
-            contractService.enableOption(contract, option);
+            Set<Option> optionSet = new HashSet<Option>();
+            optionSet.add(optionService.getOptionById(option_id));
+            contractService.enableOptions(contract, optionSet);
             contractService.updateContract(contract);
         } catch (ContractException e) {
             return e.getMessage();
@@ -247,14 +248,14 @@ public class ContractController {
     public String changeTariff(@RequestParam("contract_id") long contract_id,
                                @RequestParam("tariff_id") long tariff_id,
                                @RequestParam("option_id") long[] options) {
-        List<Option> optionList = new ArrayList<Option>();
+        Set<Option> optionSet = new HashSet<Option>();
         try {
             for (long id : options) {
-                optionList.add(optionService.getOptionById(id));
+                optionSet.add(optionService.getOptionById(id));
             }
             Contract contract = contractService.getContractById(contract_id);
             Tariff tariff = tariffService.getTariffById(tariff_id);
-            contractService.changeTariff(contract, tariff, optionList);
+            contractService.changeTariff(contract, tariff, optionSet);
             contractService.updateContract(contract);
         } catch (OptionException e) {
             return e.getMessage();

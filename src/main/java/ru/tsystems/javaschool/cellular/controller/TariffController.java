@@ -54,18 +54,23 @@ public class TariffController {
                                      BindingResult result,
                                      @RequestParam(value = "options", required = false) long[] optionsID) {
         ModelAndView modelAndView = new ModelAndView("all_tariffs");
+        List<Tariff> tariffList = null;
         try {
+            tariffList = tariffService.getAllTariffs();
             modelAndView.addObject("tariffList", tariffService.getAllTariffs());
             modelAndView.addObject("optionList", optionService.getAllOptions());
             if (result.hasErrors()) {
                 return modelAndView;
             }
             tariffService.createTariff(tariff, optionsID);
-            modelAndView.addObject("tariffList", tariffService.getAllTariffs());
+            tariffList = tariffService.getAllTariffs();
+            modelAndView.addObject("tariffList", tariffList);
         } catch (TariffException e) {
-            e.printStackTrace();
+            modelAndView.addObject("error", e.getMessage());
+            modelAndView.addObject("tariffList", tariffList);
         } catch (OptionException e) {
-            e.printStackTrace();
+            modelAndView.addObject("error", e.getMessage());
+            modelAndView.addObject("tariffList", tariffList);
         }
         return modelAndView;
     }

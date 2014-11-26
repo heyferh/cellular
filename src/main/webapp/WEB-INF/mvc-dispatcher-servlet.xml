@@ -17,6 +17,7 @@
     <mvc:resources mapping="/app/**" location="/app/"/>
     <security:global-method-security pre-post-annotations="enabled" proxy-target-class="true"/>
 
+    <bean id="cartBean" class="ru.tsystems.javaschool.cellular.helper.CartBean"></bean>
     <bean id="tariffBean" scope="session" class="ru.tsystems.javaschool.cellular.entity.Tariff"></bean>
     <bean id="optionBean" scope="session" class="ru.tsystems.javaschool.cellular.entity.Option"></bean>
     <bean id="clientBean" scope="session" class="ru.tsystems.javaschool.cellular.entity.Client"></bean>

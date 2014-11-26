@@ -139,26 +139,22 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public void changeTariff(Contract contract, Tariff tariff, List<Option> options) throws ContractException, OptionException {
-        if (contract.getBalance() < tariff.getCost()) {
-            logger.error("Not enough money to add: " + tariff + " to contract: " + contract);
+    public void changeTariff(Contract contract, Tariff tariff, Set<Option> options) throws ContractException, OptionException {
+        int totalAmount = tariff.getCost();
+        for (Option option : options) {
+            totalAmount += (option.getCost() + option.getActivationCost());
+        }
+        if (contract.getBalance() < totalAmount) {
+            logger.error("Not enough money to add: " + tariff + " and options to contract: " + contract);
             throw new ContractException("Not enough money");
         }
+        validateOptions(options);
         logger.info("Changing tarriff to: " + tariff);
-        contract.setBalance(contract.getBalance() - tariff.getCost());
+        contract.setBalance(contract.getBalance() - totalAmount);
         contract.setTariff(tariff);
         contract.getOptions().clear();
         Set<Option> requiredOptions = new HashSet<Option>();
-        for (Option option : options) {
-            requiredOptions.addAll(option.getRequiredOptions());
-        }
-        options.removeAll(requiredOptions);
-        for (Option option : requiredOptions) {
-            enableOption(contract, option);
-        }
-        for (Option option : options) {
-            enableOption(contract, option);
-        }
+        enableOptions(contract, options);
     }
 
     @Override
@@ -176,34 +172,22 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public void enableOption(Contract contract, Option option) throws OptionException, ContractException {
-        logger.info("Enabling option: " + option);
-        Set<Option> optionSet = contract.getOptions();
-        for (Option incompatibleOption : option.getIncompatibleOptions()) {
-            if (optionSet.contains(incompatibleOption)) {
-                logger.error("Option: " + option.getTitle() + " is incompatible with option: " + incompatibleOption.getTitle());
-                throw new OptionException("Option: " + option.getTitle() + " is incompatible with option: " + incompatibleOption.getTitle());
-            }
+    public void enableOptions(Contract contract, Set<Option> optionSet) throws ContractException, OptionException {
+        int totalAmount = 0;
+        for (Option option : optionSet) {
+            totalAmount += (option.getCost() + option.getActivationCost());
         }
-        for (Option srcOption : optionSet) {
-            if (srcOption.getIncompatibleOptions().contains(option)) {
-                logger.error("Option: " + srcOption.getTitle() + " contains the: " + option.getTitle() + " as incompatible");
-                throw new OptionException("Option: " + srcOption.getTitle() + " contains the: " + option.getTitle() + " as incompatible");
-            }
-        }
-        for (Option requiredOption : option.getRequiredOptions()) {
-            if (!optionSet.contains(requiredOption)) {
-                logger.error("Option: " + option.getTitle() + " requires " + requiredOption.getTitle() + " to be enable");
-                throw new OptionException("Option: " + option.getTitle() + " requires " + requiredOption.getTitle() + " to be enable");
-            }
-        }
-        logger.info("Adding option: " + option);
-        if (contract.getBalance() < option.getActivationCost() + option.getCost()) {
-            logger.error("Not enough money to activate option: " + option + " to contract: " + contract);
+        if (contract.getBalance() < totalAmount) {
             throw new ContractException("Not enough money");
         }
-        contract.setBalance(contract.getBalance() - option.getActivationCost() - option.getCost());
-        optionSet.add(option);
+        Set<Option> options = new HashSet<Option>();
+        options.addAll(optionSet);
+        options.addAll(contract.getOptions());
+        validateOptions(options);
+        contract.setBalance(contract.getBalance() - totalAmount);
+        for (Option option : optionSet) {
+            contract.addOptions(option);
+        }
     }
 
     @Override
@@ -214,15 +198,18 @@ public class ContractServiceImpl implements ContractService {
                 logger.error("Number: " + contract.getPhoneNumber() + " already exists");
                 throw new ContractException("Number: " + contract.getPhoneNumber() + " already exists");
             }
+            Set<Option> optionSet = new HashSet<Option>();
+            for (long id : optionIds) {
+                optionSet.add(optionDAO.get(id));
+            }
+            validateOptions(optionSet);
             contractDAO.create(contract);
             client.addContract(contract);
             clientDAO.create(client);
             contract.setClient(client);
             contract.setTariff(tariffDAO.get(tariffId));
-            for (long id : optionIds) {
-                logger.info("Enabling option: " + id);
-                enableOption(contract, optionDAO.get(id));
-            }
+            enableOptions(contract, optionSet);
+            contractDAO.update(contract);
         } catch (DAOException e) {
             logger.error("Unable to add contract");
             throw new ContractException("Unable to add contract");
@@ -237,14 +224,16 @@ public class ContractServiceImpl implements ContractService {
                 logger.error("Number: " + contract.getPhoneNumber() + " already exists");
                 throw new ContractException("Number: " + contract.getPhoneNumber() + " already exists");
             }
+            Set<Option> optionSet = new HashSet<Option>();
+            for (long id : optionIds) {
+                optionSet.add(optionDAO.get(id));
+            }
             contractDAO.create(contract);
             client.addContract(contract);
             contract.setClient(client);
             contract.setTariff(tariffDAO.get(tariffId));
-            for (long id : optionIds) {
-                logger.info("Enabling option: " + id);
-                enableOption(contract, optionDAO.get(id));
-            }
+            enableOptions(contract, optionSet);
+            contractDAO.update(contract);
         } catch (DAOException e) {
             logger.error("Unable to add contract");
             throw new ContractException("Unable to add contract");
@@ -258,6 +247,24 @@ public class ContractServiceImpl implements ContractService {
             return contractDAO.checkIfNumberExists(number);
         } catch (DAOException e) {
             throw new ContractException("Unable to check.");
+        }
+    }
+
+    @Override
+    public void validateOptions(Set<Option> set) throws OptionException {
+        for (Option option : set) {
+            for (Option incompatibleOption : option.getIncompatibleOptions()) {
+                for (Option srcOption : set) {
+                    if (srcOption.equals(incompatibleOption)) {
+                        throw new OptionException("Option: " + option.getTitle() + " is incompatible with: " + srcOption.getTitle());
+                    }
+                }
+            }
+            for (Option requiredOption : option.getRequiredOptions()) {
+                if (!set.contains(requiredOption)) {
+                    throw new OptionException("Option: " + option.getTitle() + " requires: " + requiredOption.getTitle());
+                }
+            }
         }
     }
 }

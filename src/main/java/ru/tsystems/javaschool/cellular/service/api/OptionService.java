@@ -67,6 +67,7 @@ public interface OptionService {
      * @throws OptionException if there are exceptions while getting options.
      */
     public void manageIncompatibleOptions(long id, long[] ids) throws OptionException;
+
     /**
      * Set required options to option with given id.
      *
