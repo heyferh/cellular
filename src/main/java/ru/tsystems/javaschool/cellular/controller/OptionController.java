@@ -52,6 +52,16 @@ public class OptionController {
                 modelAndView.addObject("optionList", optionService.getAllOptions());
                 return modelAndView;
             }
+            if (iID != null & rID != null)
+                for (long incID : iID) {
+                    for (long reqID : rID) {
+                        if (incID == reqID) {
+                            modelAndView.addObject("error", optionService.getOptionById(incID).getTitle() + " could not be both incompatible and required");
+                            modelAndView.addObject("optionList", optionService.getAllOptions());
+                            return modelAndView;
+                        }
+                    }
+                }
             optionService.createOption(option);
             optionService.manageIncompatibleOptions(option.getId(), iID);
             optionService.manageRequiredOptions(option.getId(), rID);

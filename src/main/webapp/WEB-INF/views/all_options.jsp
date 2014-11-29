@@ -103,6 +103,11 @@
                     <form:form action="${pageContext.request.contextPath}/option/all" commandName="optionBean"
                                onsubmit="addOption();return false;">
                         <div class="panel-body">
+                            <c:if test="${not empty error}">
+                                <div class="alert alert-danger alert-dismissable">
+                                        ${error}
+                                </div>
+                            </c:if>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     Title:
@@ -138,7 +143,7 @@
                                             <label>
                                                 <input name="requiredOptions" value="${option.id}"
                                                        type="checkbox"
-                                                       onchange="check(${option.id}, '.incompatible')">${option.title}
+                                                        >${option.title}
                                             </label>
                                         </div>
                                     </c:forEach>
@@ -152,7 +157,7 @@
                                             <label>
                                                 <input name="incompatibleOptions" value="${option.id}"
                                                        type="checkbox"
-                                                       onchange="check(${option.id}, '.required')">${option.title}
+                                                        >${option.title}
                                             </label>
                                         </div>
                                     </c:forEach>

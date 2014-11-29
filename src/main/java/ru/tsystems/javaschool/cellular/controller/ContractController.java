@@ -3,7 +3,6 @@ package ru.tsystems.javaschool.cellular.controller;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -69,21 +68,26 @@ public class ContractController {
     public ModelAndView addNewContract(@Valid @ModelAttribute("clientBean") Client client,
                                        BindingResult result,
                                        @RequestParam("phoneNumber") String phoneNumber,
-                                       @RequestParam(value = "tariff_id") long tariff_id,
-                                       @RequestParam(value = "option_id") long[] option_id) {
+                                       @RequestParam(value = "tariff_id", required = false) Long tariff_id,
+                                       @RequestParam(value = "option_id", required = false) long[] option_id) {
         ModelAndView modelAndView = new ModelAndView("create_contract");
         List<Tariff> tariffList = null;
         try {
             tariffList = tariffService.getAllTariffs();
-            if (result.hasErrors() || contractService.checkIfNumberExists(phoneNumber)) {
+            if (result.hasErrors()) {
                 modelAndView.addObject("tariffList", tariffList);
-                modelAndView.addObject("phoneNumberError", "is already exist");
                 return modelAndView;
             }
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String hashedPassword = passwordEncoder.encode(client.getPassword());
-            client.setPassword(hashedPassword);
+            if (tariff_id == null || option_id == null) {
+                modelAndView.addObject("optionError", "Choose tariff and options");
+                modelAndView.addObject("tariffList", tariffList);
+                return modelAndView;
+            }
+            if (contractService.checkIfNumberExists(phoneNumber)) {
+                throw new ContractException(phoneNumber + " is already used");
+            }
             contractService.addContract(new Contract(phoneNumber, false, false), client, tariff_id, option_id);
+
         } catch (ContractException | TariffException | OptionException e) {
             modelAndView.addObject("optionError", e.getMessage());
             modelAndView.addObject("tariffList", tariffList);
@@ -101,7 +105,7 @@ public class ContractController {
                 return "This number is already used";
             }
         } catch (ContractException e) {
-            e.printStackTrace();
+            return e.getMessage();
         }
         return "";
     }
@@ -140,6 +144,7 @@ public class ContractController {
                               @RequestParam("option_id") long[] option_id) {
         ModelAndView modelAndView = new ModelAndView("all_contracts");
         try {
+            contractService.checkIfNumberExists(phoneNumber);
             Client client = clientService.getClientById(id);
             contractService.addOneMoreContract(new Contract(phoneNumber, false, false), client, tariff_id, option_id);
         } catch (ClientException e) {

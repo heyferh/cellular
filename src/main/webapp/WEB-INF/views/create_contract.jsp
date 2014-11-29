@@ -6,10 +6,10 @@
 <head>
     <script>
         function createContract() {
-            if ($("input[name=option_id]:checked").size() > 0) {
-                this.submit();
-            }
-            $("#createError").html("Choose tariff and options!").show();
+//            if ($("input[name=option_id]:checked").size() > 0) {
+            this.submit();
+//            }
+//            $("#createError").html("Choose tariff and options!").show();
         }
     </script>
 </head>
@@ -51,11 +51,14 @@
                             </div>
                             <div class="form-group">
                                 Phone number:
-                                <c:if test="${not empty phoneNumberError}">
-                                    <span id="phoneNumberError" class="error">${phoneNumberError}</span>
-                                </c:if>
+                                    <span id="phoneNumberError" class="error">
+                                        <c:if test="${not empty phoneNumberError}">
+                                            ${phoneNumberError}
+                                        </c:if>
+                                    </span>
+
                                 <input name="phoneNumber" id="phoneNumber" class="form-control" placeholder=""
-                                       type="number" onchange="checkNumber()"/>
+                                       type="number" onblur="checkNumber()"/>
                             </div>
                             <div class="form-group">
                                 Password:

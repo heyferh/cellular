@@ -33,8 +33,16 @@ public class CartBean {
             }
             Set<Option> set = new HashSet<Option>();
             set.addAll(optionSet);
+            int total = 0;
+            for (Option option : optionSet) {
+                total += (option.getActivationCost() + option.getCost());
+            }
             set.addAll(contract.getOptions());
             contractService.validateOptions(set);
+            if (contract.getBalance() < total) {
+                throw new CartException("Not enough money");
+            }
+            contract.setBalance(contract.getBalance() - total);
             for (Option option : set) {
                 contract.addOptions(option);
             }

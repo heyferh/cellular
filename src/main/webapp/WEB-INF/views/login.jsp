@@ -40,6 +40,11 @@
                                     <input class="form-control" placeholder="Password" name='password' type='password'
                                            value="">
                                 </div>
+                                <%--<div class="checkbox">--%>
+                                    <%--<label>--%>
+                                        <%--<input name='remember-me-parameter' type='checkbox' value="">Remember Me--%>
+                                    <%--</label>--%>
+                                <%--</div>--%>
                                 <c:if test="${not empty error}">
                                     <div class="alert alert-danger">
                                             ${error}

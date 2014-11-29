@@ -26,19 +26,16 @@ import static org.mockito.Mockito.*;
  * Created by ferh on 25.11.14.
  */
 @RunWith(MockitoJUnitRunner.class)
+
 public class OptionServiceTest {
     @Mock
     private Logger logger;
-
     @Mock
     private OptionDAOImpl optionDAO;
-
     @Mock
     private TariffDAOImpl tariffDAO;
-
     @Mock
     private ContractDAOImpl contractDAO;
-
     @InjectMocks
     private OptionServiceImpl optionService;
 

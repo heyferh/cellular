@@ -21,20 +21,6 @@
                 }
             });
         }
-        function checkNumber() {
-            $.ajax({
-                url: '${pageContext.request.contextPath}/contract/check_number',
-                type: 'POST',
-                data: {'number': $("#phoneNumber").val()},
-                success: function (data) {
-                    if (!$.isEmptyObject(data)) {
-                        $("#phoneError").text(data);
-                    } else {
-                        $("#phoneError").empty();
-                    }
-                }
-            });
-        }
         function addContract() {
             $.ajax({
                 traditional: true,
@@ -82,9 +68,9 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            Phone number: <span id="phoneError" class="error"></span>
-                            <input name="phoneNumber" id="phoneNumber" class="form-control" placeholder=""
-                                   type="number" onchange="checkNumber()"/>
+                            Phone number:
+                            <span id="phoneNumberError" class="error"></span>
+                            <input id="phoneNumber" class="form-control" onblur="checkNumber()"/>
                         </div>
                     </div>
                 </div>

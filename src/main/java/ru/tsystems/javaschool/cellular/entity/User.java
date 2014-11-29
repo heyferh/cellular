@@ -21,7 +21,6 @@ public class User {
     @Length(max = 32, message = "Max length is 64")
     protected String email;
 
-    @NotEmpty
     @Length(min = 6, max = 64, message = "Min length - 6, Max - 64")
     protected String password;
 

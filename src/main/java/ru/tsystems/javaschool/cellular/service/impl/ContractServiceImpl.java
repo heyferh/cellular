@@ -2,6 +2,7 @@ package ru.tsystems.javaschool.cellular.service.impl;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.javaschool.cellular.dao.api.ClientDAO;
@@ -194,10 +195,6 @@ public class ContractServiceImpl implements ContractService {
     public void addContract(Contract contract, Client client, long tariffId, long[] optionIds) throws ContractException, OptionException {
         logger.info("Adding new contract: " + contract);
         try {
-            if (contractDAO.checkIfNumberExists(contract.getPhoneNumber())) {
-                logger.error("Number: " + contract.getPhoneNumber() + " already exists");
-                throw new ContractException("Number: " + contract.getPhoneNumber() + " already exists");
-            }
             Set<Option> optionSet = new HashSet<Option>();
             for (long id : optionIds) {
                 optionSet.add(optionDAO.get(id));
@@ -205,6 +202,9 @@ public class ContractServiceImpl implements ContractService {
             validateOptions(optionSet);
             contractDAO.create(contract);
             client.addContract(contract);
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String hashedPassword = passwordEncoder.encode(client.getPassword());
+            client.setPassword(hashedPassword);
             clientDAO.create(client);
             contract.setClient(client);
             contract.setTariff(tariffDAO.get(tariffId));
@@ -228,6 +228,7 @@ public class ContractServiceImpl implements ContractService {
             for (long id : optionIds) {
                 optionSet.add(optionDAO.get(id));
             }
+            validateOptions(optionSet);
             contractDAO.create(contract);
             client.addContract(contract);
             contract.setClient(client);
@@ -244,6 +245,10 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public boolean checkIfNumberExists(String number) throws ContractException {
         try {
+            String regex = "[0-9]+";
+            if ((number.length() != 11) || !number.matches(regex)) {
+                throw new ContractException("Invalid phone format. Must contain 11 digits");
+            }
             return contractDAO.checkIfNumberExists(number);
         } catch (DAOException e) {
             throw new ContractException("Unable to check.");

@@ -28,19 +28,14 @@ import static org.mockito.Mockito.*;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class TariffServiceTest {
-
     @Mock
     private Logger logger;
-
     @Mock
     private OptionDAOImpl optionDAO;
-
     @Mock
     private TariffDAOImpl tariffDAO;
-
     @Mock
     private ContractDAOImpl contractDAO;
-
     @InjectMocks
     private TariffServiceImpl tariffService;
 
