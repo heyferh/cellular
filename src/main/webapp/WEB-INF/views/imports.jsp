@@ -12,19 +12,13 @@
     <link href="${pageContext.request.contextPath}/app/css/sb-admin-2.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/app/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet"
           type="text/css">
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-
-    <![endif]-->
     <script src="${pageContext.request.contextPath}/app/js/jquery-1.11.0.js"></script>
     <script src="${pageContext.request.contextPath}/app/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/app/js/plugins/metisMenu/metisMenu.min.js"></script>
     <script src="${pageContext.request.contextPath}/app/js/plugins/dataTables/jquery.dataTables.js"></script>
     <script src="${pageContext.request.contextPath}/app/js/plugins/dataTables/dataTables.bootstrap.js"></script>
     <script src="${pageContext.request.contextPath}/app/js/sb-admin-2.js"></script>
+    <script src="${pageContext.request.contextPath}/app/js/my.js"></script>
     <style>
         .error {
             color: red;
@@ -32,20 +26,42 @@
         }
     </style>
     <script>
-        function getOptions(tariff_id) {
+        function disableOption(contract_id, option_id) {
+            console.log("With client");
             $.ajax({
-                url: '${pageContext.request.contextPath}/option/get_options?tariff_id=' + tariff_id,
+                url: 'disable_option',
                 type: 'GET',
+                data: {contract_id: contract_id, option_id: option_id, client_id:${client.id}},
                 success: function (data) {
-                    $(".options").empty();
-                    data.forEach(function (elem, index, array) {
-                        $(".options").append(
-                                        "<div><label>" +
-                                        "<input name='option_id' type='checkbox' value=" + elem.id + ">" + elem.title +
-                                        ". Cost: " + elem.cost + ". Activation cost: " + elem.activationCost + "" +
-                                        "</label></div>");
-                    })
-
+                    if ($.isEmptyObject(data)) {
+                        location.reload();
+                    } else {
+                        $('#deleteError').html(data).show();
+                    }
+                }
+            });
+        }
+        function changeTariff() {
+            console.log("With client");
+            var options = $("input[name='option_id']:checked").map(function () {
+                return parseInt($(this).val());
+            }).get();
+            $.ajax({
+                traditional: true,
+                url: 'change_tariff',
+                type: 'POST',
+                data: {
+                    tariff_id: $("input[name='tariff_id']:checked").val(),
+                    contract_id:${contract.id},
+                    option_id: options,
+                    client_id:${client.id}
+                },
+                success: function (data) {
+                    if ($.isEmptyObject(data)) {
+                        location.reload();
+                    } else {
+                        $('#changeTariffError').html(data).show();
+                    }
                 }
             });
         }

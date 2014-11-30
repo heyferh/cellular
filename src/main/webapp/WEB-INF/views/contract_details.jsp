@@ -6,62 +6,7 @@
 <html lang="en">
 
 <head>
-    <script>
-        function enableOption(contract_id, option_id) {
-            $.ajax({
-                url: 'enable_option',
-                type: 'GET',
-                data: {contract_id: contract_id, option_id: option_id},
-                success: function (data) {
-                    if ($.isEmptyObject(data)) {
-                        location.href = "contract_details?id=" + contract_id;
-                    } else {
-                        $('#deleteError').html(data).show();
-                    }
-                }
-            });
-        }
-        function disableOption(contract_id, option_id) {
-            $.ajax({
-                url: 'disable_option',
-                type: 'GET',
-                data: {contract_id: contract_id, option_id: option_id},
-                success: function (data) {
-                    if ($.isEmptyObject(data)) {
-                        location.href = "contract_details?id=" + contract_id;
-                    } else {
-                        $('#deleteError').html(data).show();
-                    }
-                }
-            });
-        }
-        function changeTariff() {
-            var options = $("input[name='option_id']:checked").map(function () {
-                return parseInt($(this).val());
-            }).get();
-            if ($("input[name='option_id']:checked").size() == 0) {
-                $('#changeTariffError').html("Choose tariff and options").show();
-            } else {
-                $.ajax({
-                    traditional: true,
-                    url: 'change_tariff',
-                    type: 'POST',
-                    data: {
-                        tariff_id: $("input[name='tariff_id']:checked").val(),
-                        contract_id:${contract.id},
-                        option_id: options
-                    },
-                    success: function (data) {
-                        if ($.isEmptyObject(data)) {
-                            location.reload();
-                        } else {
-                            $('#changeTariffError').html(data).show();
-                        }
-                    }
-                });
-            }
-        }
-    </script>
+    <title>Contract details</title>
 </head>
 
 <body>
@@ -71,16 +16,13 @@
         <div class="col-lg-12">
             <h2 class="page-header">Contract details</h2>
         </div>
-        <!-- /.col-lg-12 -->
     </div>
-    <!-- /.row -->
     <div class="row">
         <div class="col-lg-10">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     Info
                 </div>
-                <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="col-lg-2">
                         <p>Name:</p>
@@ -140,13 +82,9 @@
                         </p>
                     </div>
                 </div>
-                <!-- /.panel -->
             </div>
-            <!-- /.col-lg-12 -->
         </div>
-        <!-- /.row -->
     </div>
-    <!-- /.row -->
     <div class="row">
         <div class="col-lg-10">
             <div class="panel panel-primary">
@@ -157,74 +95,84 @@
                     <div id="deleteError" class="alert alert-danger alert-dismissable" style="display: none">
                     </div>
                     <div class="col-lg-6">
-                        <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Title</th>
-                                        <th>Cost</th>
-                                        <th>Activation cost</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    Enabled options:
-                                    <c:forEach var="option" items="${contract.options}">
-                                        <tr>
-                                            <td>
-                                                <a onclick="disableOption(${contract.id},${option.id})">
-                                                    <i class="fa fa-minus fa-fw"></i>
-                                                </a>
-                                            </td>
-                                            <td>${option.title}</td>
-                                            <td>${option.cost}</td>
-                                            <td>${option.activationCost}</td>
-                                        </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.table-responsive -->
+                            Current options:
+                            <c:choose>
+                                <c:when test="${not empty contract.options}">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Title</th>
+                                                <th>Cost</th>
+                                                <th>Activation cost</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach var="option" items="${contract.options}">
+                                                <tr>
+                                                    <td>
+                                                        <a onclick="disableOption(${contract.id},${option.id})">
+                                                            <i class="fa fa-minus fa-fw"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td>${option.title}</td>
+                                                    <td>${option.cost}</td>
+                                                    <td>${option.activationCost}</td>
+                                                </tr>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div>There is no options yet.</div>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Title</th>
-                                        <th>Cost</th>
-                                        <th>Activation cost</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    Available options:
-                                    <c:forEach var="option" items="${optionList}">
-                                        <tr>
-                                            <td>
-                                                <a onclick="enableOption(${contract.id},${option.id})">
-                                                    <i class="fa fa-plus fa-fw"></i>
-                                                </a>
-                                            </td>
-                                            <td>${option.title}</td>
-                                            <td>${option.cost}</td>
-                                            <td>${option.activationCost}</td>
-                                        </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.table-responsive -->
+                            Available options:
+                            <c:choose>
+                                <c:when test="${not empty optionList}">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Title</th>
+                                                <th>Cost</th>
+                                                <th>Activation cost</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach var="option" items="${optionList}">
+                                                <tr>
+                                                    <td>
+                                                        <a onclick="enableOption(${contract.id},${option.id})">
+                                                            <i class="fa fa-plus fa-fw"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td>${option.title}</td>
+                                                    <td>${option.cost}</td>
+                                                    <td>${option.activationCost}</td>
+                                                </tr>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div>All options are enabled.</div>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- /.col-lg-10 -->
     </div>
     <div class="row">
         <div class="col-lg-10">
@@ -248,7 +196,7 @@
                             </c:forEach>
                         </div>
                         <input id="submit" type="submit" class="btn btn-primary" value="Create"
-                               onclick="changeTariff()">
+                               onclick="changeTariff(${contract.id})">
                     </div>
                     <div class="col-lg-6">
                         <div class="checkbox options">
@@ -259,7 +207,5 @@
         </div>
     </div>
 </div>
-</div>
-<!-- /#page-wrapper -->
 </body>
 </html>

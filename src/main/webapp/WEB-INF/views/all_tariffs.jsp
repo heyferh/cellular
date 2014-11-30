@@ -6,31 +6,9 @@
 <html lang="en">
 
 <head>
-    <script>
-        function addTariff() {
-            if ($("#cost").val().length == 0) {
-                $("#costError").html("may not be empty").show();
-            }
-            if ($("#cost").val().length > 0) {
-                this.submit();
-            }
-        }
-        function deleteTariff(id) {
-            $.ajax({
-                url: 'delete?id=' + id,
-                type: 'GET',
-                success: function (data) {
-                    if ($.isEmptyObject(data)) {
-                        location.href = "all";
-                    } else {
-                        $('#deleteError').html(data).show();
-                    }
-
-                }
-            });
-        }
-    </script>
+    <title>All tariffs</title>
 </head>
+
 <body>
 <jsp:include page="navigation.jsp"></jsp:include>
 <div id="page-wrapper">
@@ -38,48 +16,51 @@
         <div class="col-lg-10">
             <h2 class="page-header">All tariffs</h2>
         </div>
-        <!-- /.col-lg-12 -->
         <div class="row">
             <div class="col-lg-10">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         Existing tariffs
                     </div>
-                    <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div id="deleteError" class="alert alert-danger alert-dismissable" style="display: none">
                         </div>
-                        <div class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th>Status</th>
-                                    <th>Title</th>
-                                    <th>Cost</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach var="tariff" items="${tariffList}">
-                                    <tr>
-                                        <td>
-                                            <a class="deleteTariff" onclick="deleteTariff(${tariff.id})">
-                                                <i class="fa fa-times fa-fw"></i>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a href="edit?id=${tariff.id}">
-                                                    ${tariff.title}
-                                            </a>
-                                        </td>
-                                        <td>${tariff.cost}</td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.table-responsive -->
+                        <c:choose>
+                            <c:when test="${not empty tariffList}">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Status</th>
+                                            <th>Title</th>
+                                            <th>Cost</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach var="tariff" items="${tariffList}">
+                                            <tr>
+                                                <td>
+                                                    <a class="deleteTariff" onclick="deleteTariff(${tariff.id})">
+                                                        <i class="fa fa-times fa-fw"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="edit?id=${tariff.id}">
+                                                            ${tariff.title}
+                                                    </a>
+                                                </td>
+                                                <td>${tariff.cost}</td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div>There is no options yet.</div>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
-                    <!-- /.panel-body -->
                 </div>
             </div>
         </div>
@@ -116,14 +97,22 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Options</label>
-                                    <c:forEach var="option" items="${optionList}">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input name="options" value="${option.id}"
-                                                       type="checkbox">${option.title}
-                                            </label>
-                                        </div>
-                                    </c:forEach>
+                                    <c:choose>
+                                        <c:when test="${not empty optionList}">
+                                            <c:forEach var="option" items="${optionList}">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input name="options" value="${option.id}"
+                                                               type="checkbox">${option.title}
+                                                    </label>
+                                                </div>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div>There is no options yet.</div>
+                                        </c:otherwise>
+                                    </c:choose>
+
                                 </div>
                             </div>
                         </div>
@@ -132,9 +121,7 @@
 
             </div>
         </div>
-        <!-- /#page-wrapper -->
     </div>
 </div>
 </body>
-
 </html>

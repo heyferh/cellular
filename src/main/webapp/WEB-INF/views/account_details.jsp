@@ -7,73 +7,7 @@
 <html lang="en">
 
 <head>
-    <script>
-        function pushOptions(contract_id, client_id) {
-            $.ajax({
-                url: 'push_options',
-                type: 'GET',
-                data: {contract_id: contract_id, client_id: client_id},
-                success: function (data) {
-                    if ($.isEmptyObject(data)) {
-                        location.reload();
-                    } else {
-                        $('#deleteError').html(data).show();
-                    }
-                }
-            });
-        }
-        function enableOption(contract_id, option_id) {
-            $.ajax({
-                url: '${pageContext.request.contextPath}/enable_option',
-                type: 'GET',
-                data: {contract_id: contract_id, option_id: option_id, client_id:${client.id}},
-                success: function (data) {
-                    if ($.isEmptyObject(data)) {
-                        location.reload();
-                    } else {
-                        $('#deleteError').html(data).show();
-                    }
-                }
-            });
-        }
-        function disableOption(contract_id, option_id) {
-            $.ajax({
-                url: '${pageContext.request.contextPath}/disable_option',
-                type: 'GET',
-                data: {contract_id: contract_id, option_id: option_id, client_id:${client.id}},
-                success: function (data) {
-                    if ($.isEmptyObject(data)) {
-                        location.reload();
-                    } else {
-                        $('#deleteError').html(data).show();
-                    }
-                }
-            });
-        }
-        function changeTariff() {
-            var options = $("input[name='option_id']:checked").map(function () {
-                return parseInt($(this).val());
-            }).get();
-            $.ajax({
-                traditional: true,
-                url: '${pageContext.request.contextPath}/change_tariff',
-                type: 'POST',
-                data: {
-                    tariff_id: $("input[name='tariff_id']:checked").val(),
-                    contract_id:${contract.id},
-                    option_id: options,
-                    client_id:${client.id}
-                },
-                success: function (data) {
-                    if ($.isEmptyObject(data)) {
-                        location.reload();
-                    } else {
-                        $('#changeTariffError').html(data).show();
-                    }
-                }
-            });
-        }
-    </script>
+    <title>Account details</title>
 </head>
 
 <body>
@@ -81,16 +15,8 @@
 <div id="wrapper">
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="${pageContext.request.contextPath}/contract/all">logo.png</a>
+            <a href="${pageContext.request.contextPath}/home"><img src="/cellular/app/js/logo.png"></a>
         </div>
-        <!-- /.navbar-header -->
-
         <ul class="nav navbar-top-links navbar-right">
             <li>${pageContext.request.userPrincipal.name}
             </li>
@@ -98,7 +24,6 @@
                     class="fa fa-sign-out fa-fw"></i> Logout</a>
             </li>
         </ul>
-        <!-- /.navbar-top-links -->
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
@@ -160,16 +85,13 @@
     <div class="col-lg-12">
         <h2 class="page-header">Contract details</h2>
     </div>
-    <!-- /.col-lg-12 -->
 </div>
-<!-- /.row -->
 <div class="row">
     <div class="col-lg-10">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 Info
             </div>
-            <!-- /.panel-heading -->
             <div class="panel-body">
                 <div class="col-lg-2">
                     <p>Name:</p>
@@ -254,75 +176,85 @@
                 <div id="deleteError" class="alert alert-danger alert-dismissable" style="display: none">
                 </div>
                 <div class="col-lg-6">
-                    <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>Disable</th>
-                                    <th>Title</th>
-                                    <th>Cost</th>
-                                    <th>Activation cost</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                Enabled options:
-                                <c:forEach var="option" items="${contract.options}">
-                                    <tr>
-                                        <td>
-                                            <a onclick="disableOption(${contract.id},${option.id})"
-                                               style="cursor: pointer">
-                                                <i class="fa fa-minus fa-fw"></i>
-                                            </a>
-                                        </td>
-                                        <td>${option.title}</td>
-                                        <td>${option.cost}</td>
-                                        <td>${option.activationCost}</td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.table-responsive -->
+                        Current options:
+                        <c:choose>
+                            <c:when test="${not empty contract.options}">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Disable</th>
+                                            <th>Title</th>
+                                            <th>Cost</th>
+                                            <th>Activation cost</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach var="option" items="${contract.options}">
+                                            <tr>
+                                                <td>
+                                                    <a onclick="disableOption(${contract.id},${option.id})"
+                                                       style="cursor: pointer">
+                                                        <i class="fa fa-minus fa-fw"></i>
+                                                    </a>
+                                                </td>
+                                                <td>${option.title}</td>
+                                                <td>${option.cost}</td>
+                                                <td>${option.activationCost}</td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div>There is no options yet.</div>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>Add to cart</th>
-                                    <th>Title</th>
-                                    <th>Cost</th>
-                                    <th>Activation cost</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                Available options:
-                                <c:forEach var="option" items="${optionList}">
-                                    <tr>
-                                        <td>
-                                            <a href="add_to_cart?option_id=${option.id}&client_id=${client.id}&contract_id=${contract.id}">
-                                                <i class="fa fa-shopping-cart fa-fw" style="color: #5cb85c"></i>
-                                            </a>
-                                        </td>
-                                        <td>${option.title}</td>
-                                        <td>${option.cost}</td>
-                                        <td>${option.activationCost}</td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.table-responsive -->
+                        Available options:
+                        <c:choose>
+                            <c:when test="${not empty optionList}">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Add to cart</th>
+                                            <th>Title</th>
+                                            <th>Cost</th>
+                                            <th>Activation cost</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach var="option" items="${optionList}">
+                                            <tr>
+                                                <td>
+                                                    <a href="add_to_cart?option_id=${option.id}&client_id=${client.id}&contract_id=${contract.id}">
+                                                        <i class="fa fa-shopping-cart fa-fw" style="color: #5cb85c"></i>
+                                                    </a>
+                                                </td>
+                                                <td>${option.title}</td>
+                                                <td>${option.cost}</td>
+                                                <td>${option.activationCost}</td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div>All options are enabled.</div>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- /.col-lg-10 -->
 </div>
 <div class="row">
     <div class="col-lg-10">
@@ -357,8 +289,6 @@
     </div>
 </div>
 </div>
-</div>
-<!-- /#page-wrapper -->
 </body>
 
 </html>

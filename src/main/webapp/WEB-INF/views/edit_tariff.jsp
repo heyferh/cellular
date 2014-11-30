@@ -6,38 +6,7 @@
 <html lang="en">
 
 <head>
-    <script>
-        function removeTariffOption(id) {
-            $.ajax({
-                url: 'disable',
-                type: 'GET',
-                data: {id: ${tariff.id}, optionID: id},
-                success: function (data) {
-                    if ($.isEmptyObject(data)) {
-                        location.href = "edit?id=" +${tariff.id};
-                    } else {
-                        $('#deleteError').html(data).show();
-                    }
-
-                }
-            });
-        }
-        function addTariffOption(id) {
-            $.ajax({
-                url: 'enable',
-                type: 'GET',
-                data: {id: ${tariff.id}, optionID: id},
-                success: function (data) {
-                    if ($.isEmptyObject(data)) {
-                        location.href = "edit?id=" +${tariff.id};
-                    } else {
-                        $('#deleteError').html(data).show();
-                    }
-
-                }
-            });
-        }
-    </script>
+    <title>Edit tariff</title>
 </head>
 
 <body>
@@ -47,7 +16,6 @@
         <div class="col-lg-12">
             <h2 class="page-header">Manage tariff options</h2>
         </div>
-
         <div class="row">
             <div class="col-lg-10">
                 <div class="panel panel-primary">
@@ -58,77 +26,88 @@
                         <div id="deleteError" class="alert alert-danger alert-dismissable" style="display: none">
                         </div>
                         <div class="col-lg-6">
-                            <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>Title</th>
-                                            <th>Cost</th>
-                                            <th>Activation Cost</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <c:forEach var="option" items="${tariff.options}">
-                                            <tr>
-                                                <td>
-                                                    <a onclick="removeTariffOption(${option.id})"
-                                                       style="cursor: pointer">
-                                                        <i class="fa fa-minus fa-fw"></i>
-                                                    </a>
-                                                </td>
-                                                <td>${option.title}</td>
-                                                <td>${option.cost}</td>
-                                                <td>${option.activationCost}</td>
-                                            </tr>
-                                        </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- /.table-responsive -->
+                                Current options:
+                                <c:choose>
+                                    <c:when test="${not empty tariff.options}">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Title</th>
+                                                    <th>Cost</th>
+                                                    <th>Activation Cost</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach var="option" items="${tariff.options}">
+                                                    <tr>
+                                                        <td>
+                                                            <a onclick="removeTariffOption(${option.id},${tariff.id})"
+                                                               style="cursor: pointer">
+                                                                <i class="fa fa-minus fa-fw"></i>
+                                                            </a>
+                                                        </td>
+                                                        <td>${option.title}</td>
+                                                        <td>${option.cost}</td>
+                                                        <td>${option.activationCost}</td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div>There is no options yet.</div>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>Title</th>
-                                            <th>Cost</th>
-                                            <th>Activation cost</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <c:forEach var="option" items="${availableOptions}">
-                                            <tr>
-                                                <td>
-                                                    <a onclick="addTariffOption(${option.id})" style="cursor: pointer">
-                                                        <i class="fa fa-plus fa-fw"></i>
-                                                    </a>
-                                                </td>
-                                                <td>${option.title}</td>
-                                                <td>${option.cost}</td>
-                                                <td>${option.activationCost}</td>
-                                            </tr>
-                                        </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- /.table-responsive -->
+                                Available options:
+                                <c:choose>
+                                    <c:when test="${not empty availableOptions}">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Title</th>
+                                                    <th>Cost</th>
+                                                    <th>Activation cost</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach var="option" items="${availableOptions}">
+                                                    <tr>
+                                                        <td>
+                                                            <a onclick="addTariffOption(${option.id},${tariff.id})"
+                                                               style="cursor: pointer">
+                                                                <i class="fa fa-plus fa-fw"></i>
+                                                            </a>
+                                                        </td>
+                                                        <td>${option.title}</td>
+                                                        <td>${option.cost}</td>
+                                                        <td>${option.activationCost}</td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div>There is no options yet.</div>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- /.col-lg-10 -->
         </div>
-
     </div>
-    <!-- /#page-wrapper -->
 </div>
 </body>
 </html>

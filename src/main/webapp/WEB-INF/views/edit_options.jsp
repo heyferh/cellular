@@ -6,11 +6,7 @@
 <html lang="en">
 
 <head>
-    <script>
-        function check(id, className) {
-            $(className + " input[value=" + id + "]").prop("checked", false);
-        }
-    </script>
+    <title>Edit option</title>
 </head>
 
 <body>
@@ -27,49 +23,59 @@
                         <div class="panel-heading">
                             ${option.title}
                         </div>
-                        <!-- /.panel-heading -->
                         <div class="panel-body">
                             <form action=${pageContext.request.contextPath}/option/manage method="POST">
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Required options</label>
-                                        <c:forEach var="option" items="${optionList}">
-                                            <div class="checkbox required">
-                                                <label>
-                                                    <input name="required" value="${option.id}" type="checkbox"
-                                                           onchange="check(${option.id}, '.incompatible')">${option.title}
-                                                </label>
-                                            </div>
-                                        </c:forEach>
-                                        <input type="hidden" name="option_id" value="${option.id}">
-                                        <input type="submit" class="btn btn-primary" value="Submit">
+                                        <c:choose>
+                                            <c:when test="${not empty optionList}">
+                                                <c:forEach var="option" items="${optionList}">
+                                                    <div class="checkbox required">
+                                                        <label>
+                                                            <input name="required" value="${option.id}" type="checkbox"
+                                                                   onchange="check(${option.id}, '.incompatible')">${option.title}
+                                                        </label>
+                                                    </div>
+                                                </c:forEach>
+                                                <input type="hidden" name="option_id" value="${option.id}">
+                                                <input type="submit" class="btn btn-primary" value="Submit">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div>There is no options yet.</div>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Incompatible options</label>
-                                        <c:forEach var="option" items="${optionList}">
-                                            <div class="checkbox incompatible">
-                                                <label>
-                                                    <input name="incompatible" value="${option.id}" type="checkbox"
-                                                           onchange="check(${option.id},'.required')">${option.title}
-                                                </label>
-                                            </div>
-                                        </c:forEach>
+                                        <c:choose>
+                                            <c:when test="${not empty optionList}">
+                                                <c:forEach var="option" items="${optionList}">
+                                                    <div class="checkbox incompatible">
+                                                        <label>
+                                                            <input name="incompatible" value="${option.id}"
+                                                                   type="checkbox"
+                                                                   onchange="check(${option.id},'.required')">${option.title}
+                                                        </label>
+                                                    </div>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div>There is no options yet.</div>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-                <!-- /.col-lg-10 -->
             </div>
-
         </div>
-        <!-- /#page-wrapper -->
     </div>
 </div>
-<!-- /#wrapper -->
 <script type="text/javascript">
     <c:forEach var="option" items="${option.requiredOptions}">
     $(".required input[value=" + ${option.id} +"]").prop("checked", true);

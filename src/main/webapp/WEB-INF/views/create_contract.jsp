@@ -4,34 +4,24 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html lang="en">
 <head>
-    <script>
-        function createContract() {
-//            if ($("input[name=option_id]:checked").size() > 0) {
-            this.submit();
-//            }
-//            $("#createError").html("Choose tariff and options!").show();
-        }
-    </script>
+    <title>Create new contract</title>
 </head>
 
 <body>
 <jsp:include page="navigation.jsp"></jsp:include>
-<form:form action="new" method="post" commandName="clientBean" onsubmit="createContract(); return false;">
+<form:form action="new" method="post" commandName="clientBean">
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
                 <h2 class="page-header">Create contract</h2>
             </div>
-            <!-- /.col-lg-12 -->
         </div>
-        <!-- /.row -->
         <div class="row">
             <div class="col-lg-10">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         Step 1. Create new user
                     </div>
-                    <!-- /.panel-heading -->
                     <div class="panel-body">
                         <c:if test="${not empty optionError}">
                             <div class="alert alert-danger alert-dismissable">
@@ -98,7 +88,6 @@
                     <div class="panel-heading">
                         Step 2. Choose tariff and options
                     </div>
-                    <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div id="createError" class="alert alert-danger alert-dismissable" style="display: none">
                         </div>

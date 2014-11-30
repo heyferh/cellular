@@ -63,39 +63,6 @@ public class ContractController {
     }
 
     @PreAuthorize("hasRole('Admin')")
-    @RequestMapping(value = "new", method = RequestMethod.POST)
-    public ModelAndView addNewContract(@Valid @ModelAttribute("clientBean") Client client,
-                                       BindingResult result,
-                                       @RequestParam("phoneNumber") String phoneNumber,
-                                       @RequestParam(value = "tariff_id", required = false) Long tariff_id,
-                                       @RequestParam(value = "option_id", required = false) long[] option_id) {
-        ModelAndView modelAndView = new ModelAndView("create_contract");
-        List<Tariff> tariffList = null;
-        try {
-            tariffList = tariffService.getAllTariffs();
-            if (result.hasErrors()) {
-                modelAndView.addObject("tariffList", tariffList);
-                return modelAndView;
-            }
-            if (tariff_id == null || option_id == null) {
-                modelAndView.addObject("optionError", "Choose tariff and options");
-                modelAndView.addObject("tariffList", tariffList);
-                return modelAndView;
-            }
-            if (contractService.checkIfNumberExists(phoneNumber)) {
-                throw new ContractException(phoneNumber + " is already used");
-            }
-            contractService.addContract(new Contract(phoneNumber, false, false), client, tariff_id, option_id);
-
-        } catch (ContractException | TariffException | OptionException e) {
-            modelAndView.addObject("optionError", e.getMessage());
-            modelAndView.addObject("tariffList", tariffList);
-            return modelAndView;
-        }
-        return new ModelAndView("all_contracts");
-    }
-
-    @PreAuthorize("hasRole('Admin')")
     @RequestMapping(value = "check_number", method = RequestMethod.POST)
     @ResponseBody
     public String checkIfNumberExists(@RequestParam("number") String phoneNumber) {
@@ -240,6 +207,42 @@ public class ContractController {
             return e.getMessage();
         }
         return "";
+    }
+
+    @PreAuthorize("hasRole('Admin')")
+    @RequestMapping(value = "new", method = RequestMethod.POST)
+    public ModelAndView addNewContract(@Valid @ModelAttribute("clientBean") Client client,
+                                       BindingResult result,
+                                       @RequestParam("phoneNumber") String phoneNumber,
+                                       @RequestParam(value = "tariff_id", required = false) Long tariff_id,
+                                       @RequestParam(value = "option_id", required = false) long[] option_id) {
+        ModelAndView modelAndView = new ModelAndView("create_contract");
+        List<Tariff> tariffList = null;
+        List<Client> clientList = null;
+        try {
+            tariffList = tariffService.getAllTariffs();
+            if (result.hasErrors()) {
+                modelAndView.addObject("tariffList", tariffList);
+                return modelAndView;
+            }
+            if (tariff_id == null || option_id == null) {
+                modelAndView.addObject("optionError", "Choose tariff and options");
+                modelAndView.addObject("tariffList", tariffList);
+                return modelAndView;
+            }
+            if (contractService.checkIfNumberExists(phoneNumber)) {
+                throw new ContractException(phoneNumber + " is already used");
+            }
+            contractService.addContract(new Contract(phoneNumber, false, false), client, tariff_id, option_id);
+            clientList = clientService.getAllClients();
+        } catch (ContractException | TariffException | OptionException | ClientException e) {
+            modelAndView.addObject("optionError", e.getMessage());
+            modelAndView.addObject("tariffList", tariffList);
+            return modelAndView;
+        }
+        ModelAndView all_contracts = new ModelAndView("all_contracts");
+        all_contracts.addObject("clientList", clientList);
+        return all_contracts;
     }
 
     @PreAuthorize("hasRole('Admin')")
