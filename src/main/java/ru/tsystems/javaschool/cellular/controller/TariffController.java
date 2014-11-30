@@ -24,8 +24,7 @@ import java.util.List;
 @RequestMapping(value = "tariff")
 public class TariffController {
 
-    @Autowired
-    private Logger logger;
+    private final static Logger logger = Logger.getLogger(TariffController.class);
 
     @Autowired
     TariffService tariffService;
@@ -41,9 +40,9 @@ public class TariffController {
             modelAndView.addObject("tariffList", tariffService.getAllTariffs());
             modelAndView.addObject("optionList", optionService.getAllOptions());
         } catch (TariffException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         } catch (OptionException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return modelAndView;
     }
@@ -99,9 +98,9 @@ public class TariffController {
             modelAndView.addObject("availableOptions", optionList);
             modelAndView.addObject("tariff", tariff);
         } catch (OptionException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         } catch (TariffException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return modelAndView;
     }

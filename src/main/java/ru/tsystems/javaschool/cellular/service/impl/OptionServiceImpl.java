@@ -22,8 +22,8 @@ import java.util.List;
 @Transactional
 @Service("OptionService")
 public class OptionServiceImpl implements OptionService {
-    @Autowired
-    private Logger logger;
+
+    private final static Logger logger = Logger.getLogger(OptionService.class);
 
     @Autowired
     private ContractDAO contractDAO;
@@ -46,6 +46,7 @@ public class OptionServiceImpl implements OptionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Option getOptionById(long id) throws OptionException {
         try {
             logger.info("Getting option by id: " + id);
@@ -57,6 +58,7 @@ public class OptionServiceImpl implements OptionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Option> getAllOptions() throws OptionException {
         try {
             logger.info("Getting all options");
@@ -82,6 +84,12 @@ public class OptionServiceImpl implements OptionService {
     public void deleteOption(Option option) throws OptionException {
         logger.info("Deleting option: " + option);
         try {
+            for (Option srcOption : optionDAO.getAll()) {
+                if (srcOption.getRequiredOptions().contains(option)) {
+                    logger.error("Unable to delete option: " + option.getTitle() + ". It is required for option: " + srcOption.getTitle());
+                    throw new OptionException("Unable to delete option: " + option.getTitle() + ". It is required for option: " + srcOption.getTitle());
+                }
+            }
             for (Tariff tariff : tariffDAO.getAll()) {
                 if (tariff.getOptions().contains(option)) {
                     logger.error("Unable to delete option: " + option.getTitle() + ". There is tariff: " + tariff.getTitle() + " using this option");
@@ -92,12 +100,6 @@ public class OptionServiceImpl implements OptionService {
                 if (contract.getOptions().contains(option)) {
                     logger.error("Unable to delete option: " + option.getTitle() + ". There is contract: " + contract.getPhoneNumber() + " using this option");
                     throw new OptionException("Unable to delete option: " + option.getTitle() + ". There is contract: " + contract.getPhoneNumber() + " using this option");
-                }
-            }
-            for (Option srcOption : optionDAO.getAll()) {
-                if (srcOption.getRequiredOptions().contains(option)) {
-                    logger.error("Unable to delete option: " + option.getTitle() + ". It is required for option: " + srcOption.getTitle());
-                    throw new OptionException("Unable to delete option: " + option.getTitle() + ". It is required for option: " + srcOption.getTitle());
                 }
             }
             for (Option srcOption : optionDAO.getAll()) {
@@ -113,6 +115,7 @@ public class OptionServiceImpl implements OptionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Option> getOptionsForTariff(long tariff_id) throws OptionException {
         logger.info("Getting options for tariff: " + tariff_id);
         try {
@@ -165,7 +168,7 @@ public class OptionServiceImpl implements OptionService {
             }
             optionDAO.update(option);
         } catch (DAOException e) {
-            logger.error("Error while editing required options");
+            logger.error("Error while editing required options. DAOException was caught.");
             throw new OptionException("Error while editing required options");
         }
     }

@@ -33,8 +33,7 @@ import java.util.Set;
 @RequestMapping(value = "contract")
 public class ContractController {
 
-    @Autowired
-    private Logger logger;
+    private final static Logger logger = Logger.getLogger(ContractController.class);
 
     @Autowired
     ContractService contractService;
@@ -58,7 +57,7 @@ public class ContractController {
         try {
             modelAndView.addObject("tariffList", tariffService.getAllTariffs());
         } catch (TariffException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return modelAndView;
     }
@@ -117,7 +116,7 @@ public class ContractController {
         try {
             modelAndView.addObject("clientList", clientService.getAllClients());
         } catch (ClientException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return modelAndView;
     }
@@ -130,7 +129,7 @@ public class ContractController {
         try {
             modelAndView.addObject("tariffList", tariffService.getAllTariffs());
         } catch (TariffException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return modelAndView;
     }
@@ -175,9 +174,9 @@ public class ContractController {
             modelAndView.addObject("tariffList", tariffList);
             modelAndView.addObject("optionList", optionList);
         } catch (ContractException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         } catch (TariffException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return modelAndView;
     }
@@ -188,9 +187,8 @@ public class ContractController {
         try {
             Contract contract = contractService.getContractById(id);
             contractService.forceBlock(contract);
-            contractService.updateContract(contract);
         } catch (ContractException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         ModelAndView modelAndView = new ModelAndView("redirect:contract_details?id=" + id);
         return modelAndView;
@@ -202,9 +200,8 @@ public class ContractController {
         try {
             Contract contract = contractService.getContractById(id);
             contractService.forceUnblock(contract);
-            contractService.updateContract(contract);
         } catch (ContractException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         ModelAndView modelAndView = new ModelAndView("redirect:contract_details?id=" + id);
         return modelAndView;
@@ -220,7 +217,6 @@ public class ContractController {
             Set<Option> optionSet = new HashSet<Option>();
             optionSet.add(optionService.getOptionById(option_id));
             contractService.enableOptions(contract, optionSet);
-            contractService.updateContract(contract);
         } catch (ContractException e) {
             return e.getMessage();
         } catch (OptionException e) {
@@ -238,7 +234,6 @@ public class ContractController {
             Contract contract = contractService.getContractById(contract_id);
             Option option = optionService.getOptionById(option_id);
             contractService.disableOption(contract, option);
-            contractService.updateContract(contract);
         } catch (ContractException e) {
             return e.getMessage();
         } catch (OptionException e) {
@@ -261,7 +256,6 @@ public class ContractController {
             Contract contract = contractService.getContractById(contract_id);
             Tariff tariff = tariffService.getTariffById(tariff_id);
             contractService.changeTariff(contract, tariff, optionSet);
-            contractService.updateContract(contract);
         } catch (OptionException e) {
             return e.getMessage();
         } catch (ContractException e) {

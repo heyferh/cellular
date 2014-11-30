@@ -24,15 +24,12 @@ public class UserDAOImpl extends CommonDAOImpl<User> implements UserDAO {
     @Override
     public User getUserByEmail(String email) throws DAOException {
         try {
-            logger.info("Getting user with email: " + email);
             return (User) entityManager.createQuery("select user from User user where user.email=:email")
                     .setParameter("email", email)
                     .getSingleResult();
         } catch (NoResultException e) {
-            logger.error("There's no user with email: " + email);
             throw new DAOException(OBJECT_NOT_FOUND);
         } catch (PersistenceException e) {
-            logger.error("User with email: " + email + " doesn't exist.");
             throw new DAOException(PERSISTENCE_EXCEPTION, e);
         }
     }

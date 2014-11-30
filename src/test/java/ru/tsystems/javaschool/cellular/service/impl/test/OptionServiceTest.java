@@ -1,6 +1,5 @@
 package ru.tsystems.javaschool.cellular.service.impl.test;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,8 +27,6 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 
 public class OptionServiceTest {
-    @Mock
-    private Logger logger;
     @Mock
     private OptionDAOImpl optionDAO;
     @Mock

@@ -22,8 +22,7 @@ import java.util.List;
 @RequestMapping(value = "option")
 public class OptionController {
 
-    @Autowired
-    private Logger logger;
+    private final static Logger logger = Logger.getLogger(OptionController.class);
 
     @Autowired
     OptionService optionService;
@@ -35,7 +34,7 @@ public class OptionController {
         try {
             modelAndView.addObject("optionList", optionService.getAllOptions());
         } catch (OptionException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return modelAndView;
     }
@@ -67,7 +66,7 @@ public class OptionController {
             optionService.manageRequiredOptions(option.getId(), rID);
             modelAndView.addObject("optionList", optionService.getAllOptions());
         } catch (OptionException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return modelAndView;
     }
@@ -94,7 +93,7 @@ public class OptionController {
             modelAndView.addObject("optionList", optionList);
             modelAndView.addObject("option", optionService.getOptionById(id));
         } catch (OptionException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return modelAndView;
     }
@@ -110,7 +109,7 @@ public class OptionController {
             optionService.manageRequiredOptions(id, requiredOptions);
             modelAndView.addObject("optionList", optionService.getAllOptions());
         } catch (OptionException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return modelAndView;
     }

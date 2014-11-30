@@ -20,29 +20,33 @@ import ru.tsystems.javaschool.cellular.service.api.AuthorizationService;
 @Transactional
 @Service("AuthorizationService")
 public class AuthorizationServiceImpl implements AuthorizationService, UserDetailsService {
-    @Autowired
-    private Logger logger;
+
+    private final static Logger logger = Logger.getLogger(AuthorizationService.class);
+
     @Autowired
     UserDAO userDAO;
 
     @Override
+    @Transactional(readOnly = true)
     public User getUserByEmail(String email) throws AuthorizationException {
-        logger.info("Getting user by email: " + email);
         try {
-            logger.info("Getting object" + email);
+            logger.info("Getting user with email: " + email);
             return userDAO.getUserByEmail(email);
         } catch (DAOException e) {
-            logger.error("Getting user by email: " + email + " fails.");
+            logger.error("Getting user with email: " + email + " fails with DAOException.");
             throw new AuthorizationException("Getting user by email: " + email + " fails.");
         }
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         UserBean userBean = null;
         try {
+            logger.info("Loading user with email: " + s);
             userBean = new UserBean(userDAO.getUserByEmail(s));
         } catch (DAOException e) {
+            logger.error("Loading user with email: " + s + " fails. UserNotFoundException.");
             throw new UsernameNotFoundException(s);
         }
         return userBean;

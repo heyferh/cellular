@@ -25,8 +25,7 @@ import java.util.List;
 @Service("TariffService")
 public class TariffServiceImpl implements TariffService {
 
-    @Autowired
-    private Logger logger;
+    private final static Logger logger = Logger.getLogger(TariffService.class);
 
     @Autowired
     private TariffDAO tariffDAO;
@@ -39,7 +38,6 @@ public class TariffServiceImpl implements TariffService {
 
     @Override
     public void createTariff(Tariff tariff, long[] optionId) throws TariffException {
-        logger.info("Creating tariff: " + tariff);
         try {
             List<Option> optionList = new ArrayList<Option>();
             if (optionId != null)
@@ -49,6 +47,7 @@ public class TariffServiceImpl implements TariffService {
             for (Option option : optionList) {
                 for (Option requiredOption : option.getRequiredOptions()) {
                     if (!optionList.contains(requiredOption)) {
+                        logger.error("Unable to create tariff." + " Option: " + option.getTitle() + " requires: " + requiredOption.getTitle());
                         throw new TariffException("Unable to create tariff." + " Option: " + option.getTitle() + " requires: " + requiredOption.getTitle());
                     }
                 }
@@ -58,6 +57,7 @@ public class TariffServiceImpl implements TariffService {
                 tariff.addOptions(option);
             }
             tariffDAO.update(tariff);
+            logger.info("New tariff was created: " + tariff);
         } catch (DAOException e) {
             logger.error("Error while creating tariff: " + tariff);
             throw new TariffException("Error while creating tariff: " + tariff.getTitle());
@@ -65,6 +65,7 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Tariff getTariffById(long id) throws TariffException {
         logger.info("Getting tariff by id: " + id);
         try {
@@ -76,6 +77,7 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Tariff> getAllTariffs() throws TariffException {
         logger.info("Getting all tariffs");
         try {
@@ -125,6 +127,7 @@ public class TariffServiceImpl implements TariffService {
             for (Option option : optionList) {
                 for (Option requiredOption : option.getRequiredOptions()) {
                     if (!tariff.getOptions().contains(requiredOption) && !optionList.contains(requiredOption)) {
+                        logger.error("Unable to add option: " + option.getTitle() + ".Requires: " + requiredOption.getTitle());
                         throw new OptionException("Unable to add option: " + option.getTitle() + ".Requires: " + requiredOption.getTitle());
                     }
                 }
@@ -133,7 +136,9 @@ public class TariffServiceImpl implements TariffService {
                 tariff.addOptions(option);
             }
             tariffDAO.update(tariff);
+            logger.info("Tariff was updated: " + tariff);
         } catch (DAOException e) {
+            logger.error("Error while updating tariff. DAOException was caught.");
             throw new OptionException("Error while adding option to tariff");
         }
     }
@@ -143,15 +148,17 @@ public class TariffServiceImpl implements TariffService {
         try {
             Tariff tariff = tariffDAO.get(tariff_id);
             Option option = optionDAO.get(option_id);
-
             for (Option srcOption : tariff.getOptions()) {
                 if (srcOption.getRequiredOptions().contains(option)) {
+                    logger.error("Unable to delete option: " + option.getTitle() + " while it is required for: " + srcOption.getTitle());
                     throw new OptionException("Unable to delete option: " + option.getTitle() + " while it is required for: " + srcOption.getTitle());
                 }
             }
             tariff.getOptions().remove(option);
             tariffDAO.update(tariff);
+            logger.info("Tariff was updated: " + tariff);
         } catch (DAOException e) {
+            logger.error("Error while updating tariff. DAOException was caught.");
             throw new OptionException("Error while deletin tariff option");
         }
     }

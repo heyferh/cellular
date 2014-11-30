@@ -143,7 +143,7 @@
                                             <label>
                                                 <input name="requiredOptions" value="${option.id}"
                                                        type="checkbox"
-                                                        >${option.title}
+                                                       onchange="check(${option.id}, '.incompatible')">${option.title}
                                             </label>
                                         </div>
                                     </c:forEach>
@@ -157,7 +157,7 @@
                                             <label>
                                                 <input name="incompatibleOptions" value="${option.id}"
                                                        type="checkbox"
-                                                        >${option.title}
+                                                       onchange="check(${option.id}, '.required')">${option.title}
                                             </label>
                                         </div>
                                     </c:forEach>

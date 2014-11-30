@@ -1,6 +1,5 @@
 package ru.tsystems.javaschool.cellular.service.impl.test;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,8 +21,7 @@ import static org.mockito.Mockito.*;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class ClientServiceTest {
-    @Mock
-    private Logger logger;
+
     @Mock
     private ClientDAOImpl clientDAO;
     @InjectMocks

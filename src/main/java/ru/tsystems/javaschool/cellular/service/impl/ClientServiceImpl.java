@@ -18,8 +18,8 @@ import java.util.List;
 @Transactional
 @Service("ClientService")
 public class ClientServiceImpl implements ClientService {
-    @Autowired
-    private Logger logger;
+
+    private final static Logger logger = Logger.getLogger(ClientService.class);
     @Autowired
     private ClientDAO clientDAO;
 
@@ -29,44 +29,49 @@ public class ClientServiceImpl implements ClientService {
             logger.info("Creating client: " + client);
             clientDAO.create(client);
         } catch (DAOException e) {
-            logger.error("Error while creating: " + client);
+            logger.error("Error while creating: " + client + ". DAOException was caught.");
             throw new ClientException("Error while creating: " + client.getFirstName() + " " + client.getLastName());
         }
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Client getClientById(long id) throws ClientException {
         try {
             logger.info("Getting client by id: " + id);
             return clientDAO.get(id);
         } catch (DAOException e) {
-            logger.error("Error while getting client with id: " + id);
+            logger.error("Error while getting client with id: " + id + ". DAOException was caught.");
             throw new ClientException("Error while getting client with id: " + id);
         }
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Client getClientByEmail(String email) throws ClientException {
         try {
             logger.info("Getting client by email: " + email);
             return clientDAO.getClientByEmail(email);
         } catch (DAOException e) {
-            logger.error("Error while getting client with email: " + email);
+            logger.error("Error while getting client with email: " + email + ". DAOException was caught.");
             throw new ClientException("Error while getting client with email: " + email);
         }
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Client getClientByPhoneNumber(String phoneNumber) throws ClientException {
         try {
+            logger.info("Getting client with phone number: " + phoneNumber);
             return clientDAO.getClientByNumber(phoneNumber);
         } catch (DAOException e) {
-            logger.error("Error while getting client by phone number: " + phoneNumber);
+            logger.error("Error while getting client by phone number: " + phoneNumber + ". DAOException was caught.");
             throw new ClientException("Error while getting client by phone number: " + phoneNumber);
         }
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Client> getAllClients() throws ClientException {
         List<Client> lst = null;
         try {
@@ -74,7 +79,7 @@ public class ClientServiceImpl implements ClientService {
             lst = clientDAO.getAll();
             return lst;
         } catch (DAOException e) {
-            logger.error("Error while getting all clients");
+            logger.error("Error while getting all clients. DAOException was caught.");
             throw new ClientException("Error while getting all clients");
         }
 
@@ -86,7 +91,7 @@ public class ClientServiceImpl implements ClientService {
             logger.info("Updating client: " + client);
             clientDAO.update(client);
         } catch (DAOException e) {
-            logger.error("Error while updating client: " + client);
+            logger.error("Error while updating client: " + client + ". DAOException was caught.");
             throw new ClientException("Error while updating client: " + client.getFirstName() + " " + client.getLastName());
         }
     }
@@ -97,7 +102,7 @@ public class ClientServiceImpl implements ClientService {
             logger.info("Deleting client: " + client);
             clientDAO.delete(client);
         } catch (DAOException e) {
-            logger.error("Error while deleting client: " + client);
+            logger.error("Error while deleting client: " + client + ". DAOException was caught.");
             throw new ClientException("Error while deleting client: " + client.getFirstName() + " " + client.getLastName());
         }
     }

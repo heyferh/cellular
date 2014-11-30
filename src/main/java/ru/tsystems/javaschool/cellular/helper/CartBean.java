@@ -1,5 +1,6 @@
 package ru.tsystems.javaschool.cellular.helper;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.javaschool.cellular.entity.Contract;
@@ -18,6 +19,8 @@ import java.util.Set;
  */
 public class CartBean {
 
+    private final static Logger logger = Logger.getLogger(CartBean.class);
+
     @Autowired
     ContractService contractService;
 
@@ -29,6 +32,7 @@ public class CartBean {
         try {
             Contract contract = contractService.getContractById(contract_id);
             if (contract.isBlockedByOperator()) {
+                logger.error("Contract is blocked by operator: " + contract);
                 throw new CartException("This contract is blocked by operator");
             }
             Set<Option> set = new HashSet<Option>();
@@ -40,6 +44,7 @@ public class CartBean {
             set.addAll(contract.getOptions());
             contractService.validateOptions(set);
             if (contract.getBalance() < total) {
+                logger.error("Not enough money.");
                 throw new CartException("Not enough money");
             }
             contract.setBalance(contract.getBalance() - total);
@@ -47,10 +52,12 @@ public class CartBean {
                 contract.addOptions(option);
             }
             contractService.updateContract(contract);
+            logger.info("Pushing options: " + optionSet + " to contract: " + contract);
             optionSet.clear();
         } catch (ContractException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         } catch (OptionException e) {
+            logger.error(e.getMessage());
             throw new CartException(e.getMessage());
         }
     }

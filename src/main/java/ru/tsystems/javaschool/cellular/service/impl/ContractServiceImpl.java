@@ -28,8 +28,9 @@ import java.util.Set;
 @Transactional
 @Service("ContractService")
 public class ContractServiceImpl implements ContractService {
-    @Autowired
-    private Logger logger;
+
+    private static final Logger logger = Logger.getLogger(ContractService.class);
+
     @Autowired
     private ContractDAO contractDAO;
     @Autowired
@@ -51,6 +52,7 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Contract getContractById(long id) throws ContractException {
         try {
             logger.info("Getting contract by id: " + id);
@@ -62,6 +64,7 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Contract> getAllContracts() throws ContractException {
         try {
             logger.info("Getting all contracts");
@@ -102,6 +105,7 @@ public class ContractServiceImpl implements ContractService {
         } else {
             logger.info("Blocking contract: " + contract + " by operator");
             contract.setBlockedByOperator(true);
+            updateContract(contract);
         }
     }
 
@@ -113,6 +117,7 @@ public class ContractServiceImpl implements ContractService {
         } else {
             logger.info("Unblocking contract by operator: " + contract);
             contract.setBlockedByOperator(false);
+            updateContract(contract);
         }
 
     }
@@ -122,6 +127,7 @@ public class ContractServiceImpl implements ContractService {
         if (!contract.isBlockedByClient()) {
             logger.info("Blocking contract: " + contract + " by client");
             contract.setBlockedByClient(true);
+            updateContract(contract);
         } else {
             logger.warn("Contract " + contract + " is already blocked");
             throw new ContractException("Contract " + contract.getPhoneNumber() + " is already blocked");
@@ -136,6 +142,7 @@ public class ContractServiceImpl implements ContractService {
         } else if (contract.isBlockedByClient()) {
             logger.info("Unblocking contract: " + contract + " by client");
             contract.setBlockedByClient(false);
+            updateContract(contract);
         }
     }
 
@@ -147,20 +154,19 @@ public class ContractServiceImpl implements ContractService {
         }
         if (contract.getBalance() < totalAmount) {
             logger.error("Not enough money to add: " + tariff + " and options to contract: " + contract);
-            throw new ContractException("Not enough money");
+            throw new ContractException("Not enough money. Need: " + totalAmount + ". Got: " + contract.getBalance());
         }
         validateOptions(options);
         logger.info("Changing tarriff to: " + tariff);
-        contract.setBalance(contract.getBalance() - totalAmount);
         contract.setTariff(tariff);
         contract.getOptions().clear();
-        Set<Option> requiredOptions = new HashSet<Option>();
         enableOptions(contract, options);
+        contract.setBalance(contract.getBalance() - tariff.getCost());
+        updateContract(contract);
     }
 
     @Override
-    public void disableOption(Contract contract, Option option) throws OptionException {
-        logger.info("Disabling option: " + option);
+    public void disableOption(Contract contract, Option option) throws OptionException, ContractException {
         Set<Option> optionSet = contract.getOptions();
         for (Option srcOption : optionSet) {
             if (srcOption.getRequiredOptions().contains(option)) {
@@ -170,6 +176,7 @@ public class ContractServiceImpl implements ContractService {
         }
         logger.info("Disabling option: " + option);
         optionSet.remove(option);
+        updateContract(contract);
     }
 
     @Override
@@ -179,21 +186,23 @@ public class ContractServiceImpl implements ContractService {
             totalAmount += (option.getCost() + option.getActivationCost());
         }
         if (contract.getBalance() < totalAmount) {
-            throw new ContractException("Not enough money");
+            logger.error("Not enough money. Need: " + totalAmount + ". Got: " + contract.getBalance());
+            throw new ContractException("Not enough money. Need: " + totalAmount + ". Got: " + contract.getBalance());
         }
         Set<Option> options = new HashSet<Option>();
         options.addAll(optionSet);
         options.addAll(contract.getOptions());
         validateOptions(options);
         contract.setBalance(contract.getBalance() - totalAmount);
+        logger.info("Contract: " + contract.getPhoneNumber() + ". Enabling options: " + optionSet);
         for (Option option : optionSet) {
             contract.addOptions(option);
         }
+        updateContract(contract);
     }
 
     @Override
     public void addContract(Contract contract, Client client, long tariffId, long[] optionIds) throws ContractException, OptionException {
-        logger.info("Adding new contract: " + contract);
         try {
             Set<Option> optionSet = new HashSet<Option>();
             for (long id : optionIds) {
@@ -210,15 +219,15 @@ public class ContractServiceImpl implements ContractService {
             contract.setTariff(tariffDAO.get(tariffId));
             enableOptions(contract, optionSet);
             contractDAO.update(contract);
+            logger.info("New contract was created: " + contract);
         } catch (DAOException e) {
-            logger.error("Unable to add contract");
+            logger.error("Unable to add contract. DAOException was caught.");
             throw new ContractException("Unable to add contract");
         }
     }
 
     @Override
     public void addOneMoreContract(Contract contract, Client client, long tariffId, long[] optionIds) throws ContractException, OptionException {
-        logger.info("Adding new contract: " + contract);
         try {
             if (contractDAO.checkIfNumberExists(contract.getPhoneNumber())) {
                 logger.error("Number: " + contract.getPhoneNumber() + " already exists");
@@ -235,6 +244,7 @@ public class ContractServiceImpl implements ContractService {
             contract.setTariff(tariffDAO.get(tariffId));
             enableOptions(contract, optionSet);
             contractDAO.update(contract);
+            logger.info("Another contract was added: " + contract);
         } catch (DAOException e) {
             logger.error("Unable to add contract");
             throw new ContractException("Unable to add contract");
@@ -247,10 +257,12 @@ public class ContractServiceImpl implements ContractService {
         try {
             String regex = "[0-9]+";
             if ((number.length() != 11) || !number.matches(regex)) {
+                logger.error("Invalid phone format. Must contain 11 digits");
                 throw new ContractException("Invalid phone format. Must contain 11 digits");
             }
             return contractDAO.checkIfNumberExists(number);
         } catch (DAOException e) {
+            logger.error("Unable to check number. Caught: DAOException");
             throw new ContractException("Unable to check.");
         }
     }
@@ -261,12 +273,14 @@ public class ContractServiceImpl implements ContractService {
             for (Option incompatibleOption : option.getIncompatibleOptions()) {
                 for (Option srcOption : set) {
                     if (srcOption.equals(incompatibleOption)) {
+                        logger.error("Option: " + option.getTitle() + " is incompatible with: " + srcOption.getTitle());
                         throw new OptionException("Option: " + option.getTitle() + " is incompatible with: " + srcOption.getTitle());
                     }
                 }
             }
             for (Option requiredOption : option.getRequiredOptions()) {
                 if (!set.contains(requiredOption)) {
+                    logger.error("Option: " + option.getTitle() + " requires: " + requiredOption.getTitle());
                     throw new OptionException("Option: " + option.getTitle() + " requires: " + requiredOption.getTitle());
                 }
             }

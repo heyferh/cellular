@@ -31,8 +31,7 @@ import java.util.Set;
 @Controller
 public class ClientController {
 
-    @Autowired
-    private Logger logger;
+    private final static Logger logger = Logger.getLogger(ClientController.class);
 
     @Autowired
     OptionService optionService;
@@ -52,11 +51,13 @@ public class ClientController {
     @Autowired
     AuthHelper authHelper;
 
+    @PreAuthorize("hasRole('User')")
     @ModelAttribute("currentUser")
     public Client getCurrentUser() {
         return (Client) authHelper.getCurrentUser();
     }
 
+    @PreAuthorize("hasRole('User')")
     @RequestMapping(value = "account", method = RequestMethod.GET)
     public ModelAndView getAccountView() {
         ModelAndView modelAndView = new ModelAndView("account");
@@ -80,9 +81,9 @@ public class ClientController {
             modelAndView.addObject("tariffList", tariffList);
             modelAndView.addObject("optionList", optionList);
         } catch (ContractException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         } catch (TariffException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return modelAndView;
     }
@@ -94,7 +95,6 @@ public class ClientController {
         try {
             Contract contract = contractService.getContractById(id);
             contractService.block(contract);
-            contractService.updateContract(contract);
         } catch (ContractException e) {
             return e.getMessage();
         }
@@ -108,7 +108,6 @@ public class ClientController {
         try {
             Contract contract = contractService.getContractById(id);
             contractService.unblock(contract);
-            contractService.updateContract(contract);
         } catch (ContractException e) {
             return e.getMessage();
         }
@@ -129,7 +128,6 @@ public class ClientController {
             Set<Option> optionSet = new HashSet<Option>();
             optionSet.add(optionService.getOptionById(option_id));
             contractService.enableOptions(contract, optionSet);
-            contractService.updateContract(contract);
         } catch (ContractException e) {
             return e.getMessage();
         } catch (OptionException e) {
@@ -151,7 +149,6 @@ public class ClientController {
             }
             Option option = optionService.getOptionById(option_id);
             contractService.disableOption(contract, option);
-            contractService.updateContract(contract);
         } catch (ContractException e) {
             return e.getMessage();
         } catch (OptionException e) {
@@ -178,7 +175,6 @@ public class ClientController {
             }
             Tariff tariff = tariffService.getTariffById(tariff_id);
             contractService.changeTariff(contract, tariff, optionSet);
-            contractService.updateContract(contract);
         } catch (OptionException e) {
             return e.getMessage();
         } catch (ContractException e) {
@@ -198,9 +194,9 @@ public class ClientController {
             cartBean.setTariff(contractService.getContractById(contract_id).getTariff());
             cartBean.addOption(optionService.getOptionById(option_id));
         } catch (OptionException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         } catch (ContractException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return "redirect:account_details?id=" + contract_id + "&clientID=" + client_id;
     }
@@ -213,7 +209,7 @@ public class ClientController {
         try {
             cartBean.removeOption(optionService.getOptionById(option_id));
         } catch (OptionException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return "redirect:account_details?id=" + contract_id + "&clientID=" + client_id;
     }

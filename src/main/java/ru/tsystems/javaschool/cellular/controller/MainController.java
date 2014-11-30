@@ -1,7 +1,7 @@
 package ru.tsystems.javaschool.cellular.controller;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class MainController {
 
-    @Autowired
-    private Logger logger;
+    private static final Logger logger = Logger.getLogger(MainController.class);
 
     @RequestMapping(value = "/login")
     public String login(HttpServletRequest request, Model model) {
@@ -35,6 +34,7 @@ public class MainController {
         return "403";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/home")
     public String userDispatch() {
         if (((UserBean) (SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getUser() instanceof Client) {

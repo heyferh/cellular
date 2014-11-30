@@ -97,7 +97,7 @@ public interface ContractService {
      * @param option   option to disable.
      * @throws OptionException if this option required for another option.
      */
-    public void disableOption(Contract contract, Option option) throws OptionException;
+    public void disableOption(Contract contract, Option option) throws OptionException, ContractException;
 
     /**
      * Enable option on given contract.
