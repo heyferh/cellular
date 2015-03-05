@@ -1,6 +1,6 @@
 #Introduction
 
-Cellular web application represents the service which provides dashboard and account details page. Dashboard is a web page where employees can customize tariffs, options and contract features. Every customer has it's own private account page which is available through login procedure.
+Cellular web application represents the service which provides dashboard and account details page. Dashboard is a web page where employees can customize tariffs, options and contract features. Every customer has its own private account page which is available through login procedure.
 
 #Purpose
 
