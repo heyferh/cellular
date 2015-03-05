@@ -4,7 +4,7 @@ Cellular web application represents the service which provides dashboard and acc
 
 #Purpose
 
-It's main purpose is to provide:
+Its main purpose is to provide:
 
 	Creating and deleting options
 	Creating and deleting tariff and related options
