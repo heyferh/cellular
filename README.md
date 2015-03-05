@@ -16,8 +16,8 @@ It's main purpose is to provide:
 	
 #Technologies used:
 
-  AS WildFly 8
-  Spring Framework (Core, Security, MVC)
-  Maven 3.0.5
-  Hibernate ORM
-  JPA 2.0
+	AS WildFly 8
+	Spring Framework (Core, Security, MVC)
+	Maven 3.0.5
+	Hibernate ORM
+	JPA 2.0
